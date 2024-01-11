@@ -1,38 +1,23 @@
-import {
-  json,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { Navigation } from "~/components/navigation";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireUserSession(request);
 
-  console.log("user", user);
-
-  return json({ message: "Hello World", user });
+  return json({ user });
 };
 
-export default function DashboardIndex() {
-  const data = useLoaderData<typeof loader>();
+export default function DashboardLayout() {
+  const { user } = useLoaderData<typeof loader>();
+
   return (
-    <>
-      {" "}
-      <Navigation />
-      <div className="mx-auto max-w-7xl p-8">
-        <div className="text-2xl font-bold">
-          Hello User {data.message} - {data?.user?.email}
-        </div>
+    <div>
+      <Navigation user={user} />
+      <div className="max-w-7xl mx-auto p-8">
+        <Outlet />
       </div>
-    </>
+    </div>
   );
 }
