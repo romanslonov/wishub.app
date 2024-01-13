@@ -6,10 +6,10 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { NonFlashOfWrongThemeEls, useTheme } from './theme-provder';
-import { cn } from './lib/cn';
+import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
+import { cn } from "./lib/cn";
 
-export default function App () {
+export default function App() {
   const theme = useTheme();
   return (
     <html lang="en" className={cn(theme)}>
@@ -27,5 +27,5 @@ export default function App () {
         <LiveReload />
       </body>
     </html>
-  )
+  );
 }
