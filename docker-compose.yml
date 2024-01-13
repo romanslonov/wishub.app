@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: remix-backend
+    command: ["npm", "run", "start"]
+    environment:
+      DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+  database:
+    image: postgres
+    restart: always
+    container_name: remix-database
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

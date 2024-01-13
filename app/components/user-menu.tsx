@@ -1,4 +1,10 @@
-import { Github, LayoutDashboard, LifeBuoy, UserIcon } from "lucide-react";
+import {
+  Github,
+  LayoutDashboard,
+  LifeBuoy,
+  LogOut,
+  UserIcon,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -10,19 +16,17 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { User } from "lucia";
-// import { SignOutForm } from "./auth-components";
 
 export function UserMenu({ user }: { user: User }) {
-  // const session = await auth();
-
-  // if (!session?.user) return null;
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 bg-muted rounded-full"
+        >
           {/* <Avatar className="h-8 w-8">
             <AvatarImage
               src={user.image as string | undefined}
@@ -32,7 +36,7 @@ export function UserMenu({ user }: { user: User }) {
               <div className="animate-pulse bg-muted"></div>
             </AvatarFallback>
           </Avatar> */}
-          <div className="w-8 h-8 rounded-full bg-muted"></div>
+          {user.email[0].toUpperCase()}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -62,7 +66,14 @@ export function UserMenu({ user }: { user: User }) {
           <span>Support</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>{/* <SignOutForm /> */}</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Form action="/logout" method="post">
+            <button type="submit" className="flex items-center w-full p-0">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </button>
+          </Form>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

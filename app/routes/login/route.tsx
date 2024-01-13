@@ -5,9 +5,11 @@ import {
   type ActionFunctionArgs,
   type MetaFunction,
   redirect,
+  LoaderFunctionArgs,
 } from "@remix-run/node";
 import { z } from "zod";
 import { login } from "./login.server";
+import { allowAnonymous } from "~/auth/allow-anonymous";
 
 export const meta: MetaFunction = () => {
   return [
@@ -44,6 +46,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json({ errors: "Something goes wrong." }, { status: 500 });
   }
 };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await allowAnonymous(request);
+  return null;
+}
 
 export default function Login() {
   return (

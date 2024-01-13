@@ -1,5 +1,13 @@
+import { MetaFunction } from "@remix-run/node";
 import { Lists } from "./lists";
 import { Reserves } from "./reserves";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Your Wish Lists" },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
 
 export default function DashboardIndex() {
   return (

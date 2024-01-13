@@ -4,7 +4,7 @@ import { requireUserSession } from "~/auth/require-user-session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUserSession(request);
+  const { user } = await requireUserSession(request);
 
   return json({ user });
 };

@@ -35,5 +35,5 @@ export async function requireUserSession(request: Request) {
     });
   }
 
-  return response.user;
+  return response;
 }

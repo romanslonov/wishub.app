@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUserSession(request);
+  const { user } = await requireUserSession(request);
 
   return json({ message: "Hello World", user });
 };

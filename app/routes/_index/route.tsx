@@ -4,7 +4,7 @@ import {
   type MetaFunction,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { requireUserSession } from "~/auth/require-user-session.server";
+import { getUser } from "~/auth/get-user.server";
 import { Navigation } from "~/components/navigation";
 
 export const meta: MetaFunction = () => {
@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireUserSession(request);
+  const user = await getUser(request);
 
   return json({ user });
 };
