@@ -1,6 +1,15 @@
 version: "3.7"
 
 services:
+  frontend:
+    image: caddy:2.6.4-alpine
+    container_name: remix-frontend
+    hostname: frontend
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
   backend:
     build:
       context: .
@@ -9,20 +18,16 @@ services:
     command: ["npm", "run", "start"]
     environment:
       DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    ports:
-      - 3000:3000
     depends_on:
       - database
   database:
-    image: postgres
+    image: postgres:16.1-alpine
     restart: always
     container_name: remix-database
     environment:
       POSTGRES_PASSWORD: example
     ports:
-      - 5432:5432
+      - 127.0.0.1:5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
 
