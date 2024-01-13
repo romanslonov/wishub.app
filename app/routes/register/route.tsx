@@ -10,6 +10,11 @@ import {
 import { z } from "zod";
 import { createUser } from "./create-user.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
+import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import { useEffect, useRef } from "react";
+import { toast } from "sonner";
+import { Ghost } from "lucide-react";
+import { Message } from "~/components/ui/message";
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,23 +24,19 @@ export const meta: MetaFunction = () => {
 };
 
 const schema = z.object({
-  email: z.string().min(1).email(),
-  password: z.string().min(8),
+  email: z
+    .string()
+    .min(1, "Email is required.")
+    .email("Please enter a valid email."),
+  password: z.string().min(8, "Password must be at least 8 characters."),
 });
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
 
-  const parsed = schema.safeParse(Object.fromEntries(formData));
-
-  if (!parsed.success) {
-    return json({ errors: "Invalid credentials." }, { status: 400 });
-  }
-
-  const { email, password } = parsed.data;
-
-  console.log({ email, password });
   try {
+    const { email, password } = schema.parse(Object.fromEntries(formData));
+
     const cookies = await createUser(email, password);
 
     return redirect("/", {
@@ -44,8 +45,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    return json({ errors: "Something goes wrong." }, { status: 500 });
+    if (error instanceof z.ZodError) {
+      return json({ errors: error.formErrors }, { status: 400 });
+    }
+    return json({ error: "Something goes wrong." }, { status: 500 });
   }
 };
 
@@ -54,32 +57,74 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return null;
 }
 
-export default function Login() {
+export default function RegisterRoute() {
+  const data = useActionData<typeof action>();
+  const navigation = useNavigation();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const isSubmitting = navigation.state === "loading";
+
+  useEffect(() => {
+    if (data && "errors" in data) {
+      if (data.errors.fieldErrors["email"]?.length) {
+        emailRef.current?.focus();
+      } else if (data.errors.fieldErrors["password"]?.length) {
+        passwordRef.current?.focus();
+      }
+    }
+  }, [data]);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <div className="max-w-md w-full p-8">
-        <h1 className="font-bold text-2xl mb-4 text-center">
-          Create your account
-        </h1>
-        <form method="post" className="space-y-4">
-          <Input
-            required
-            name="email"
-            defaultValue={"test@gmail.com"}
-            type="email"
-            placeholder="example@domain.com"
-          />
-          <Input
-            required
-            name="password"
-            type="password"
-            defaultValue={"12345678"}
-            placeholder="********"
-          />
+        <div className="text-center space-y-1 mb-8">
+          <Ghost className="w-12 h-12 mx-auto text-primary mb-4" />
+          <h1 className="font-bold text-2xl mb-4">Create your account</h1>
+          <p className="text-muted-foreground">
+            Join today ahd start to share wish lists.
+          </p>
+        </div>
+        <Form method="post" className="space-y-4 mb-4">
+          <div className="space-y-2">
+            <Input
+              required
+              name="email"
+              type="email"
+              placeholder="example@domain.com"
+            />
+            {data &&
+              "errors" in data &&
+              data.errors.fieldErrors["email"]?.map((error) => (
+                <Message key={error}>{error}</Message>
+              ))}
+          </div>
+          <div>
+            <Input
+              required
+              name="password"
+              type="password"
+              placeholder="********"
+            />
+            {data &&
+              "errors" in data &&
+              data.errors.fieldErrors["password"]?.map((error) => (
+                <Message key={error}>{error}</Message>
+              ))}
+          </div>
+          {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit">
-            Create an account
+            {isSubmitting ? "Creating..." : "Create an account"}
           </Button>
-        </form>
+        </Form>
+        <p className="text-muted-foreground text-sm text-center">
+          Already have an account?{" "}
+          <Link
+            className="text-primary underline-offset-4 hover:underline"
+            to="/login"
+          >
+            Login to your account
+          </Link>
+        </p>
       </div>
     </div>
   );

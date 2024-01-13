@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
 import { cn } from "./lib/cn";
+import { Toaster } from "./components/ui/toast";
 
 export default function App() {
   const theme = useTheme();
@@ -25,6 +26,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Toaster />
       </body>
     </html>
   );

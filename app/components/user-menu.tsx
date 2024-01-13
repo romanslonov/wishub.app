@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Form, Link } from "@remix-run/react";
 import { User } from "lucia";
 
@@ -23,10 +23,7 @@ export function UserMenu({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="relative h-8 w-8 bg-primary rounded-full"
-        >
+        <Button className="relative h-8 w-8 rounded-full">
           {/* <Avatar className="h-8 w-8">
             <AvatarImage
               src={user.image as string | undefined}
