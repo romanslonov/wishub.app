@@ -12,10 +12,17 @@ datasource db {
 
 model User {
   id       String    @id
-  sessions Session[]
 
   email    String    @unique
   password String
+
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+
+  sessions Session[]
+  lists    List[]
+  reserves      Item[]
 
   @@map("users")
 }
@@ -27,4 +34,37 @@ model Session {
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model List {
+  id          String   @id @default(cuid())
+  name        String   @db.Text
+  description String?  @db.Text
+  public      Boolean  @default(false) 
+  ownerId     String
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+
+  items     Item[]
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@map(name: "lists")
+}
+
+model Item {
+  id          String   @id @default(cuid())
+  listId      String
+  name        String   @db.Text
+  url         String   @db.Text
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+  reserverId  String?
+  
+  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  reserver  User?    @relation(fields: [reserverId], references: [id], onDelete: SetNull)
+
+  @@index([listId])
+  @@index([reserverId])
+  @@map(name: "items")
 }

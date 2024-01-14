@@ -1,9 +1,8 @@
+import { Item } from "@prisma/client";
 import { ListItem } from "~/components/list-item";
 
-export function Reserves() {
-  const items: unknown[] = [];
-
-  if (items === null || items.length === 0) {
+export function Reserves({ reserves }: { reserves: Item[] }) {
+  if (reserves === null || reserves.length === 0) {
     return (
       <div className="border border-dashed rounded-2xl py-16 px-8 text-center">
         <div className="flex items-center justify-center gap-2 mb-8">
@@ -33,7 +32,7 @@ export function Reserves() {
 
   return (
     <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-4">
-      {items.map((item) => (
+      {reserves.map((item) => (
         <ListItem key={item.id} item={item} actions={<div></div>} />
       ))}
     </ul>

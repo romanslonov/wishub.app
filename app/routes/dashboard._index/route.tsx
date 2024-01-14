@@ -1,6 +1,9 @@
-import { MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Lists } from "./lists";
 import { Reserves } from "./reserves";
+import { requireUserSession } from "~/auth/require-user-session.server";
+import { getLists, getReserves } from "./actions.server";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,7 +12,19 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await requireUserSession(request);
+
+  const lists = await getLists(session.user.id);
+
+  const reserves = await getReserves(session.user.id);
+
+  return { lists, reserves };
+}
+
 export default function DashboardIndex() {
+  const { lists, reserves } = useLoaderData<typeof loader>();
+
   return (
     <div className="space-y-16">
       <div className="space-y-6">
@@ -18,7 +33,7 @@ export default function DashboardIndex() {
           <div className="flex items-center gap-2"></div>
         </div>
 
-        <Lists />
+        <Lists lists={lists} />
       </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -26,7 +41,7 @@ export default function DashboardIndex() {
           <div className="flex items-center gap-2"></div>
         </div>
 
-        <Reserves />
+        <Reserves reserves={reserves} />
       </div>
     </div>
   );

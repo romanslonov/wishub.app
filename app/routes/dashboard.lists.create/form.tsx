@@ -2,7 +2,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +34,11 @@ const defaultItemValue = { url: "", name: "" };
 
 type FormData = z.infer<typeof schema>;
 
-export function CreateListForm() {
+export function CreateListForm({
+  action,
+}: {
+  action: (data: FormData) => Promise<null>;
+}) {
   const {
     register,
     control,
@@ -58,7 +62,7 @@ export function CreateListForm() {
   // const router = useRouter();
 
   async function onsubmit(data: FormData) {
-    // const response = await create(data);
+    const response = await action(data);
     // if (response.status === "success") {
     //   toast.success("List was created.");
     //   // router.push("/dashboard/lists");

@@ -19,5 +19,5 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
   }
 
-  return json({ url: params });
+  return json({ result: { ogTitle: "Example name" } });
 }

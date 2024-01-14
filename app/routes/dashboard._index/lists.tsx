@@ -1,20 +1,18 @@
 import { cn } from "~/lib/cn";
 import { buttonVariants } from "~/components/ui/button";
 import { ListPlus } from "lucide-react";
-import { Link, useLoaderData } from "@remix-run/react";
-import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { requireUserSession } from "~/auth/require-user-session.server";
+import { Link } from "@remix-run/react";
+import { List } from "@prisma/client";
 
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//   await requireUserSession(request);
-
-//   return json({ lists: [] });
-// };
-export function Lists() {
-  // const { lists } = useLoaderData<typeof loader>();
-
-  const lists: unknown[] = [];
-
+export function Lists({
+  lists,
+}: {
+  lists: (List & {
+    _count: {
+      items: number;
+    };
+  })[];
+}) {
   if (lists.length === 0) {
     return (
       <div className="border border-dashed rounded-2xl py-16 text-center">
@@ -56,12 +54,12 @@ export function Lists() {
       {lists.map((item) => (
         <li key={item.id}>
           <Link
-            href={`/dashboard/lists/${item.id}`}
+            to={`./lists/${item.id}`}
             className="border p-6 rounded-xl shadow-sm block"
           >
             <div className="flex items-center justify-between">
               <time className="text-xs text-muted-foreground">
-                {item.createdAt.toDateString()}
+                {new Date(item.createdAt).toDateString()}
               </time>
               <div className="text-xs font-medium">
                 {item._count.items} wishes

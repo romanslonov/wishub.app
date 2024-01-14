@@ -1,11 +1,11 @@
-// import { type Item } from "@prisma/client";
+import { type Item } from "@prisma/client";
 import { Link2 } from "lucide-react";
 
 export function ListItem({
   item,
   actions,
 }: {
-  item: unknown;
+  item: Item;
   actions: React.ReactNode;
 }) {
   return (
@@ -18,7 +18,7 @@ export function ListItem({
       <div className="flex items-center gap-4">
         <div>
           <div className="text-xs text-muted-foreground">
-            {item.createdAt.toDateString()}
+            {new Date(item.createdAt).toLocaleDateString()}
           </div>
           <a
             href={item.url}
