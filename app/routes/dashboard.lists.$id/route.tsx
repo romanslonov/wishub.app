@@ -40,7 +40,7 @@ export default function DashboardListsIdRoute() {
         <div className="flex items-center gap-2">
           <Link
             className={cn("flex-1 md:flex-auto", buttonVariants())}
-            to={`${list?.id}/add`}
+            to={`./add`}
           >
             <Gift size={16} className="mr-1" />
             Add a wish
