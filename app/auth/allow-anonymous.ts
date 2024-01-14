@@ -14,6 +14,6 @@ export async function allowAnonymous(request: Request) {
   const response = await lucia.validateSession(sessionId);
 
   if (response.session) {
-    return redirect("/dashboard");
+    throw redirect("/dashboard");
   }
 }
