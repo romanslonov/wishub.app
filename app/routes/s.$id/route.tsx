@@ -1,20 +1,65 @@
-import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { prisma } from "~/lib/prisma.server";
+import { ItemsList } from "./items-list";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { getUser } from "~/auth/get-user.server";
+import { useLoaderData } from "@remix-run/react";
 import { Navigation } from "~/components/navigation";
+import { requireUserSession } from "~/auth/require-user-session.server";
+import { reserve } from "./actions.server";
+import { z } from "zod";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   const user = await getUser(request);
 
-  return json({ user });
-};
+  const list = await prisma.list.findFirst({
+    where: { id: params.id, public: true },
+    include: { owner: true },
+  });
 
-export default function SharedListRoute() {
-  const params = useParams<{ id: string }>();
-  const { user } = useLoaderData<typeof loader>();
+  if (!list) {
+    throw redirect("/404");
+  }
 
-  const list = { name: "My List", owner: { name: "Me" } };
+  const items = await prisma.item.findMany({
+    where: { listId: list.id },
+    orderBy: { createdAt: "asc" },
+  });
 
+  return { items, list, user };
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const session = await requireUserSession(request);
+
+  if (request.method === "POST") {
+    const formData = await request.formData();
+    try {
+      const { itemId } = z
+        .object({ itemId: z.string().min(1, "Item is required") })
+        .parse(Object.fromEntries(formData));
+
+      await reserve(session.user.id, itemId);
+
+      return json({ message: "Reserved!" });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return json(
+          { error: "Request to reserve this item is not valid." },
+          { status: 400 }
+        );
+      }
+      return json({ error: "Something goes wrong." }, { status: 500 });
+    }
+  }
+}
+
+export default function PublicListRoute() {
+  const { items, list, user } = useLoaderData<typeof loader>();
   return (
     <>
       <Navigation user={user} />
@@ -22,19 +67,17 @@ export default function SharedListRoute() {
         <header className="mb-8">
           <h1 className="text-2xl tracking-tight font-bold">{list.name}</h1>
           <p className="text-muted-foreground text-sm">
-            Created by {list.owner.name}
+            Created by {list.owner.name ?? "Unknown"}
           </p>
         </header>
 
-        {/* <ItemsList
-      items={items}
-      listId={list.id}
-      isAuthenticated={!!session}
-      isMyself={session?.user?.id === list.ownerId}
-      className="space-y-4"
-    /> */}
-
-        {/* <LoginDrawer open={!session} /> */}
+        <ItemsList
+          items={items}
+          listId={list.id}
+          isAuthenticated={!!user}
+          isMyself={user?.id === list.ownerId}
+          className="space-y-4"
+        />
       </div>
     </>
   );

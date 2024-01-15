@@ -5,7 +5,7 @@ import { Ghost, ListPlus } from "lucide-react";
 import { User } from "lucia";
 import { Link } from "@remix-run/react";
 
-export function Navigation({ user }: { user: User }) {
+export function Navigation({ user }: { user: User | null }) {
   return (
     <header className="border-b">
       <div className="flex h-16 justify-between items-center px-8 mx-auto max-w-7xl">
