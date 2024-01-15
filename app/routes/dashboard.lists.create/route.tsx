@@ -52,6 +52,8 @@ const defaultItemValue = { url: "", name: "" };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
+
+  return null;
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
