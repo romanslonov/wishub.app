@@ -100,7 +100,7 @@ export default function DashboardProfile() {
           Manage your account settings and set e-mail preferences.
         </p>
       </div>
-      <div className="border rounded-2xl p-4 shadow-sm">
+      <div className="border rounded-2xl p-6 shadow-sm">
         <Form
           method="post"
           className="space-y-4"

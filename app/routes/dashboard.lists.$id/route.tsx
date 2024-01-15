@@ -1,13 +1,37 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import {
+  Link,
+  useActionData,
+  useFetcher,
+  useLoaderData,
+  useNavigate,
+} from "@remix-run/react";
 import { Gift } from "lucide-react";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
 import { ItemsList } from "./items-list";
 import { TogglePublic } from "./toggle-public";
 import { CopyToClipboard } from "./copy-to-clipboard";
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { getListWithItems } from "./actions.server";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+  redirect,
+} from "@remix-run/node";
+import { getListWithItems, removeList, updateList } from "./actions.server";
 import { requireUserSession } from "~/auth/require-user-session.server";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { RemoveListAlert } from "./remove-list-alert";
+import { UpdateListDialog } from "./update-list-dialog";
+import { z } from "zod";
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    { title: `Your ${data?.list?.name} Wish List` },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const session = await requireUserSession(request);
@@ -20,8 +44,81 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   return { list };
 }
 
+export async function action({ request, params }: ActionFunctionArgs) {
+  const session = await requireUserSession(request);
+
+  if (request.method === "PUT") {
+    const formData = await request.formData();
+
+    try {
+      const data = z
+        .object({
+          name: z.string().min(1, "Name is required."),
+          description: z.string().optional(),
+        })
+        .parse(Object.fromEntries(formData));
+
+      console.log("put", data);
+
+      await updateList(params.id!, data);
+
+      console.log("updated", data);
+
+      return json(
+        {
+          status: 200,
+          message: "List was updated.",
+          action: "put",
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.log(error);
+      return json(
+        {
+          status: 500,
+          message: "Something goes wrong.",
+          action: "put",
+        },
+        { status: 500 }
+      );
+    }
+  }
+
+  if (request.method === "DELETE") {
+    await removeList(params.id!);
+
+    return json(
+      {
+        status: 200,
+        message: "List was removed.",
+        action: "delete",
+      },
+      { status: 200 }
+    );
+  }
+
+  return null;
+}
+
 export default function DashboardListsIdRoute() {
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const { list } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(actionData);
+    if (actionData?.action === "delete" && actionData?.status === 200) {
+      toast.success(actionData.message);
+      navigate("/dashboard");
+    } else if (actionData?.action === "put" && actionData?.status === 200) {
+      toast.success(actionData.message);
+      setIsUpdateDialogOpen(false);
+    } else if (actionData?.status === 500 || actionData?.status === 400) {
+      toast.error(actionData.message);
+    }
+  }, [actionData, navigate]);
 
   return (
     <div className="space-y-8">
@@ -47,8 +144,12 @@ export default function DashboardListsIdRoute() {
           </Link>
           {list?.id ? (
             <>
-              {/* <UpdateListDialog list={list} />
-              <RemoveListAlert listId={list.id} /> */}
+              <UpdateListDialog
+                list={list}
+                isOpen={isUpdateDialogOpen}
+                setIsOpen={setIsUpdateDialogOpen}
+              />
+              <RemoveListAlert />
             </>
           ) : null}
         </div>
