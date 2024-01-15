@@ -45,24 +45,26 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-  const session = await requireUserSession(request);
+  await requireUserSession(request);
 
   if (request.method === "PUT") {
     const formData = await request.formData();
+
+    console.log(Object.fromEntries(formData));
 
     try {
       const data = z
         .object({
           name: z.string().min(1, "Name is required."),
           description: z.string().optional(),
+          public: z.preprocess(
+            (value) => value === "on",
+            z.boolean().optional()
+          ),
         })
         .parse(Object.fromEntries(formData));
 
-      console.log("put", data);
-
       await updateList(params.id!, data);
-
-      console.log("updated", data);
 
       return json(
         {
@@ -108,7 +110,6 @@ export default function DashboardListsIdRoute() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(actionData);
     if (actionData?.action === "delete" && actionData?.status === 200) {
       toast.success(actionData.message);
       navigate("/dashboard");
@@ -167,7 +168,7 @@ export default function DashboardListsIdRoute() {
               {list?.description || "No description"}
             </p>
           </div>
-          <TogglePublic listId={list?.id} defaultValue={list?.public} />
+          <TogglePublic list={list} defaultValue={list?.public} />
           {list?.public ? (
             <CopyToClipboard text={`http://localhost:3000/s/${list.id}`} />
           ) : null}

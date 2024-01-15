@@ -1,21 +1,40 @@
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
-import { updateList } from "./actions.server";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { useFetcher } from "@remix-run/react";
+import { List } from "@prisma/client";
 
 export function TogglePublic({
-  listId,
-  defaultValue,
+  list,
+  defaultValue = false,
 }: {
-  listId: string;
-  defaultValue: boolean;
+  list: List;
+  defaultValue?: boolean;
 }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fetcher = useFetcher<{ message: string }>();
+  const formRef = useRef<HTMLFormElement>(null);
+  const isSubmitting = fetcher.state === "submitting";
+
+  useEffect(() => {
+    if (fetcher.data) {
+      toast.success(fetcher.data.message);
+    }
+  }, [fetcher.data]);
 
   return (
-    <div className="flex items-center justify-between">
+    <fetcher.Form
+      method="put"
+      ref={formRef}
+      className="flex items-center justify-between"
+    >
+      <input type="hidden" defaultValue={list.name} name="name" />
+      <input
+        type="hidden"
+        defaultValue={list.description || ""}
+        name="description"
+      />
       <div>
         <div className="flex items-center gap-2">
           <Label
@@ -33,24 +52,25 @@ export function TogglePublic({
       </div>
       <Switch
         id="list-public-switch"
+        name="public"
         disabled={isSubmitting}
         defaultChecked={defaultValue}
-        onCheckedChange={async (value) => {
-          setIsSubmitting(true);
-          try {
-            await updateList(listId, { public: value });
+        onCheckedChange={async () => {
+          fetcher.submit(formRef.current, { method: "put" });
+          // setIsSubmitting(true);
+          // try {
+          //   await updateList(listId, { public: value });
 
-            toast.success(
-              value
-                ? "List is public now. Everyone who have a link can see it."
-                : "List is private now. Only you can see it."
-            );
-          } finally {
-            setIsSubmitting(false);
-          }
+          //   toast.success(
+          //     value
+          //       ? "List is public now. Everyone who have a link can see it."
+          //       : "List is private now. Only you can see it."
+          //   );
+          // } finally {
+          //   setIsSubmitting(false);
+          // }
         }}
-        name="public"
       />
-    </div>
+    </fetcher.Form>
   );
 }
