@@ -62,7 +62,7 @@ export default function DashboardListsIdAddRoute() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state !== "idle";
   const submit = useSubmit();
   const {
     handleSubmit,

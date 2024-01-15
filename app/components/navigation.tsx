@@ -1,17 +1,9 @@
 import { cn } from "~/lib/cn";
 import { UserMenu } from "./user-menu";
 import { buttonVariants } from "~/components/ui/button";
-import { Ghost, ListPlus } from "lucide-react";
-import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { requireUserSession } from "~/auth/require-user-session.server";
+import { CheckCircle, Ghost, ListPlus, XCircle } from "lucide-react";
 import { User } from "lucia";
 import { Link } from "@remix-run/react";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { user } = await requireUserSession(request);
-
-  return json({ user });
-};
 
 export function Navigation({ user }: { user: User }) {
   return (
@@ -23,6 +15,11 @@ export function Navigation({ user }: { user: User }) {
         <div className="flex items-center gap-4">
           {user ? (
             <>
+              {user.emailVerified ? (
+                <CheckCircle size={16} className="text-emerald-500" />
+              ) : (
+                <XCircle size={16} className="text-rose-500" />
+              )}
               <Link
                 className={cn(
                   buttonVariants({ size: "sm", variant: "secondary" })

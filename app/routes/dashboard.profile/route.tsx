@@ -51,7 +51,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const data = await request.json();
 
   try {
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: { id: session.user.id },
       data: data,
     });
@@ -66,7 +66,7 @@ export default function DashboardProfile() {
   const { user } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
 
   const {

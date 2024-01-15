@@ -1,4 +1,9 @@
-import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+} from "@remix-run/node";
 import {
   Form,
   useActionData,
@@ -21,6 +26,7 @@ import { MinusCircle, PlusCircle } from "lucide-react";
 import { Textarea } from "~/components/ui/textarea";
 import { Description } from "~/components/ui/description";
 import { Switch } from "~/components/ui/switch";
+import { requireUserSession } from "~/auth/require-user-session.server";
 
 export const meta: MetaFunction = () => [{ title: "Create new wish list" }];
 
@@ -43,6 +49,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const defaultItemValue = { url: "", name: "" };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserSession(request);
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await getUser(request);
@@ -76,7 +86,7 @@ export default function DashboardListsCreate() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state !== "idle";
   const submit = useSubmit();
 
   const {

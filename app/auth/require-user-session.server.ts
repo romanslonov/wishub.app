@@ -23,6 +23,10 @@ export async function requireUserSession(request: Request) {
     });
   }
 
+  if (!response.user.emailVerified) {
+    throw redirect("/confirmation");
+  }
+
   // TODO: This is a bit of a hack. We should probably have a better way to do it.
   // If the session is fresh, we want to set a new session cookie.
   if (response.session && response.session.fresh) {

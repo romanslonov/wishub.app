@@ -12,9 +12,10 @@ import { createUser } from "./create-user.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { useEffect, useRef } from "react";
-import { toast } from "sonner";
 import { Ghost } from "lucide-react";
 import { Message } from "~/components/ui/message";
+import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
+import { sendVerificationEmail } from "~/lib/email";
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,11 +38,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const { email, password } = schema.parse(Object.fromEntries(formData));
 
-    const cookies = await createUser(email, password);
+    const { userId, cookie } = await createUser(email, password);
 
-    return redirect("/", {
+    const code = await generateEmailVerificationCode(userId, email);
+
+    await sendVerificationEmail(email, code);
+
+    return redirect("/dashboard", {
       headers: {
-        "Set-Cookie": cookies.serialize(),
+        "Set-Cookie": cookie.serialize(),
       },
     });
   } catch (error) {
@@ -62,7 +67,7 @@ export default function RegisterRoute() {
   const navigation = useNavigation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state !== "idle";
 
   useEffect(() => {
     if (data && "errors" in data) {

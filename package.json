@@ -36,6 +36,7 @@
     "react-hook-form": "^7.49.3",
     "remix-hook-form": "^3.2.3",
     "remix-toast": "^1.1.0",
+    "resend": "^2.1.0",
     "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",

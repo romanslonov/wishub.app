@@ -12,10 +12,13 @@ export async function createUser(email: string, password: string) {
       id: userId,
       email,
       password: hashedPassword,
+      emailVerified: false,
     },
   });
 
   const session = await lucia.createSession(userId, {});
 
-  return lucia.createSessionCookie(session.id);
+  const cookie = lucia.createSessionCookie(session.id);
+
+  return { userId, cookie };
 }

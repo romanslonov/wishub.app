@@ -60,7 +60,7 @@ export default function Login() {
   const navigation = useNavigation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const isSubmitting = navigation.state === "loading";
+  const isSubmitting = navigation.state !== "idle";
 
   useEffect(() => {
     if (data && "errors" in data) {

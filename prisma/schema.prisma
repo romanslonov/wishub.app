@@ -11,60 +11,74 @@ datasource db {
 }
 
 model User {
-  id       String    @id
-  name     String?
-  email    String    @unique
-  password String
+  id              String    @id
+  name            String?
+  email           String    @unique
+  password        String
 
-  emailVerified DateTime?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  emailVerified   Boolean?
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  updatedAt       DateTime  @default(now()) @map(name: "updated_at")
 
-  sessions Session[]
-  lists    List[]
-  reserves      Item[]
+  sessions        Session[]
+  lists           List[]
+  reserves        Item[]
+  codes           EmailVerificationCode[]
 
   @@map("users")
 }
 
 model Session {
-  id        String   @id
-  userId    String
-  expiresAt DateTime
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  id              String   @id
+  userId          String
+  expiresAt       DateTime
+  user            User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
 }
 
 model List {
-  id          String   @id @default(cuid())
-  name        String   @db.Text
-  description String?  @db.Text
-  public      Boolean  @default(false) 
-  ownerId     String
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+  id              String   @id @default(cuid())
+  name            String   @db.Text
+  description     String?  @db.Text
+  public          Boolean  @default(false) 
+  ownerId         String
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @default(now()) @map(name: "updated_at")
 
-  items     Item[]
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  items           Item[]
+  owner           User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@index([ownerId])
   @@map(name: "lists")
 }
 
 model Item {
-  id          String   @id @default(cuid())
-  listId      String
-  name        String   @db.Text
-  url         String   @db.Text
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @default(now()) @map(name: "updated_at")
-  reserverId  String?
+  id              String   @id @default(cuid())
+  listId          String
+  name            String   @db.Text
+  url             String   @db.Text
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  updatedAt       DateTime @default(now()) @map(name: "updated_at")
+  reserverId      String?
   
-  list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
-  reserver  User?    @relation(fields: [reserverId], references: [id], onDelete: SetNull)
+  list            List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  reserver        User?    @relation(fields: [reserverId], references: [id], onDelete: SetNull)
 
   @@index([listId])
   @@index([reserverId])
   @@map(name: "items")
+}
+
+model EmailVerificationCode {
+  id              String   @id @default(cuid())
+  userId          String
+  email           String
+  code            String
+  expiresAt       DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "email_verification_codes")
 }
