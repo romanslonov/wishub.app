@@ -1,8 +1,8 @@
-www.wish-lists.local:80 {
+{$DOMAIN}:80 {
   reverse_proxy http://backend:3000
 }
 
-www.wish-lists.local:443 {
+{$DOMAIN}:443 {
   tls internal
   reverse_proxy http://backend:3000
 }
