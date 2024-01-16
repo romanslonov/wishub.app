@@ -37,7 +37,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const cookies = await login(email, password);
 
-    return redirect("/", {
+    return redirect("/dashboard", {
       headers: {
         "Set-Cookie": cookies.serialize(),
       },
