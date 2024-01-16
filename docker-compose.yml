@@ -18,6 +18,8 @@ services:
     command: ["npm", "run", "start"]
     environment:
       DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
+    env_file:
+      - .env
     depends_on:
       - database
   database:
