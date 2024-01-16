@@ -44,7 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     await sendVerificationEmail(email, code);
 
-    return redirect("/dashboard", {
+    return redirect("/welcome", {
       headers: {
         "Set-Cookie": cookie.serialize(),
       },

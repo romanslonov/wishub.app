@@ -110,7 +110,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function ConfirmationRoute() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  const isConfirming = navigation.state !== "idle";
+  const isConfirming = navigation.state === "submitting";
   const fetcher = useFetcher<{ message: string }>({
     key: "resend-varification-code",
   });
@@ -122,7 +122,6 @@ export default function ConfirmationRoute() {
   }, [fetcher.data]);
 
   useEffect(() => {
-    console.log(actionData);
     if (actionData && "error" in actionData) {
       toast.error(actionData.error);
     }

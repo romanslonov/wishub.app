@@ -24,7 +24,7 @@ export async function requireUserSession(request: Request) {
   }
 
   if (!response.user.emailVerified) {
-    throw redirect("/confirmation");
+    throw redirect("/welcome");
   }
 
   // TODO: This is a bit of a hack. We should probably have a better way to do it.
