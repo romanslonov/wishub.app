@@ -8,7 +8,7 @@ declare global {
 }
 
 if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient({ log: ["info", "error", "query", "warn"] });
+  prisma = new PrismaClient();
 
   prisma.$connect();
 } else {
