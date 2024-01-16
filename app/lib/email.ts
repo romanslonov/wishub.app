@@ -4,7 +4,7 @@ export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export function sendVerificationEmail(email: string, code: string) {
   return resend.emails.send({
-    from: "Wishlist App <onboarding@resend.dev>",
+    from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: "Confirm your account",
     html: `
