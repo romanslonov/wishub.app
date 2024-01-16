@@ -5,6 +5,8 @@ services:
     image: caddy:2.6.4-alpine
     container_name: remix-frontend
     hostname: frontend
+    env_file:
+      - .env
     ports:
       - 80:80
       - 443:443
