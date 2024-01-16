@@ -88,7 +88,7 @@ export default function DashboardListsCreate() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const isSubmitting = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
 
   const {
