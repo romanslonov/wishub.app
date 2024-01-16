@@ -2,6 +2,7 @@ import {
   Form,
   Link,
   useActionData,
+  useLoaderData,
   useNavigate,
   useNavigation,
   useSubmit,
@@ -16,7 +17,7 @@ import { z } from "zod";
 import { ChangeEvent, useEffect } from "react";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { addListItems } from "./actions.server";
-import { ActionFunctionArgs, json } from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { toast } from "sonner";
 import { Message } from "~/components/ui/message";
 
@@ -36,6 +37,12 @@ const schema = z.object({
 const defaultItemValue = { url: "", name: "" };
 
 type FormData = z.infer<typeof schema>;
+
+export async function loader({ request, params: { id } }: LoaderFunctionArgs) {
+  await requireUserSession(request);
+
+  return { listId: id };
+}
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   await requireUserSession(request);
@@ -59,10 +66,11 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 };
 
 export default function DashboardListsIdAddRoute() {
+  const { listId } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const isSubmitting = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
   const {
     handleSubmit,
@@ -133,10 +141,10 @@ export default function DashboardListsIdAddRoute() {
   return (
     <div className="max-w-2xl mx-auto space-y-4">
       <Link
-        to={`..`}
+        to={`/dashboard/lists/${listId}`}
         className="text-muted-foreground hover:text-foreground text-sm"
       >
-        Back to Lists
+        Back to list
       </Link>
       <h1 className="font-bold tracking-tight text-2xl">Add wishes</h1>
       <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
