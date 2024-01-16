@@ -133,10 +133,10 @@ export default function DashboardListsIdAddRoute() {
   return (
     <div className="max-w-2xl mx-auto space-y-4">
       <Link
-        to={`./`}
+        to={`..`}
         className="text-muted-foreground hover:text-foreground text-sm"
       >
-        Back to all Lists
+        Back to Lists
       </Link>
       <h1 className="font-bold tracking-tight text-2xl">Add wishes</h1>
       <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
