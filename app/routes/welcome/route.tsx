@@ -125,10 +125,11 @@ export default function ConfirmationRoute() {
   const { user } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  const isConfirming = navigation.state === "submitting";
+  const isConfirming = navigation.formData?.get("intent") === "confirmation";
   const fetcher = useFetcher<{ message: string }>({
     key: "resend-varification-code",
   });
+  const isResending = fetcher.formData?.get("intent") === "resending";
 
   useEffect(() => {
     if (fetcher.data?.message) {
@@ -155,6 +156,7 @@ export default function ConfirmationRoute() {
             </p>
           </div>
           <Form method="post" className="space-y-4">
+            <input type="hidden" value="confirmation" name="intent" />
             <div className="space-y-2">
               <Label htmlFor="code" hidden>
                 Code
@@ -175,15 +177,14 @@ export default function ConfirmationRoute() {
           </Form>
           <div className="text-center">
             <fetcher.Form method="put">
+              <input type="hidden" name="intent" value="resending" />
               <Button
                 variant="link"
                 type="submit"
-                disabled={fetcher.state === "submitting"}
+                disabled={isResending}
                 className="p-0 h-auto mx-auto"
               >
-                {fetcher.state === "submitting"
-                  ? "Sending..."
-                  : "Resend verification code"}
+                {isResending ? "Sending..." : "Resend verification code"}
               </Button>
             </fetcher.Form>
           </div>
