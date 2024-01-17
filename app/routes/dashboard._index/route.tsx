@@ -1,9 +1,10 @@
-import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Lists } from "./lists";
-import { Reserves } from "./reserves";
+import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
+import { Lists, ListsSkeleton } from "./lists";
+import { Reserves, ReservesSkeleton } from "./reserves";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { getLists, getReserves } from "./actions.server";
-import { useLoaderData } from "@remix-run/react";
+import { Await, useLoaderData } from "@remix-run/react";
+import { Suspense } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,11 +16,10 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await requireUserSession(request);
 
-  const lists = await getLists(session.user.id);
+  const lists = getLists(session.user.id);
+  const reserves = getReserves(session.user.id);
 
-  const reserves = await getReserves(session.user.id);
-
-  return { lists, reserves };
+  return defer({ lists, reserves });
 }
 
 export default function DashboardIndex() {
@@ -33,7 +33,9 @@ export default function DashboardIndex() {
           <div className="flex items-center gap-2"></div>
         </div>
 
-        <Lists lists={lists} />
+        <Suspense fallback={<ListsSkeleton />}>
+          <Await resolve={lists}>{(lists) => <Lists lists={lists} />}</Await>
+        </Suspense>
       </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -41,7 +43,11 @@ export default function DashboardIndex() {
           <div className="flex items-center gap-2"></div>
         </div>
 
-        <Reserves reserves={reserves} />
+        <Suspense fallback={<ReservesSkeleton />}>
+          <Await resolve={reserves}>
+            {(reserves) => <Reserves reserves={reserves} />}
+          </Await>
+        </Suspense>
       </div>
     </div>
   );
