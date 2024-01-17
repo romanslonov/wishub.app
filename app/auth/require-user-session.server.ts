@@ -13,6 +13,16 @@ export async function requireUserSession(request: Request) {
 
   const response = await lucia.validateSession(sessionId);
 
+  if (response.session && response.session.fresh) {
+    const sessionCookie = lucia.createSessionCookie(response.session.id);
+
+    throw redirect(request.url, {
+      headers: {
+        "Set-Cookie": sessionCookie.serialize(),
+      },
+    });
+  }
+
   if (!response.session || !response.user) {
     const sessionCookie = lucia.createBlankSessionCookie();
 
@@ -25,18 +35,6 @@ export async function requireUserSession(request: Request) {
 
   if (!response.user.emailVerified) {
     throw redirect("/welcome");
-  }
-
-  // TODO: This is a bit of a hack. We should probably have a better way to do it.
-  // If the session is fresh, we want to set a new session cookie.
-  if (response.session && response.session.fresh) {
-    const sessionCookie = lucia.createSessionCookie(response.session.id);
-
-    throw redirect(request.url, {
-      headers: {
-        "Set-Cookie": sessionCookie.serialize(),
-      },
-    });
   }
 
   return response;
