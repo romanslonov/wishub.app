@@ -1,9 +1,9 @@
 import { redirect } from "@remix-run/node";
 import { lucia } from "./lucia";
-import { requireUserSession } from "./require-user-session.server";
+import { getSession } from "./get-session.server";
 
 export async function logout(request: Request) {
-  const { session } = await requireUserSession(request);
+  const session = await getSession(request);
 
   if (!session) {
     return redirect("/login");
