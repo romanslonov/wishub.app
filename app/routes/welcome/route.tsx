@@ -1,5 +1,6 @@
 import {
   ActionFunctionArgs,
+  LoaderFunctionArgs,
   MetaFunction,
   json,
   redirect,
@@ -9,6 +10,7 @@ import {
   Form,
   useActionData,
   useFetcher,
+  useLoaderData,
   useNavigation,
 } from "@remix-run/react";
 import { isWithinExpirationDate } from "oslo";
@@ -22,12 +24,24 @@ import { Label } from "~/components/ui/label";
 import { prisma } from "~/lib/prisma.server";
 import { sendVerificationEmail } from "~/lib/email";
 import { lucia } from "~/auth/lucia";
+import { Navigation } from "~/components/navigation";
+import { MailOpen } from "lucide-react";
 
 export const meta: MetaFunction = () => [
   {
     title: "Confirm your account",
   },
 ];
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await getUser(request);
+
+  if (user && user.emailVerified) {
+    throw redirect("/dashboard");
+  }
+
+  return { user };
+}
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "POST") {
@@ -108,6 +122,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ConfirmationRoute() {
+  const { user } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isConfirming = navigation.state === "submitting";
@@ -128,46 +143,50 @@ export default function ConfirmationRoute() {
   }, [actionData]);
 
   return (
-    <div className="flex flex-col items-center min-h-screen justify-center">
-      <div className="shadow-sm border rounded-2xl p-6 max-w-lg w-full space-y-4">
-        <div className="text-center space-y-1">
-          <h1 className="font-bold text-2xl">Please confirm you email</h1>
-          <p className="text-muted-foreground">
-            We&apos;ve sent you confirmation code on your email.
-          </p>
-        </div>
-        <Form method="post" className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="code" hidden>
-              Code
-            </Label>
-            <Input
-              id="code"
-              required
-              name="code"
-              type="text"
-              minLength={6}
-              autoComplete="off"
-              placeholder="Enter your code from email"
-            />
+    <div className="flex flex-col min-h-screen">
+      <Navigation user={user} />
+      <div className="flex-1 items-center justify-center flex p-4 md:p-8">
+        <div className="shadow-sm border rounded-2xl p-6 max-w-lg w-full space-y-4">
+          <div className="text-center space-y-1">
+            <MailOpen className="w-12 h-12 mx-auto text-primary mb-4" />
+            <h1 className="font-bold text-2xl">Please confirm your email</h1>
+            <p className="text-muted-foreground">
+              We&apos;ve sent you confirmation code on your email.
+            </p>
           </div>
-          <Button className="w-full">
-            {isConfirming ? "Confirming..." : "Confirm email"}
-          </Button>
-        </Form>
-        <div className="text-center">
-          <fetcher.Form method="put">
-            <Button
-              variant="link"
-              type="submit"
-              disabled={fetcher.state === "submitting"}
-              className="p-0 h-auto mx-auto"
-            >
-              {fetcher.state === "submitting"
-                ? "Sending..."
-                : "Resend verification code"}
+          <Form method="post" className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="code" hidden>
+                Code
+              </Label>
+              <Input
+                id="code"
+                required
+                name="code"
+                type="text"
+                minLength={6}
+                autoComplete="off"
+                placeholder="Enter your code from email"
+              />
+            </div>
+            <Button className="w-full">
+              {isConfirming ? "Confirming..." : "Confirm email"}
             </Button>
-          </fetcher.Form>
+          </Form>
+          <div className="text-center">
+            <fetcher.Form method="put">
+              <Button
+                variant="link"
+                type="submit"
+                disabled={fetcher.state === "submitting"}
+                className="p-0 h-auto mx-auto"
+              >
+                {fetcher.state === "submitting"
+                  ? "Sending..."
+                  : "Resend verification code"}
+              </Button>
+            </fetcher.Form>
+          </div>
         </div>
       </div>
     </div>
