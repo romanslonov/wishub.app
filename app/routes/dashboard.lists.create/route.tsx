@@ -17,7 +17,6 @@ import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { ChangeEvent, useEffect } from "react";
 import { toast } from "sonner";
-import { getUser } from "~/auth/get-user.server";
 import { createList } from "./actions.server";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,14 +56,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await getUser(request);
-
-  if (!user) {
-    return json(
-      { error: "You must be logged in to create a list." },
-      { status: 401 }
-    );
-  }
+  const { user } = await requireUserSession(request);
 
   const formData = await request.json();
   try {
