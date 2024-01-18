@@ -6,4 +6,5 @@ export default {
     "@lucia-auth/adapter-prisma",
     "oslo",
   ],
+  tailwind: true,
 };
