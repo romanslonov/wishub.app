@@ -129,7 +129,7 @@ export default function DashboardListsIdRoute() {
             to="/dashboard"
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
           >
-            Back to all Lists
+            Back to lists
           </Link>
           <h1 className="text-3xl line-clamp-2 font-bold tracking-tight">
             {list?.name}

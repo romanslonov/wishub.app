@@ -7,7 +7,7 @@ import {
   useNavigation,
   useSubmit,
 } from "@remix-run/react";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
@@ -20,6 +20,7 @@ import { addListItems } from "./actions.server";
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { toast } from "sonner";
 import { Message } from "~/components/ui/message";
+import { cn } from "~/lib/cn";
 
 const urlSchema = z.string().min(1, "URL is required.").url("URL is invalid");
 
@@ -140,13 +141,17 @@ export default function DashboardListsIdAddRoute() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-4">
-      <Link
-        to={`/dashboard/lists/${listId}`}
-        className="text-muted-foreground hover:text-foreground text-sm"
-      >
-        Back to list
-      </Link>
-      <h1 className="font-bold tracking-tight text-2xl">Add wishes</h1>
+      <div className="space-y-4">
+        <Link
+          to={`/dashboard/lists/${listId}`}
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
+        >
+          Back to list
+        </Link>
+        <h1 className="text-3xl line-clamp-2 font-bold tracking-tight">
+          Add wishes
+        </h1>
+      </div>
       <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
         <ul className="space-y-4">
           {items.map((item, index) => (
