@@ -8,7 +8,7 @@ export async function generateEmailVerificationCode(
 ) {
   await prisma.emailVerificationCode.deleteMany({ where: { userId } });
 
-  const code = generateRandomString(8, alphabet("0-9"));
+  const code = generateRandomString(6, alphabet("0-9"));
 
   await prisma.emailVerificationCode.create({
     data: {
