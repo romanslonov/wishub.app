@@ -9,8 +9,12 @@ export function Navigation({ user }: { user: User | null }) {
   return (
     <header className="border-b">
       <div className="flex h-16 justify-between items-center px-4 md:px-8 mx-auto max-w-7xl">
-        <Link to={user ? "/dashboard" : "/"}>
+        <Link
+          to={user ? "/dashboard" : "/"}
+          className="inline-flex items-center gap-2"
+        >
           <Ghost size={24} />
+          <span className="font-bold">Wishub</span>
         </Link>
         <div className="flex items-center gap-4">
           {user ? (
