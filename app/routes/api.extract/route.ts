@@ -1,32 +1,38 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { z } from "zod";
-import { getUser } from "~/auth/get-user.server";
-import ogs from "open-graph-scraper";
+import { requireUserSession } from "~/auth/require-user-session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const requestURL = new URL(request.url);
-  const url = requestURL.searchParams.get("url");
-
-  const user = await getUser(request);
-
-  if (!user) {
-    return json({ error: "Not authenticated." }, { status: 401 });
-  }
-
-  if (!url || !z.string().url().safeParse(url).success) {
-    return json(
-      { error: "No url provided or it's not valid." },
-      { status: 400 }
-    );
-  }
+  await requireUserSession(request);
 
   try {
-    const data = await ogs({ url }).then((data) => data);
+    const url = z.string().url().parse(requestURL.searchParams.get("url"));
+    const userAgent =
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
 
-    const { result } = data;
+    const response = await fetch(url, {
+      headers: { "user-agent": userAgent },
+    });
+    const html = await response.text();
 
-    return json({ result }, { status: 200 });
+    const parseTitle = (body: string) => {
+      const match = body.match(/<title>([^<]*)<\/title>/);
+      if (!match || typeof match[1] !== "string")
+        throw new Error("Unable to parse the title tag");
+      return match[1];
+    };
+
+    const title = parseTitle(html);
+
+    return json({ title }, { status: 200 });
   } catch (error) {
-    return json({ message: "Unable to fetch data from URL." }, { status: 500 });
+    if (error instanceof z.ZodError) {
+      throw json(
+        { error: "No url provided or it's not valid." },
+        { status: 400 }
+      );
+    }
+    throw json({ error: "Unable to fetch data from URL." }, { status: 500 });
   }
 }

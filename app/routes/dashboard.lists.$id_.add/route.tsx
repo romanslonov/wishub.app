@@ -14,13 +14,14 @@ import { Input } from "~/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { addListItems } from "./actions.server";
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { toast } from "sonner";
 import { Message } from "~/components/ui/message";
 import { cn } from "~/lib/cn";
+import { Spinner } from "~/components/ui/spinner";
 
 const urlSchema = z.string().min(1, "URL is required.").url("URL is invalid");
 
@@ -73,6 +74,7 @@ export default function DashboardListsIdAddRoute() {
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
+  const [loaders, setLoaders] = useState(new Set());
   const {
     handleSubmit,
     watch,
@@ -106,6 +108,8 @@ export default function DashboardListsIdAddRoute() {
         return;
       }
 
+      setLoaders((loaders) => new Set(loaders.add(index)));
+
       const response = await fetch(`/api/extract?url=${value}`, {
         headers: { "Content-Type": "application/json" },
       });
@@ -114,19 +118,21 @@ export default function DashboardListsIdAddRoute() {
         throw new Error(await response.json());
       }
 
-      const { result } = await response.json();
+      const { title } = await response.json();
 
-      if (!result.ogTitle) {
+      if (!title) {
         throw new Error();
       }
 
-      setValue(`items.${index}.name`, result.ogTitle, { shouldValidate: true });
+      setValue(`items.${index}.name`, title, { shouldValidate: true });
     } catch (error) {
       setError(
         `items.${index}.name`,
         { message: "Unable to get a wish name. Please, type name yourself." },
         { shouldFocus: true }
       );
+    } finally {
+      setLoaders((loaders) => new Set([...loaders].filter((i) => i !== index)));
     }
   }
 
@@ -177,15 +183,21 @@ export default function DashboardListsIdAddRoute() {
               <div className="space-y-2">
                 <div className="space-y-2">
                   <Label htmlFor={`url-${index}`}>URL</Label>
-                  <Input
-                    id={`url-${index}`}
-                    {...register(`items.${index}.url`, {
-                      onChange(e) {
-                        handleURLInputChange(e, index);
-                      },
-                    })}
-                    placeholder="Enter a wish URL"
-                  />
+                  <div className="relative">
+                    <Input
+                      id={`url-${index}`}
+                      {...register(`items.${index}.url`, {
+                        onChange(e) {
+                          handleURLInputChange(e, index);
+                        },
+                      })}
+                      disabled={loaders.has(index)}
+                      placeholder="Enter a wish URL"
+                    />
+                    {loaders.has(index) && (
+                      <Spinner className="absolute top-2 right-2" />
+                    )}
+                  </div>
                   {errors.items && (
                     <Message>{errors.items[index]?.url?.message}</Message>
                   )}
