@@ -6,7 +6,7 @@ import {
   type MetaFunction,
   redirect,
   LoaderFunctionArgs,
-} from "@remix-run/node";
+} from "@vercel/remix";
 import { z } from "zod";
 import { login } from "./login.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";

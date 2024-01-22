@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, defer } from "@vercel/remix";
 import { Lists, ListsSkeleton } from "./lists";
 import { Reserves, ReservesSkeleton } from "./reserves";
 import { requireUserSession } from "~/auth/require-user-session.server";

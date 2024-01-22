@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from "@vercel/remix";
 import stylesheet from "~/globals.css";
 import { ThemeProvider } from "./theme-provder";
 import App from "./app";

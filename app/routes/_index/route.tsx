@@ -2,7 +2,7 @@ import {
   json,
   type LoaderFunctionArgs,
   type MetaFunction,
-} from "@remix-run/node";
+} from "@vercel/remix";
 import { useLoaderData } from "@remix-run/react";
 import { getUser } from "~/auth/get-user.server";
 import { Navigation } from "~/components/navigation";

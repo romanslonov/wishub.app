@@ -3,7 +3,7 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
   json,
-} from "@remix-run/node";
+} from "@vercel/remix";
 import {
   Form,
   useActionData,

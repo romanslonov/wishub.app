@@ -12,7 +12,7 @@ import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-} from "@remix-run/node";
+} from "@vercel/remix";
 import { Button } from "~/components/ui/button";
 import { Description } from "~/components/ui/description";
 import { Input } from "~/components/ui/input";

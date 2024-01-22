@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node";
+import { redirect } from "@vercel/remix";
 import { lucia } from "./lucia";
 import { getSession } from "./get-session.server";
 
