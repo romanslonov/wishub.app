@@ -171,7 +171,7 @@ export default function ConfirmationRoute() {
                 placeholder="Enter your code from email"
               />
             </div>
-            <Button className="w-full">
+            <Button className="w-full" disabled={isConfirming}>
               {isConfirming ? "Confirming..." : "Confirm email"}
             </Button>
           </Form>

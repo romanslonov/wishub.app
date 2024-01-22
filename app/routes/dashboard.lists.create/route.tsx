@@ -15,7 +15,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { z } from "zod";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createList } from "./actions.server";
 import { Controller, useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Description } from "~/components/ui/description";
 import { Switch } from "~/components/ui/switch";
 import { requireUserSession } from "~/auth/require-user-session.server";
+import { Spinner } from "~/components/ui/spinner";
 
 export const meta: MetaFunction = () => [{ title: "Create new wish list" }];
 
@@ -82,7 +83,7 @@ export default function DashboardListsCreate() {
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
-
+  const [loaders, setLoaders] = useState(new Set());
   const {
     register,
     handleSubmit,
@@ -118,6 +119,8 @@ export default function DashboardListsCreate() {
         return;
       }
 
+      setLoaders((loaders) => new Set(loaders.add(index)));
+
       const response = await fetch(`/api/extract?url=${value}`, {
         headers: { "Content-Type": "application/json" },
       });
@@ -126,19 +129,21 @@ export default function DashboardListsCreate() {
         throw new Error();
       }
 
-      const { result } = await response.json();
+      const { title } = await response.json();
 
-      if (!result.ogTitle) {
+      if (!title) {
         throw new Error();
       }
 
-      setValue(`items.${index}.name`, result.ogTitle, { shouldValidate: true });
+      setValue(`items.${index}.name`, title, { shouldValidate: true });
     } catch (error) {
       setError(
         `items.${index}.name`,
         { message: "Unable to fetch a wish name. Please, type name yourself." },
         { shouldFocus: true }
       );
+    } finally {
+      setLoaders((loaders) => new Set([...loaders].filter((i) => i !== index)));
     }
   }
 
@@ -206,40 +211,45 @@ export default function DashboardListsCreate() {
         </div>
         <hr />
         <div>
-          <div className="text-lg font-bold tracking-tight mb-4">Wishes</div>
+          <div className="font-bold text-sm mb-4">Wishes</div>
           <ul className="space-y-4">
             {items.map((item, index) => (
-              <li key={index} className="space-y-2">
-                <div className="flex justify-between items-center gap-2">
-                  <p className="font-medium">Wish #{index + 1}</p>
-                  {items.length > 1 && (
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      type="button"
-                      className="w-8 h-8 flex items-center justify-center"
-                      onClick={() =>
-                        setValue("items", [
-                          ...items.filter((_, i) => i !== index),
-                        ])
-                      }
-                    >
-                      <MinusCircle size={16} />
-                    </Button>
-                  )}
+              <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
+                <div className="h-8 flex justify-between items-center gap-2">
+                  <p className="font-medium font-mono">#{index + 1}</p>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    disabled={loaders.has(index)}
+                    type="button"
+                    className="w-8 h-8 flex items-center justify-center"
+                    onClick={() =>
+                      setValue("items", [
+                        ...items.filter((_, i) => i !== index),
+                      ])
+                    }
+                  >
+                    <MinusCircle size={16} />
+                  </Button>
                 </div>
                 <div className="space-y-2">
                   <div className="space-y-2">
                     <Label htmlFor={`url-${index}`}>URL</Label>
-                    <Input
-                      id={`url-${index}`}
-                      {...register(`items.${index}.url`, {
-                        onChange(e) {
-                          handleURLInputChange(e, index);
-                        },
-                      })}
-                      placeholder="Enter a wish URL"
-                    />
+                    <div className="relative">
+                      <Input
+                        id={`url-${index}`}
+                        {...register(`items.${index}.url`, {
+                          onChange(e) {
+                            handleURLInputChange(e, index);
+                          },
+                        })}
+                        disabled={loaders.has(index)}
+                        placeholder="Enter a wish URL"
+                      />
+                      {loaders.has(index) && (
+                        <Spinner className="absolute top-2 right-2" />
+                      )}
+                    </div>
                     {errors.items && (
                       <Message>{errors.items[index]?.url?.message}</Message>
                     )}

@@ -14,6 +14,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const response = await fetch(url, {
       headers: { "user-agent": userAgent },
     });
+
+    if (!response.ok) {
+      throw new Error("Unable to fetch data from URL.");
+    }
+
     const html = await response.text();
 
     const parseTitle = (body: string) => {

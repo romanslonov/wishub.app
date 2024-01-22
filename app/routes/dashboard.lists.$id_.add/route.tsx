@@ -161,24 +161,21 @@ export default function DashboardListsIdAddRoute() {
       <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
         <ul className="space-y-4">
           {items.map((item, index) => (
-            <li key={index} className="space-y-2">
-              <div className="flex justify-between items-center gap-2">
-                <p className="font-medium">Item {index + 1}</p>
-                {items.length > 1 && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    type="button"
-                    className="w-8 h-8 flex items-center justify-center"
-                    onClick={() =>
-                      setValue("items", [
-                        ...items.filter((_, i) => i !== index),
-                      ])
-                    }
-                  >
-                    <MinusCircle size={16} />
-                  </Button>
-                )}
+            <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
+              <div className="h-8 flex justify-between items-center gap-2">
+                <p className="font-medium font-mono">#{index + 1}</p>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  type="button"
+                  disabled={loaders.has(index)}
+                  className="w-8 h-8 flex items-center justify-center"
+                  onClick={() =>
+                    setValue("items", [...items.filter((_, i) => i !== index)])
+                  }
+                >
+                  <MinusCircle size={16} />
+                </Button>
               </div>
               <div className="space-y-2">
                 <div className="space-y-2">
