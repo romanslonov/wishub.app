@@ -25,6 +25,7 @@ export const meta: MetaFunction = () => {
 };
 
 const schema = z.object({
+  name: z.string().min(1, "Name is required."),
   email: z
     .string()
     .min(1, "Email is required.")
@@ -36,9 +37,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
 
   try {
-    const { email, password } = schema.parse(Object.fromEntries(formData));
+    const { name, email, password } = schema.parse(
+      Object.fromEntries(formData)
+    );
 
-    const { userId, cookie } = await createUser(email, password);
+    const { userId, cookie } = await createUser({ name, email, password });
 
     const code = await generateEmailVerificationCode(userId, email);
 
@@ -65,13 +68,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function RegisterRoute() {
   const data = useActionData<typeof action>();
   const navigation = useNavigation();
+  const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const isSubmitting = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
 
   useEffect(() => {
     if (data && "errors" in data) {
-      if (data.errors.fieldErrors["email"]?.length) {
+      if (data.errors.fieldErrors["name"]?.length) {
+        nameRef.current?.focus();
+      } else if (data.errors.fieldErrors["email"]?.length) {
         emailRef.current?.focus();
       } else if (data.errors.fieldErrors["password"]?.length) {
         passwordRef.current?.focus();
@@ -90,6 +96,19 @@ export default function RegisterRoute() {
           </p>
         </div>
         <Form method="post" className="space-y-4 mb-4">
+          <div className="space-y-2">
+            <Input
+              required
+              name="name"
+              type="text"
+              placeholder="Frank Lampard"
+            />
+            {data &&
+              "errors" in data &&
+              data.errors.fieldErrors["name"]?.map((error) => (
+                <Message key={error}>{error}</Message>
+              ))}
+          </div>
           <div className="space-y-2">
             <Input
               required
@@ -117,7 +136,7 @@ export default function RegisterRoute() {
               ))}
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Creating..." : "Create an account"}
           </Button>
         </Form>

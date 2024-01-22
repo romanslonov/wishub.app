@@ -60,7 +60,7 @@ export default function Login() {
   const navigation = useNavigation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const isSubmitting = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
 
   useEffect(() => {
     if (data && "errors" in data) {
@@ -112,7 +112,7 @@ export default function Login() {
               ))}
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Loging in..." : "Login"}
           </Button>
         </Form>
