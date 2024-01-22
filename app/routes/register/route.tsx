@@ -50,6 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     });
   } catch (error) {
+    console.error("registration", error);
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors }, { status: 400 });
     }
