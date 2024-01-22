@@ -4,7 +4,7 @@ import {
   MetaFunction,
   json,
   redirect,
-} from "@vercel/remix";
+} from "@remix-run/node";
 import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
 import {
   Form,

@@ -5,7 +5,7 @@ import {
   LoaderFunctionArgs,
   json,
   redirect,
-} from "@vercel/remix";
+} from "@remix-run/node";
 import { getUser } from "~/auth/get-user.server";
 import { useLoaderData } from "@remix-run/react";
 import { Navigation } from "~/components/navigation";

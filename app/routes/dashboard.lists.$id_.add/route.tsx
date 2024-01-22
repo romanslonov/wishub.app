@@ -17,7 +17,7 @@ import { z } from "zod";
 import { ChangeEvent, useEffect, useState } from "react";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { addListItems } from "./actions.server";
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@vercel/remix";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { toast } from "sonner";
 import { Message } from "~/components/ui/message";
 import { cn } from "~/lib/cn";

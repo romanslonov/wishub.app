@@ -1,6 +1,6 @@
 import { parseCookies } from "oslo/cookie";
 import { lucia } from "./lucia";
-import { redirect } from "@vercel/remix";
+import { redirect } from "@remix-run/node";
 
 export async function allowAnonymous(request: Request) {
   const cookies = request.headers.get("cookie");

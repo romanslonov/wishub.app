@@ -17,7 +17,7 @@ import {
   MetaFunction,
   json,
   redirect,
-} from "@vercel/remix";
+} from "@remix-run/node";
 import { getListWithItems, removeList, updateList } from "./actions.server";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { useEffect, useState } from "react";

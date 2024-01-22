@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, json } from "@vercel/remix";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { z } from "zod";
 import { requireUserSession } from "~/auth/require-user-session.server";
 

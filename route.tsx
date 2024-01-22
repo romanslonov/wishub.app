@@ -4,32 +4,32 @@ import {
   type MetaFunction,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getUser } from "~/auth/get-user.server";
+import { requireUserSession } from "~/auth/require-user-session.server";
 import { Navigation } from "~/components/navigation";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
+    { title: "Dashboard" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await getUser(request);
+  const { user } = await requireUserSession(request);
 
-  return json({ user });
+  return json({ message: "Hello World", user });
 };
 
-export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+export default function DashboardIndex() {
+  const data = useLoaderData<typeof loader>();
   return (
     <>
       {" "}
-      <Navigation user={user} />
+      <Navigation />
       <div className="mx-auto max-w-7xl p-8">
-        <h1 className="text-center py-20 text-5xl font-bold">
-          Welcome to Remix
-        </h1>
+        <div className="text-2xl font-bold">
+          Hello User {data.message} - {data?.user?.email}
+        </div>
       </div>
     </>
   );
