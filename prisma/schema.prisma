@@ -24,6 +24,7 @@ model User {
   lists           List[]
   reserves        Item[]
   codes           EmailVerificationCode[]
+  tokens          PasswordResetToken[]
 
   @@map("users")
 }
@@ -81,4 +82,15 @@ model EmailVerificationCode {
 
   @@index([userId])
   @@map(name: "email_verification_codes")
+}
+
+model PasswordResetToken {
+  id              String    @id
+  userId          String
+  expiresAt       DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "password_reset_tokens")
 }

@@ -111,6 +111,14 @@ export default function Login() {
                 <Message key={error}>{error}</Message>
               ))}
           </div>
+          <div className="text-end">
+            <Link
+              className="text-sm font-medium underline-offset-4 hover:underline"
+              to="/reset-password"
+            >
+              Forgot password?
+            </Link>
+          </div>
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Loging in..." : "Login"}

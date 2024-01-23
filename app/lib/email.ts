@@ -18,3 +18,20 @@ export function sendVerificationEmail(email: string, code: string) {
     },
   });
 }
+
+export function sendPasswordResetToken(email: string, link: string) {
+  return resend.emails.send({
+    from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
+    to: email,
+    subject: "Reset your password",
+    html: `
+      <h1>Reset your password</h1>
+      <p>Go to page where you can reset your password: <strong>${link}</strong></p>
+    `,
+    // Set this to prevent Gmail from threading emails.
+    // More info: https://resend.com/changelog/custom-email-headers
+    headers: {
+      "X-Entity-Ref-ID": new Date().getTime() + "",
+    },
+  });
+}
