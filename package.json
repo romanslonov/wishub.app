@@ -1,5 +1,5 @@
 {
-  "name": "remix-auth",
+  "name": "wishubapp",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
-    "@lucia-auth/adapter-prisma": "4.0.0-beta.9",
+    "@lucia-auth/adapter-prisma": "^4.0.0-beta.10",
     "@prisma/client": "^5.8.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -28,8 +28,8 @@
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "isbot": "^3.6.8",
-    "lucia": "3.0.0-beta.14",
+    "isbot": "^4.4.0",
+    "lucia": "^3.0.0-beta.15",
     "lucide-react": "^0.309.0",
     "oslo": "^0.27.1",
     "react": "^18.2.0",
