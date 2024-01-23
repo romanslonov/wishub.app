@@ -16,6 +16,7 @@ import { Ghost } from "lucide-react";
 import { Message } from "~/components/ui/message";
 import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
 import { sendVerificationEmail } from "~/lib/email";
+import { Label } from "~/components/ui/label";
 
 export const meta: MetaFunction = () => {
   return [
@@ -97,7 +98,9 @@ export default function RegisterRoute() {
         </div>
         <Form method="post" className="space-y-4 mb-4">
           <div className="space-y-2">
+            <Label htmlFor="name">Name*</Label>
             <Input
+              id="name"
               required
               name="name"
               type="text"
@@ -110,7 +113,9 @@ export default function RegisterRoute() {
               ))}
           </div>
           <div className="space-y-2">
+            <Label htmlFor="email">Email*</Label>
             <Input
+              id="email"
               required
               name="email"
               type="email"
@@ -122,8 +127,10 @@ export default function RegisterRoute() {
                 <Message key={error}>{error}</Message>
               ))}
           </div>
-          <div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password*</Label>
             <Input
+              id="password"
               required
               name="password"
               type="password"
@@ -146,7 +153,7 @@ export default function RegisterRoute() {
             className="text-primary underline-offset-4 hover:underline"
             to="/login"
           >
-            Login to your account
+            Login
           </Link>
         </p>
       </div>

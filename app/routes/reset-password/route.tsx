@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { Unlock } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import { z } from "zod";
 import { createPasswordResetToken } from "~/auth/generate-password-reset-token";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import { Message } from "~/components/ui/message";
 import { sendPasswordResetToken } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
@@ -82,7 +83,9 @@ export default function RecoverPasswordRoute() {
         </div>
         <Form method="post" className="space-y-4 mb-4">
           <div className="space-y-2">
+            <Label htmlFor="email">Email*</Label>
             <Input
+              id="email"
               ref={emailRef}
               required
               name="email"
@@ -100,6 +103,14 @@ export default function RecoverPasswordRoute() {
             {isSubmitting ? "Sending an email..." : "Send"}
           </Button>
         </Form>
+        <div className="text-center mt-4 text-sm">
+          <Link
+            className="text-primary underline-offset-4 hover:underline"
+            to="/login"
+          >
+            Back to login
+          </Link>
+        </div>
       </div>
     </div>
   );
