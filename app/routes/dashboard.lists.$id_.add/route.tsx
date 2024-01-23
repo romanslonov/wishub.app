@@ -168,7 +168,7 @@ export default function DashboardListsIdAddRoute() {
                   variant="outline"
                   size="icon"
                   type="button"
-                  disabled={loaders.has(index)}
+                  disabled={loaders.has(index) || index === 0}
                   className="w-8 h-8 flex items-center justify-center"
                   onClick={() =>
                     setValue("items", [...items.filter((_, i) => i !== index)])
