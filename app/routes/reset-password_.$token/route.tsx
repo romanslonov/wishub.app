@@ -23,7 +23,7 @@ import { prisma } from "~/lib/prisma.server";
 import { hashPassword } from "./hash-password.server";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Recover password" }];
+  return [{ title: "Set new password" }];
 };
 
 const schema = z.object({
