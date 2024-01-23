@@ -40,13 +40,7 @@ function ItemActions({ item, isMyself }: { item: Item; isMyself: boolean }) {
   );
 }
 
-export function ItemsList({
-  items,
-  listId,
-  isAuthenticated,
-  isMyself,
-  ...props
-}: ItemsListProps) {
+export function ItemsList({ items, isMyself, ...props }: ItemsListProps) {
   return (
     <ul {...props}>
       {items.map((item) => (

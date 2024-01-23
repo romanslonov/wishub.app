@@ -1,7 +1,6 @@
 import {
   Link,
   useActionData,
-  useFetcher,
   useLoaderData,
   useNavigate,
 } from "@remix-run/react";
@@ -16,7 +15,6 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
   json,
-  redirect,
 } from "@remix-run/node";
 import { getListWithItems, removeList, updateList } from "./actions.server";
 import { requireUserSession } from "~/auth/require-user-session.server";

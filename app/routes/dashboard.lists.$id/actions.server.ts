@@ -22,7 +22,6 @@ export async function updateList(
 
 export async function updateItem({
   itemId,
-  listId,
   data,
 }: {
   itemId: string;
