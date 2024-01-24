@@ -1,6 +1,7 @@
 {
   "common": {
     "navigation": {
+      "create_list": "Создать список",
       "login": "Войти",
       "register": "Регистрация"
     },

@@ -1,6 +1,7 @@
 {
   "common": {
     "navigation": {
+      "create_list": "New list",
       "login": "Login",
       "register": "Register"
     },

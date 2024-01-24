@@ -27,7 +27,7 @@ export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
                 to="/dashboard/lists/create"
               >
                 <ListPlus size={16} className="mr-2" />
-                New List
+                {t.common.navigation.create_list}
               </Link>
               <UserMenu user={user} t={t} />
             </>
@@ -39,13 +39,13 @@ export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
                 )}
                 to="/login"
               >
-                Login
+                {t.common.navigation.login}
               </Link>
               <Link
                 className={cn(buttonVariants({ size: "sm" }))}
                 to="/register"
               >
-                Register
+                {t.common.navigation.register}
               </Link>
             </>
           )}
