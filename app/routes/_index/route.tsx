@@ -10,22 +10,28 @@ import { Footer } from "~/components/footer";
 import { Navigation } from "~/components/navigation";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
+import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({ data: { t } }) => {
   return [
-    { title: "New Remix App" },
+    { title: t.website.meta.title },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
 
-  return json({ user });
-};
+  const data = getLocaleData(request);
+
+  const t = await data();
+
+  return json({ user, t });
+}
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, t } = useLoaderData<typeof loader>();
+
   return (
     <div className="min-h-screen flex flex-col">
       {" "}
@@ -34,15 +40,14 @@ export default function Index() {
         <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-6xl font-bold">Wish. Create. Share.</h1>
+              <h1 className="text-6xl font-bold">{t.website.header.title}</h1>
               <p className="text-muted-foreground text-xl max-w-prose text-balance mx-auto mb-16">
-                Create a shareble wishlists, reserve gifts and present what
-                truly matters.
+                {t.website.header.subtitle}
               </p>
             </div>
             <Link className={cn(buttonVariants({ size: "lg" }))} to="/register">
               <Sparkles className="inline-block mr-2" size={20} />
-              Join now
+              {t.website.header.cta}
             </Link>
           </div>
         </section>
