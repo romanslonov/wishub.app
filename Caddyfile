@@ -21,6 +21,7 @@ www.{$DOMAIN}:443 {
 }
 
 ru.{$DOMAIN}:80 {
+  header Current-Locale "ru"
   reverse_proxy http://backend:3000
 }
 
@@ -28,5 +29,6 @@ ru.{$DOMAIN}:443 {
   tls {
     dns cloudflare {$CLOUDFLARE_API_TOKEN}
   }
+  header Current-Locale "ru"
   reverse_proxy http://backend:3000
 }
