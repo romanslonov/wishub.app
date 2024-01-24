@@ -66,6 +66,15 @@
     }
   },
   "validation": {
-    "invalid_credentials": "Invalid credentials"
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email is invalid."
+    },
+    "password": {
+      "required": "Password is required.",
+      "too_short": "Password must be at least 8 characters."
+    },
+    "invalid_credentials": "Invalid credentials.",
+    "unexpected_error": "Something goes wrong. Please try again later."
   }
 }

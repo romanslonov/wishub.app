@@ -1,13 +1,10 @@
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
-  json,
   type ActionFunctionArgs,
   type MetaFunction,
-  redirect,
   LoaderFunctionArgs,
 } from "@remix-run/node";
-import { z } from "zod";
 import { login } from "./login.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
 import {
@@ -27,14 +24,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.login.meta.title }];
 };
 
-const schema = z.object({
-  email: z.string().min(1, "Email is required.").email("Enter valid email."),
-  password: z
-    .string()
-    .min(1, "Password is required.")
-    .min(8, "Password must be at least 8 characters."),
-});
-
 export async function loader({ request }: LoaderFunctionArgs) {
   await allowAnonymous(request);
 
@@ -44,27 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const t = await getLocaleData(request);
-
-  try {
-    const { email, password } = schema.parse(
-      Object.fromEntries(formData.entries())
-    );
-
-    const cookies = await login(email, password);
-
-    return redirect("/dashboard", {
-      headers: {
-        "Set-Cookie": cookies.serialize(),
-      },
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return json({ errors: error.formErrors }, { status: 400 });
-    }
-    return json({ error: t.validation.invalid_credentials }, { status: 400 });
-  }
+  return await login(request);
 };
 
 export default function Login() {

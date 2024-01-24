@@ -1,14 +1,10 @@
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
-  json,
   type ActionFunctionArgs,
   type MetaFunction,
-  redirect,
   LoaderFunctionArgs,
 } from "@remix-run/node";
-import { z } from "zod";
-import { createUser } from "./create-user.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
 import {
   Form,
@@ -20,23 +16,13 @@ import {
 import { useEffect, useRef } from "react";
 import { Ghost } from "lucide-react";
 import { Message } from "~/components/ui/message";
-import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
-import { sendVerificationEmail } from "~/lib/email";
 import { Label } from "~/components/ui/label";
 import { getLocaleData } from "~/locales";
+import { register } from "./register.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.register.meta.title }];
 };
-
-const schema = z.object({
-  name: z.string().min(1, "Name is required."),
-  email: z
-    .string()
-    .min(1, "Email is required.")
-    .email("Please enter a valid email."),
-  password: z.string().min(8, "Password must be at least 8 characters."),
-});
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await allowAnonymous(request);
@@ -49,30 +35,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-
-  try {
-    const { name, email, password } = schema.parse(
-      Object.fromEntries(formData)
-    );
-
-    const { userId, cookie } = await createUser({ name, email, password });
-
-    const code = await generateEmailVerificationCode(userId, email);
-
-    await sendVerificationEmail(email, code);
-
-    return redirect("/welcome", {
-      headers: {
-        "Set-Cookie": cookie.serialize(),
-      },
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return json({ errors: error.formErrors }, { status: 400 });
-    }
-    return json({ error: "Something goes wrong." }, { status: 500 });
-  }
+  return await register(request);
 };
 
 export default function RegisterRoute() {

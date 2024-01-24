@@ -66,6 +66,15 @@
     }
   },
   "validation": {
-    "invalid_credentials": "Неверный email или пароль"
+    "email": {
+      "required": "Email обязателен.",
+      "invalid": "Некорректный email."
+    },
+    "password": {
+      "required": "Пароль обязателен.",
+      "too_short": "Пароль должен быть не менее 8 символов."
+    },
+    "invalid_credentials": "Неверный email или пароль.",
+    "unexpected_error": "Что-то пошло не так. Попробуйте, пожалуйста, позже."
   }
 }
