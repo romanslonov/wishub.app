@@ -40,7 +40,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     return redirect("/dashboard", {
       headers: {
-        "Set-Cookie": `${cookies.serialize()}; domain=${process.env.DOMAIN}`,
+        "Set-Cookie": cookies.serialize(),
       },
     });
   } catch (error) {
