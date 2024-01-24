@@ -9,6 +9,17 @@
   reverse_proxy http://backend:3000
 }
 
+www.{$DOMAIN}:80 {
+  reverse_proxy http://backend:3000
+}
+
+www.{$DOMAIN}:443 {
+  tls {
+    dns cloudflare {$CLOUDFLARE_API_TOKEN}
+  }
+  reverse_proxy http://backend:3000
+}
+
 ru.{$DOMAIN}:80 {
   reverse_proxy http://backend:3000
 }
