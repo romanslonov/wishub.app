@@ -12,9 +12,9 @@ import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction<typeof loader> = ({ data: { t } }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: t.website.meta.title },
+    { title: data?.t.website.meta.title },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };

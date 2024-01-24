@@ -10,11 +10,18 @@ import {
 import { z } from "zod";
 import { login } from "./login.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
-import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { Message } from "~/components/ui/message";
 import { Ghost } from "lucide-react";
 import { Label } from "~/components/ui/label";
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Login to your account" }];
@@ -27,6 +34,14 @@ const schema = z.object({
     .min(1, "Password is required.")
     .min(8, "Password must be at least 8 characters."),
 });
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await allowAnonymous(request);
+
+  const t = await getLocaleData(request);
+
+  return { t };
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -51,13 +66,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  await allowAnonymous(request);
-  return null;
-}
-
 export default function Login() {
   const data = useActionData<typeof action>();
+  const { t } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -78,12 +89,12 @@ export default function Login() {
       <div className="max-w-md w-full p-8">
         <div className="space-y-1 mb-8 text-center">
           <Ghost className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="font-bold text-2xl">Welcome back</h1>
-          <p className="text-muted-foreground">Sign in to your account</p>
+          <h1 className="font-bold text-2xl">{t.auth.login.title}</h1>
+          <p className="text-muted-foreground">{t.auth.login.subtitle}</p>
         </div>
         <Form method="post" className="space-y-4 mb-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email*</Label>
+            <Label htmlFor="email">{t.auth.login.email.label}*</Label>
             <Input
               id="email"
               ref={emailRef}
@@ -100,12 +111,12 @@ export default function Login() {
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password*</Label>
+              <Label htmlFor="password">{t.auth.login.password.label}*</Label>
               <Link
                 className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
                 to="/reset-password"
               >
-                Forgot password?
+                {t.auth.login.forgot_password}
               </Link>
             </div>
             <Input
@@ -124,16 +135,16 @@ export default function Login() {
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Loging in..." : "Login"}
+            {isSubmitting ? "Loging in..." : t.auth.login.submit}
           </Button>
         </Form>
         <p className="text-muted-foreground text-sm text-center">
-          Don&apos;t have an account?{" "}
+          {t.auth.login.register.label}{" "}
           <Link
             className="text-primary underline-offset-4 hover:underline"
             to="/register"
           >
-            Create account
+            {t.auth.login.register.link}
           </Link>
         </p>
       </div>
