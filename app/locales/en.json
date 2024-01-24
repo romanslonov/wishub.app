@@ -64,5 +64,8 @@
         "link": "Login"
       }
     }
+  },
+  "validation": {
+    "invalid_credentials": "Invalid credentials"
   }
 }

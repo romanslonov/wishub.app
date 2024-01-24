@@ -45,6 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const t = await getLocaleData(request);
 
   try {
     const { email, password } = schema.parse(
@@ -62,7 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors }, { status: 400 });
     }
-    return json({ error: "Invalid credentials." }, { status: 400 });
+    return json({ error: t.validation.invalid_credentials }, { status: 400 });
   }
 };
 

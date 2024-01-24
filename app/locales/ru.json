@@ -64,5 +64,8 @@
         "link": "Войти"
       }
     }
+  },
+  "validation": {
+    "invalid_credentials": "Неверный email или пароль"
   }
 }
