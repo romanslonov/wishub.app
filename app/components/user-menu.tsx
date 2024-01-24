@@ -17,8 +17,9 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Link, useSubmit } from "@remix-run/react";
 import { User } from "lucia";
+import { LocaleData } from "~/locales";
 
-export function UserMenu({ user }: { user: User }) {
+export function UserMenu({ user, t }: { user: User; t: LocaleData }) {
   const submit = useSubmit();
 
   return (
@@ -61,7 +62,7 @@ export function UserMenu({ user }: { user: User }) {
             className="flex items-center w-full p-0"
           >
             <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
+            <span>{t.common.user_menu.logout}</span>
           </button>
         </DropdownMenuItem>
       </DropdownMenuContent>

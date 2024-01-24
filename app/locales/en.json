@@ -1,4 +1,17 @@
 {
+  "common": {
+    "navigation": {
+      "login": "Login",
+      "register": "Register"
+    },
+    "user_menu": {
+      "title": "Your account",
+      "profile": "Profile",
+      "dashboard": "Dashboard",
+      "support": "Support",
+      "logout": "Log out"
+    }
+  },
   "website": {
     "meta": {
       "title": "Wishub - Create wish lists and share with you friends"

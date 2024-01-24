@@ -4,8 +4,9 @@ import { buttonVariants } from "~/components/ui/button";
 import { Ghost, ListPlus } from "lucide-react";
 import { User } from "lucia";
 import { Link } from "@remix-run/react";
+import { LocaleData } from "~/locales";
 
-export function Navigation({ user }: { user: User | null }) {
+export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
   return (
     <header className="border-b">
       <div className="flex h-16 justify-between items-center px-4 md:px-8 mx-auto max-w-7xl">
@@ -28,7 +29,7 @@ export function Navigation({ user }: { user: User | null }) {
                 <ListPlus size={16} className="mr-2" />
                 New List
               </Link>
-              <UserMenu user={user} />
+              <UserMenu user={user} t={t} />
             </>
           ) : (
             <>

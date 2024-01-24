@@ -1,4 +1,17 @@
 {
+  "common": {
+    "navigation": {
+      "login": "Войти",
+      "register": "Регистрация"
+    },
+    "user_menu": {
+      "title": "Ваш аккаунт",
+      "profile": "Профиль",
+      "settings": "Панель",
+      "support": "Поддержка",
+      "logout": "Выйти"
+    }
+  },
   "website": {
     "meta": {
       "title": "Wishub - Создавайте списки желаний и делитесь ими с друзьями"

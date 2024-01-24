@@ -22,9 +22,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: { t } }) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
 
-  const data = getLocaleData(request);
-
-  const t = await data();
+  const t = await getLocaleData(request);
 
   return json({ user, t });
 }
@@ -35,7 +33,7 @@ export default function Index() {
   return (
     <div className="min-h-screen flex flex-col">
       {" "}
-      <Navigation user={user} />
+      <Navigation user={user} t={t} />
       <main className="flex-1">
         <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8">
           <div className="space-y-8">
