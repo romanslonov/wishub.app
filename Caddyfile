@@ -3,7 +3,9 @@
 }
 
 {$DOMAIN}:443 {
-  tls internal
+  tls {
+    dns cloudflare {$CLOUDFLARE_API_TOKEN}
+  }
   reverse_proxy http://backend:3000
 }
 
@@ -12,6 +14,8 @@ ru.{$DOMAIN}:80 {
 }
 
 ru.{$DOMAIN}:443 {
-  tls internal
+  tls {
+    dns cloudflare {$CLOUDFLARE_API_TOKEN}
+  }
   reverse_proxy http://backend:3000
 }

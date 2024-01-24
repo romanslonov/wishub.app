@@ -2,7 +2,10 @@ version: "3.7"
 
 services:
   frontend:
-    image: caddy:2.6.4-alpine
+    build:
+      context: ./
+      dockerfile: CaddyDockerfile
+    image: caddy:cloudflare
     container_name: remix-frontend
     hostname: frontend
     env_file:
@@ -11,6 +14,7 @@ services:
       - 80:80
       - 443:443
     volumes:
+      - caddy_data:/data
       - ./Caddyfile:/etc/caddy/Caddyfile
   backend:
     build:
@@ -36,4 +40,5 @@ services:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
+  caddy_data:
   pgdata:
