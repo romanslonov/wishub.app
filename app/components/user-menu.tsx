@@ -30,19 +30,19 @@ export function UserMenu({ user, t }: { user: User; t: LocaleData }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{t.common.user_menu.title}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to="/dashboard/profile">
               <UserIcon className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>{t.common.user_menu.profile}</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/dashboard">
               <LayoutDashboard className="mr-2 h-4 w-4" />
-              <span>Dashboard</span>
+              <span>{t.common.user_menu.dashboard}</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -53,7 +53,7 @@ export function UserMenu({ user, t }: { user: User; t: LocaleData }) {
         </DropdownMenuItem>
         <DropdownMenuItem disabled>
           <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Support</span>
+          <span>{t.common.user_menu.support}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>

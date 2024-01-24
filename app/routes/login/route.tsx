@@ -23,8 +23,8 @@ import { Ghost } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Login to your account" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.auth.login.meta.title }];
 };
 
 const schema = z.object({

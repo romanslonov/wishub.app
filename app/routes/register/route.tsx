@@ -10,19 +10,23 @@ import {
 import { z } from "zod";
 import { createUser } from "./create-user.server";
 import { allowAnonymous } from "~/auth/allow-anonymous";
-import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { Ghost } from "lucide-react";
 import { Message } from "~/components/ui/message";
 import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
 import { sendVerificationEmail } from "~/lib/email";
 import { Label } from "~/components/ui/label";
+import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Create your account" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.auth.register.meta.title }];
 };
 
 const schema = z.object({
@@ -33,6 +37,16 @@ const schema = z.object({
     .email("Please enter a valid email."),
   password: z.string().min(8, "Password must be at least 8 characters."),
 });
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await allowAnonymous(request);
+
+  const t = await getLocaleData(request);
+
+  return {
+    t,
+  };
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -61,13 +75,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  await allowAnonymous(request);
-  return null;
-}
-
 export default function RegisterRoute() {
   const data = useActionData<typeof action>();
+  const { t } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -91,14 +101,12 @@ export default function RegisterRoute() {
       <div className="max-w-md w-full p-8">
         <div className="text-center space-y-1 mb-8">
           <Ghost className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="font-bold text-2xl mb-4">Create your account</h1>
-          <p className="text-muted-foreground">
-            Join today ahd start to share wish lists.
-          </p>
+          <h1 className="font-bold text-2xl mb-4">{t.auth.register.title}</h1>
+          <p className="text-muted-foreground">{t.auth.register.subtitle}</p>
         </div>
         <Form method="post" className="space-y-4 mb-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name*</Label>
+            <Label htmlFor="name">{t.auth.register.name.label}*</Label>
             <Input
               id="name"
               required
@@ -113,7 +121,7 @@ export default function RegisterRoute() {
               ))}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email*</Label>
+            <Label htmlFor="email">{t.auth.register.email.label}*</Label>
             <Input
               id="email"
               required
@@ -128,7 +136,7 @@ export default function RegisterRoute() {
               ))}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password*</Label>
+            <Label htmlFor="password">{t.auth.register.password.label}*</Label>
             <Input
               id="password"
               required
@@ -144,16 +152,16 @@ export default function RegisterRoute() {
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create an account"}
+            {isSubmitting ? "Creating..." : t.auth.register.submit}
           </Button>
         </Form>
         <p className="text-muted-foreground text-sm text-center">
-          Already have an account?{" "}
+          {t.auth.register.login.label}{" "}
           <Link
             className="text-primary underline-offset-4 hover:underline"
             to="/login"
           >
-            Login
+            {t?.auth.register.login.link}
           </Link>
         </p>
       </div>

@@ -25,6 +25,9 @@
   },
   "auth": {
     "login": {
+      "meta": {
+        "title": "Login to your account"
+      },
       "title": "Welcome back",
       "subtitle": "Login to your account",
       "email": {
@@ -38,6 +41,27 @@
       "register": {
         "label": "Don't have an account?",
         "link": "Create account"
+      }
+    },
+    "register": {
+      "meta": {
+        "title": "Create your account"
+      },
+      "title": "Create your account",
+      "subtitle": "Join today ahd start to share wish lists.",
+      "name": {
+        "label": "Name"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Password"
+      },
+      "submit": "Create an account",
+      "login": {
+        "label": "Already have an account?",
+        "link": "Login"
       }
     }
   }
