@@ -25,7 +25,7 @@ export function UpdateListDialog({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state !== "idle";
+  const isSubmitting = navigation.state === "submitting";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -56,7 +56,7 @@ export function UpdateListDialog({
           </div>
         </Form>
         <DialogFooter>
-          <Button type="submit" form="update-list-form">
+          <Button type="submit" form="update-list-form" disabled={isSubmitting}>
             {isSubmitting ? "Updating..." : "Save changes"}
           </Button>
         </DialogFooter>

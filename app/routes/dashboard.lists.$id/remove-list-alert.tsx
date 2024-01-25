@@ -1,4 +1,3 @@
-
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -9,15 +8,15 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from '~/components/ui/alert-dialog'
-import { Button } from '~/components/ui/button';
+} from "~/components/ui/alert-dialog";
+import { Button } from "~/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, useNavigation } from "@remix-run/react";
 
 export function RemoveListAlert() {
   const navigation = useNavigation();
 
-  const isSubmitting = navigation.state !== 'idle';
+  const isSubmitting = navigation.state === "submitting";
 
   return (
     <AlertDialog>
@@ -34,10 +33,16 @@ export function RemoveListAlert() {
             and all wishes in it.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <Form id='delete-list-form' method='DELETE' />
+        <Form id="delete-list-form" method="delete" />
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction form='delete-list-form' disabled={isSubmitting} type='submit'>{isSubmitting ? 'Removing list...' : 'Continue'}</AlertDialogAction>
+          <AlertDialogAction
+            form="delete-list-form"
+            disabled={isSubmitting}
+            type="submit"
+          >
+            {isSubmitting ? "Removing list..." : "Continue"}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
