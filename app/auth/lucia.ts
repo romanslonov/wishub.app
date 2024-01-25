@@ -4,11 +4,13 @@ import { Lucia } from "lucia";
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
-      domain: process.env.DOMAIN,
-      secure: process.env.NODE_ENV === "production",
+      domain: isProduction ? process.env.DOMAIN : "localhost",
+      secure: isProduction,
     },
   },
   getUserAttributes(attributes) {
