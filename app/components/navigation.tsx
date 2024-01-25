@@ -5,6 +5,7 @@ import { Ghost, ListPlus } from "lucide-react";
 import { User } from "lucia";
 import { Link } from "@remix-run/react";
 import { LocaleData } from "~/locales";
+import { LocaleSwitcher } from "./locale-switcher";
 
 export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
   return (
@@ -35,7 +36,7 @@ export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
             <>
               <Link
                 className={cn(
-                  buttonVariants({ size: "sm", variant: "secondary" })
+                  buttonVariants({ size: "sm", variant: "outline" })
                 )}
                 to="/login"
               >
@@ -49,6 +50,8 @@ export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
               </Link>
             </>
           )}
+          <div className="h-7 w-px bg-border"></div>
+          <LocaleSwitcher />
         </div>
       </div>
     </header>

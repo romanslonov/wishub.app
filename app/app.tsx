@@ -10,10 +10,10 @@ import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
 import { cn } from "./lib/cn";
 import { Toaster } from "./components/ui/toast";
 
-export default function App() {
+export default function App({ lang }: { lang: string }) {
   const theme = useTheme();
   return (
-    <html lang="en" className={cn(theme)}>
+    <html lang={lang} className={cn(theme)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
