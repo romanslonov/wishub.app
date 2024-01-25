@@ -12,10 +12,12 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const lang = getLocaleFromRequest(request);
+  const url = new URL(request.url);
 
   return json({
     ENV: {
       DOMAIN: process.env.DOMAIN!,
+      ORIGIN: url.origin,
     },
     lang,
   });

@@ -3,6 +3,7 @@ import {
   useActionData,
   useLoaderData,
   useNavigate,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { Gift } from "lucide-react";
 import { buttonVariants } from "~/components/ui/button";
@@ -104,6 +105,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function DashboardListsIdRoute() {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const { list } = useLoaderData<typeof loader>();
+  const routeData = useRouteLoaderData<{ ENV: Record<string, string> }>("root");
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
@@ -168,7 +170,7 @@ export default function DashboardListsIdRoute() {
           </div>
           <TogglePublic list={list} defaultValue={list?.public} />
           {list?.public ? (
-            <CopyToClipboard text={`http://localhost:3000/s/${list.id}`} />
+            <CopyToClipboard text={`${routeData?.ENV.ORIGIN}/s/${list.id}`} />
           ) : null}
         </div>
       </div>

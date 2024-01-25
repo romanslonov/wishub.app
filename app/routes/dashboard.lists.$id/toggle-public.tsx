@@ -39,7 +39,7 @@ export function TogglePublic({
         <div className="flex items-center gap-2">
           <Label
             htmlFor="list-public-switch"
-            className="font-bold text-lg tracking-tight"
+            className="font-bold text-lg text-foreground tracking-tight"
           >
             Public
           </Label>
@@ -55,20 +55,8 @@ export function TogglePublic({
         name="public"
         disabled={isSubmitting}
         defaultChecked={defaultValue}
-        onCheckedChange={async () => {
+        onCheckedChange={() => {
           fetcher.submit(formRef.current, { method: "put" });
-          // setIsSubmitting(true);
-          // try {
-          //   await updateList(listId, { public: value });
-
-          //   toast.success(
-          //     value
-          //       ? "List is public now. Everyone who have a link can see it."
-          //       : "List is private now. Only you can see it."
-          //   );
-          // } finally {
-          //   setIsSubmitting(false);
-          // }
         }}
       />
     </fetcher.Form>
