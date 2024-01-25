@@ -12,9 +12,12 @@ import { Navigation } from "~/components/navigation";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { reserve } from "./actions.server";
 import { z } from "zod";
+import { getLocaleData } from "~/locales";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const user = await getUser(request);
+
+  const t = await getLocaleData(request);
 
   const list = await prisma.list.findFirst({
     where: { id: params.id, public: true },
@@ -30,7 +33,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     orderBy: { createdAt: "asc" },
   });
 
-  return { items, list, user };
+  return { items, list, user, t };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -59,10 +62,10 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function PublicListRoute() {
-  const { items, list, user } = useLoaderData<typeof loader>();
+  const { items, list, user, t } = useLoaderData<typeof loader>();
   return (
     <>
-      <Navigation user={user} />
+      <Navigation user={user} t={t} />
       <div className="max-w-4xl w-full flex-1 mx-auto p-8">
         <header className="mb-8">
           <h1 className="text-2xl tracking-tight font-bold">{list.name}</h1>
