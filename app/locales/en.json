@@ -34,10 +34,10 @@
         "label": "Email"
       },
       "password": {
-        "label": "Пароль"
+        "label": "Password"
       },
       "submit": "Login",
-      "forgot_password": "Забыли пароль?",
+      "forgot_password": "Forgot password?",
       "register": {
         "label": "Don't have an account?",
         "link": "Create account"
