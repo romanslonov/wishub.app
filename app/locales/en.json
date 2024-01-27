@@ -35,6 +35,10 @@
             "public": "Public",
             "private": "Private",
             "wishes_count": "wishes"
+          },
+          "empty": {
+            "title": "You don't have any wishlists yet",
+            "subtitle": "Create your first wishlist and start to share it with your friends."
           }
         },
         "reserves": {
@@ -42,6 +46,10 @@
           "card": {
             "list": "List",
             "by": "by"
+          },
+          "empty": {
+            "title": "You don't have any reserved gifts yet",
+            "subtitle": "To reserve a gift, ask your friend for a link to his wishlist."
           }
         }
       }

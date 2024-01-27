@@ -25,10 +25,10 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
         </div>
         {/* <Gift size={48} className="text-muted-foreground mx-auto mb-4" /> */}
         <h2 className="text-xl font-bold mb-2 tracking-tight">
-          You don&apos;t have any reserved gifts yet
+          {data?.t.dashboard.lists.sections.reserves.empty.title}
         </h2>
         <p className="text-muted-foreground">
-          To reserve a gift, ask your friend for a link to his wish list.
+          {data?.t.dashboard.lists.sections.reserves.empty.subtitle}
         </p>
       </div>
     );
