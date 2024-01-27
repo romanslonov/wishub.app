@@ -6,6 +6,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev --manual",
+    "email": "email dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "prisma migrate deploy && remix-serve ./build/index.js",
     "typecheck": "tsc",
@@ -21,6 +22,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
+    "@react-email/components": "0.0.14",
     "@remix-run/css-bundle": "^2.5.1",
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
@@ -34,6 +36,7 @@
     "oslo": "^0.27.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-email": "2.0.0",
     "react-hook-form": "^7.49.3",
     "remix-toast": "^1.1.0",
     "resend": "^2.1.0",

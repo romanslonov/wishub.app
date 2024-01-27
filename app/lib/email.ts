@@ -1,3 +1,5 @@
+import { ConfirmEmailTemplate } from "emails/confirm-email";
+import { ResetPasswordTemplate } from "emails/reset-password";
 import { Resend } from "resend";
 
 export const resend = new Resend(process.env.RESEND_API_KEY);
@@ -7,15 +9,12 @@ export function sendVerificationEmail(email: string, code: string) {
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: "Confirm your account",
-    html: `
-      <h1>Confirm your account</h1>
-      <p>Enter this code to confirm your account: <strong>${code}</strong></p>
-    `,
+    react: ConfirmEmailTemplate({
+      code,
+    }),
     // Set this to prevent Gmail from threading emails.
     // More info: https://resend.com/changelog/custom-email-headers
-    headers: {
-      "X-Entity-Ref-ID": new Date().getTime() + "",
-    },
+    headers: headers(),
   });
 }
 
@@ -24,14 +23,15 @@ export function sendPasswordResetToken(email: string, link: string) {
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: "Reset your password",
-    html: `
-      <h1>Reset your password</h1>
-      <p>Go to page where you can reset your password: <strong>${link}</strong></p>
-    `,
+    react: ResetPasswordTemplate({
+      link,
+    }),
     // Set this to prevent Gmail from threading emails.
     // More info: https://resend.com/changelog/custom-email-headers
-    headers: {
-      "X-Entity-Ref-ID": new Date().getTime() + "",
-    },
+    headers: headers(),
   });
+}
+
+function headers() {
+  return { "X-Entity-Ref-ID": new Date().getTime() + "" };
 }
