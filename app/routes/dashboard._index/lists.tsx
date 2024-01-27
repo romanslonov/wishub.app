@@ -1,8 +1,9 @@
 import { cn } from "~/lib/cn";
 import { buttonVariants } from "~/components/ui/button";
 import { ListPlus, Lock, Unlock } from "lucide-react";
-import { Link } from "@remix-run/react";
+import { Link, useRouteLoaderData } from "@remix-run/react";
 import { List } from "@prisma/client";
+import { LocaleData } from "~/locales";
 
 export function Lists({
   lists,
@@ -13,6 +14,8 @@ export function Lists({
     };
   })[];
 }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>("routes/dashboard._index");
+
   if (lists.length === 0) {
     return (
       <div className="border border-dashed rounded-2xl py-16 text-center">
@@ -54,7 +57,9 @@ export function Lists({
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <span>{item._count.items}</span>{" "}
-                <span className="text-muted-foreground">wishes</span>
+                <span className="text-muted-foreground">
+                  {data?.t.dashboard.lists.sections.lists.card.wishes_count}
+                </span>
               </div>
               <div
                 className={cn([
@@ -63,7 +68,11 @@ export function Lists({
                 ])}
               >
                 {item.public ? <Unlock size={16} /> : <Lock size={16} />}
-                <span>{item.public ? "Public" : "Private"}</span>
+                <span>
+                  {item.public
+                    ? data?.t.dashboard.lists.sections.lists.card.public
+                    : data?.t.dashboard.lists.sections.lists.card.private}
+                </span>
               </div>
             </div>
           </Link>

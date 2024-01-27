@@ -1,8 +1,11 @@
 import { Item } from "@prisma/client";
-import { Link } from "@remix-run/react";
+import { Link, useRouteLoaderData } from "@remix-run/react";
 import { Link2 } from "lucide-react";
+import { LocaleData } from "~/locales";
 
 export function Reserves({ reserves }: { reserves: Item[] }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>("routes/dashboard._index");
+
   if (reserves === null || reserves.length === 0) {
     return (
       <div className="border border-dashed rounded-2xl py-16 px-8 text-center">
@@ -54,14 +57,15 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
               </a>
               <div className="mt-4 text-muted-foreground text-sm">
                 <span>
-                  List{" "}
+                  {data?.t.dashboard.lists.sections.reserves.card.list}{" "}
                   <Link
                     className="text-foreground font-medium underline underline-offset-4"
                     to={`/s/${item.list.id}`}
                   >
                     {item.list.name}
                   </Link>{" "}
-                  by {item.list.owner.name}
+                  {data?.t.dashboard.lists.sections.reserves.card.by}{" "}
+                  {item.list.owner.name}
                 </span>
               </div>
             </div>
