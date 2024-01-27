@@ -13,5 +13,10 @@ export async function getReserves(ownerId: string) {
     where: {
       reserverId: ownerId,
     },
+    include: {
+      list: {
+        include: { owner: true },
+      },
+    },
   });
 }

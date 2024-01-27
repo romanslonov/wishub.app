@@ -26,6 +26,7 @@ import { sendVerificationEmail } from "~/lib/email";
 import { lucia } from "~/auth/lucia";
 import { Navigation } from "~/components/navigation";
 import { MailOpen } from "lucide-react";
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction = () => [
   {
@@ -36,11 +37,13 @@ export const meta: MetaFunction = () => [
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
 
+  const t = await getLocaleData(request);
+
   if (user && user.emailVerified) {
     throw redirect("/dashboard");
   }
 
-  return { user };
+  return { user, t };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -122,7 +125,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ConfirmationRoute() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, t } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isConfirming = navigation.formData?.get("intent") === "confirmation";
@@ -145,7 +148,7 @@ export default function ConfirmationRoute() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navigation user={user} />
+      <Navigation user={user} t={t} />
       <div className="flex-1 items-center justify-center flex p-4 md:p-8">
         <div className="shadow-sm border rounded-2xl p-6 max-w-lg w-full space-y-4">
           <div className="text-center space-y-1">

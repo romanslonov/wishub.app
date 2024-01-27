@@ -7,10 +7,7 @@ import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "Your Wish Lists" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+  return [{ title: "Your Wish Lists" }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {

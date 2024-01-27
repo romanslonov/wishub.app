@@ -1,6 +1,6 @@
 import { cn } from "~/lib/cn";
 import { buttonVariants } from "~/components/ui/button";
-import { ListPlus } from "lucide-react";
+import { ListPlus, Lock, Unlock } from "lucide-react";
 import { Link } from "@remix-run/react";
 import { List } from "@prisma/client";
 
@@ -50,22 +50,32 @@ export function Lists({
   }
 
   return (
-    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {lists.map((item) => (
         <li key={item.id}>
           <Link
             to={`./lists/${item.id}`}
-            className="border p-6 rounded-xl shadow-sm block"
+            className="border p-6 rounded-xl shadow-sm block hover:border-foreground transition-colors"
           >
+            <time className="text-sm text-muted-foreground">
+              {new Date(item.createdAt).toDateString()}
+            </time>
+            <h2 className="font-medium text-lg mb-4">{item.name}</h2>
             <div className="flex items-center justify-between">
-              <time className="text-xs text-muted-foreground">
-                {new Date(item.createdAt).toDateString()}
-              </time>
-              <div className="text-xs font-medium">
-                {item._count.items} wishes
+              <div className="text-sm">
+                <span>{item._count.items}</span>{" "}
+                <span className="text-muted-foreground">wishes</span>
+              </div>
+              <div
+                className={cn([
+                  item.public ? "" : "text-muted-foreground",
+                  "flex items-center gap-1 text-sm",
+                ])}
+              >
+                {item.public ? <Unlock size={16} /> : <Lock size={16} />}
+                <span>{item.public ? "Public" : "Private"}</span>
               </div>
             </div>
-            <h2 className="font-medium text-lg mb-4">{item.name}</h2>
           </Link>
         </li>
       ))}

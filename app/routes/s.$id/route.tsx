@@ -3,6 +3,7 @@ import { ItemsList } from "./items-list";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
   json,
   redirect,
 } from "@remix-run/node";
@@ -13,6 +14,10 @@ import { requireUserSession } from "~/auth/require-user-session.server";
 import { reserve } from "./actions.server";
 import { z } from "zod";
 import { getLocaleData } from "~/locales";
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `${data?.list.name} by ${data?.list.owner.name}` }];
+};
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const user = await getUser(request);
@@ -66,7 +71,7 @@ export default function PublicListRoute() {
   return (
     <>
       <Navigation user={user} t={t} />
-      <div className="max-w-4xl w-full flex-1 mx-auto p-8">
+      <div className="max-w-4xl w-full flex-1 mx-auto p-4 md:p-8">
         <header className="mb-8">
           <h1 className="text-2xl tracking-tight font-bold">{list.name}</h1>
           <p className="text-muted-foreground text-sm">

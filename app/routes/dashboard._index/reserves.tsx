@@ -1,5 +1,6 @@
 import { Item } from "@prisma/client";
-import { ListItem } from "~/components/list-item";
+import { Link } from "@remix-run/react";
+import { Link2 } from "lucide-react";
 
 export function Reserves({ reserves }: { reserves: Item[] }) {
   if (reserves === null || reserves.length === 0) {
@@ -31,9 +32,41 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
   }
 
   return (
-    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-4">
+    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {reserves.map((item) => (
-        <ListItem key={item.id} item={item} actions={<div></div>} />
+        <li
+          key={item.id}
+          className="flex items-center gap-4 shadow-sm lg:gap-8 relative justify-between border p-6 rounded-xl"
+        >
+          <div className="flex items-center gap-4">
+            <div>
+              <div className="text-sm text-muted-foreground">
+                {new Date(item.createdAt).toDateString()}
+              </div>
+              <a
+                href={item.url}
+                target="_blank"
+                className="text-lg line-clamp-2 font-medium tracking-tight"
+                rel="noreferrer"
+              >
+                <Link2 size={16} className="inline-block align-middle mr-1.5" />
+                {item.name}
+              </a>
+              <div className="mt-4 text-muted-foreground text-sm">
+                <span>
+                  List{" "}
+                  <Link
+                    className="text-foreground font-medium underline underline-offset-4"
+                    to={`/s/${item.list.id}`}
+                  >
+                    {item.list.name}
+                  </Link>{" "}
+                  by {item.list.owner.name}
+                </span>
+              </div>
+            </div>
+          </div>
+        </li>
       ))}
     </ul>
   );
@@ -41,7 +74,7 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
 
 export function ReservesSkeleton() {
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-4">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <div className="animate-pulse h-[110px] bg-muted rounded-xl"></div>
       <div className="animate-pulse h-[110px] bg-muted rounded-xl"></div>
       <div className="animate-pulse h-[110px] bg-muted rounded-xl"></div>
