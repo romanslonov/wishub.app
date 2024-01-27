@@ -23,6 +23,21 @@
       "cta": "Join now"
     }
   },
+  "dashboard": {
+    "lists": {
+      "meta": {
+        "title": "Your lists"
+      },
+      "sections": {
+        "lists": {
+          "name": "Your lists"
+        },
+        "reserves": {
+          "name": "Reserved gifts"
+        }
+      }
+    }
+  },
   "auth": {
     "login": {
       "meta": {

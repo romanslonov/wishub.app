@@ -5,6 +5,7 @@ import { requireUserSession } from "~/auth/require-user-session.server";
 import { getLists, getReserves } from "./actions.server";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Your Wish Lists" }];
@@ -13,20 +14,24 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const lists = getLists(session.user.id);
   const reserves = getReserves(session.user.id);
 
-  return defer({ lists, reserves });
+  return defer({ lists, reserves, t });
 }
 
 export default function DashboardIndex() {
-  const { lists, reserves } = useLoaderData<typeof loader>();
+  const { lists, reserves, t } = useLoaderData<typeof loader>();
 
   return (
     <div className="space-y-16">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">Your lists</h2>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t.dashboard.lists.sections.lists.name}
+          </h2>
           <div className="flex items-center gap-2"></div>
         </div>
 
@@ -36,7 +41,9 @@ export default function DashboardIndex() {
       </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">Reserved gifts</h2>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t.dashboard.lists.sections.reserves.name}
+          </h2>
           <div className="flex items-center gap-2"></div>
         </div>
 

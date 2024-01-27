@@ -23,6 +23,21 @@
       "cta": "Начать сейчас"
     }
   },
+  "dashboard": {
+    "lists": {
+      "meta": {
+        "title": "Ваши списки"
+      },
+      "sections": {
+        "lists": {
+          "name": "Ваши списки"
+        },
+        "reserves": {
+          "name": "Зарезервированные подарки"
+        }
+      }
+    }
+  },
   "auth": {
     "login": {
       "meta": {
