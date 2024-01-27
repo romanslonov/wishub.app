@@ -1,5 +1,5 @@
 import { TimeSpan, createDate } from "oslo";
-import { generateRandomString, alphabet } from "oslo/random";
+import { alphabet, generateRandomString } from "oslo/crypto";
 import { prisma } from "~/lib/prisma.server";
 
 export async function generateEmailVerificationCode(
