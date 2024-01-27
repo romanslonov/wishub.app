@@ -4,7 +4,7 @@ import {
   type MetaFunction,
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { Sparkles, BookmarkCheck } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { getUser } from "~/auth/get-user.server";
 import { Footer } from "~/components/footer";
 import { Navigation } from "~/components/navigation";
@@ -30,13 +30,13 @@ export default function Index() {
   return (
     <div className="min-h-screen flex flex-col">
       {" "}
-      <Navigation user={user} t={t} />
+      <Navigation user={user} t={t} className="border-b-0" />
       <main className="flex-1">
         <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-7xl font-bold">{t.website.header.title}</h1>
-              <p className="text-muted-foreground text-3xl max-w-prose text-balance mx-auto mb-16">
+              <h1 className="text-6xl font-bold">{t.website.header.title}</h1>
+              <p className="text-muted-foreground text-2xl max-w-prose text-balance mx-auto mb-16">
                 {t.website.header.subtitle}
               </p>
             </div>

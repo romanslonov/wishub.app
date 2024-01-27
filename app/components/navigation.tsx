@@ -7,9 +7,14 @@ import { Link } from "@remix-run/react";
 import { LocaleData } from "~/locales";
 import { LocaleSwitcher } from "./locale-switcher";
 
-export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  user: User | null;
+  t: LocaleData;
+}
+
+export function Navigation({ user, t, className }: Props) {
   return (
-    <header className="border-b">
+    <header className={cn("border-b", className)}>
       <div className="flex h-16 justify-between items-center px-4 md:px-8 mx-auto max-w-7xl">
         <Link
           to={user ? "/dashboard" : "/"}
@@ -48,10 +53,10 @@ export function Navigation({ user, t }: { user: User | null; t: LocaleData }) {
               >
                 {t.common.navigation.register}
               </Link>
+              <div className="h-7 w-px bg-border"></div>
+              <LocaleSwitcher />
             </>
           )}
-          <div className="h-7 w-px bg-border"></div>
-          <LocaleSwitcher />
         </div>
       </div>
     </header>
