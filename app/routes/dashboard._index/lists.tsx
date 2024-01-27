@@ -29,14 +29,14 @@ export function Lists({
           </div>
         </div>
         <h2 className="text-xl font-bold mb-2 tracking-tight">
-          You don&apos;t have any lists yet
+          {data?.t.dashboard.lists.sections.lists.empty.title}
         </h2>
         <p className="text-center text-muted-foreground mb-4">
-          Create your first wish list.
+          {data?.t.dashboard.lists.sections.lists.empty.subtitle}
         </p>
         <Link to="./lists/create" className={cn(buttonVariants())}>
           <ListPlus size={20} className="mr-1.5" />
-          Create new list
+          {data?.t.dashboard.lists.sections.lists.empty.cta}
         </Link>
       </div>
     );

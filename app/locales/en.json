@@ -38,7 +38,8 @@
           },
           "empty": {
             "title": "You don't have any wishlists yet",
-            "subtitle": "Create your first wishlist and start to share it with your friends."
+            "subtitle": "Create your first wishlist and start to share it with your friends.",
+            "cta": "Create a list"
           }
         },
         "reserves": {
