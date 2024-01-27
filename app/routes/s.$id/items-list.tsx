@@ -1,46 +1,19 @@
 import { Button } from "~/components/ui/button";
 import { type Item } from "@prisma/client";
-import { BookmarkCheck, Bookmark, Link2 } from "lucide-react";
+import { X, Bookmark, Link2 } from "lucide-react";
 import { HTMLAttributes, useEffect } from "react";
 import { toast } from "sonner";
 import { useFetcher } from "@remix-run/react";
 import { cn } from "~/lib/cn";
+import { User } from "lucia";
 
 interface ItemsListProps extends HTMLAttributes<HTMLUListElement> {
   items: Item[];
-  listId: string;
-  isAuthenticated: boolean;
+  user: User | null;
   isMyself: boolean;
 }
 
-function ItemActions({ item, isMyself }: { item: Item; isMyself: boolean }) {
-  const fetcher = useFetcher<{ message?: string; error?: string }>();
-
-  useEffect(() => {
-    if (fetcher.data?.message) {
-      toast.success(fetcher.data.message);
-    } else if (fetcher.data?.error) {
-      toast.error(fetcher.data.error);
-    }
-  }, [fetcher.data]);
-
-  return isMyself ? null : (
-    <fetcher.Form method="post" className="flex items-center gap-2">
-      <input type="hidden" value={item.id} name="itemId" />
-      <Button
-        type="submit"
-        variant="outline"
-        size="icon"
-        className="w-8 h-8"
-        disabled={!!item.reserverId}
-      >
-        {item.reserverId ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
-      </Button>
-    </fetcher.Form>
-  );
-}
-
-export function ItemsList({ items, isMyself, ...props }: ItemsListProps) {
+export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
   return (
     <ul {...props}>
       {items.map((item) => (
@@ -50,7 +23,7 @@ export function ItemsList({ items, isMyself, ...props }: ItemsListProps) {
         >
           {item.reserverId ? (
             <div className="absolute top-0 left-[50%] translate-x-[-50%] border border-t-0 font-mono font-medium py-1 text-xs rounded-b-md px-4 bg-muted">
-              Reserved
+              Reserved {item.reserverId === user?.id && <span>(by you)</span>}
             </div>
           ) : null}
           <div className="flex items-center gap-4">
@@ -77,5 +50,31 @@ export function ItemsList({ items, isMyself, ...props }: ItemsListProps) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function ItemActions({ item, isMyself }: { item: Item; isMyself: boolean }) {
+  const fetcher = useFetcher<{ message?: string; error?: string }>();
+
+  useEffect(() => {
+    if (fetcher.data?.message) {
+      toast.success(fetcher.data.message);
+    } else if (fetcher.data?.error) {
+      toast.error(fetcher.data.error);
+    }
+  }, [fetcher.data]);
+
+  return isMyself ? null : (
+    <fetcher.Form method="post" className="flex items-center gap-2">
+      <input type="hidden" value={item.id} name="itemId" />
+      <input
+        type="hidden"
+        value={item.reserverId ? "unreserve" : "reserve"}
+        name="action"
+      />
+      <Button type="submit" variant="outline" size="icon" className="w-8 h-8">
+        {item.reserverId ? <X size={16} /> : <Bookmark size={16} />}
+      </Button>
+    </fetcher.Form>
   );
 }

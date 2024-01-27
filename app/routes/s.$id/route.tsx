@@ -11,7 +11,7 @@ import { getUser } from "~/auth/get-user.server";
 import { useLoaderData } from "@remix-run/react";
 import { Navigation } from "~/components/navigation";
 import { requireUserSession } from "~/auth/require-user-session.server";
-import { reserve } from "./actions.server";
+import { reserve, unreserve } from "./actions.server";
 import { z } from "zod";
 import { getLocaleData } from "~/locales";
 
@@ -47,13 +47,35 @@ export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "POST") {
     const formData = await request.formData();
     try {
-      const { itemId } = z
-        .object({ itemId: z.string().min(1, "Item is required") })
+      const { itemId, action } = z
+        .object({
+          itemId: z.string().min(1, "Gift is required"),
+          action: z.enum(["reserve", "unreserve"], {
+            required_error: "Action is required",
+            invalid_type_error:
+              "Invalid action. Must be either reserve or unreserve.",
+          }),
+        })
         .parse(Object.fromEntries(formData));
 
-      await reserve(session.user.id, itemId);
+      if (action === "unreserve") {
+        await unreserve(itemId);
+      } else if (action === "reserve") {
+        await reserve(session.user.id, itemId);
+      }
 
-      return json({ message: "Reserved!" });
+      console.log({
+        action: action,
+        message: action === "reserve",
+        "You reserved this gift.": "You removed reserve from this gift.",
+      });
+
+      return json({
+        message:
+          action === "reserve"
+            ? "You reserved this gift."
+            : "You removed reserve from this gift.",
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return json(
@@ -81,8 +103,7 @@ export default function PublicListRoute() {
 
         <ItemsList
           items={items}
-          listId={list.id}
-          isAuthenticated={!!user}
+          user={user}
           isMyself={user?.id === list.ownerId}
           className="space-y-4"
         />
