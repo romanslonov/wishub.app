@@ -24,23 +24,25 @@ import { toast } from "sonner";
 import { RemoveListAlert } from "./remove-list-alert";
 import { UpdateListDialog } from "./update-list-dialog";
 import { z } from "zod";
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    { title: `Your ${data?.list?.name} Wish List` },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: `${data?.t.dashboard.list.meta.title} - ${data?.list?.name}` },
   ];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const session = await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const list = await getListWithItems({
     listId: params.id!,
     ownerId: session.user.id,
   });
 
-  return { list };
+  return { list, t };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -104,7 +106,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function DashboardListsIdRoute() {
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-  const { list } = useLoaderData<typeof loader>();
+  const { list, t } = useLoaderData<typeof loader>();
   const routeData = useRouteLoaderData<{ ENV: Record<string, string> }>("root");
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -129,7 +131,7 @@ export default function DashboardListsIdRoute() {
             to="/dashboard"
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
           >
-            Back to lists
+            {t.dashboard.list.back_to_lists}
           </Link>
           <h1 className="text-3xl line-clamp-2 font-bold tracking-tight">
             {list?.name}
@@ -141,7 +143,7 @@ export default function DashboardListsIdRoute() {
             to={`./add`}
           >
             <Gift size={16} className="mr-1" />
-            Add a wish
+            {t.dashboard.list.actions.add_wish}
           </Link>
           {list?.id ? (
             <>
@@ -163,9 +165,11 @@ export default function DashboardListsIdRoute() {
 
         <div className="lg:col-span-4 space-y-6 order-1 lg:order-2">
           <div>
-            <div className="font-bold text-lg tracking-tight">Description</div>
+            <div className="font-bold text-lg tracking-tight">
+              {t.dashboard.list.settings.description.label}
+            </div>
             <p className="text-sm text-muted-foreground">
-              {list?.description || "No description"}
+              {list?.description || t.dashboard.list.settings.description.empty}
             </p>
           </div>
           <TogglePublic list={list} defaultValue={list?.public} />

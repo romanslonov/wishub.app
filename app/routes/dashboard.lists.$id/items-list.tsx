@@ -1,5 +1,7 @@
 import { type Item } from "@prisma/client";
+import { useRouteLoaderData } from "@remix-run/react";
 import { ListItem } from "~/components/list-item";
+import { LocaleData } from "~/locales";
 // import { RemoveItemAlert } from "./remove-item-alert";
 // import { getListItems } from "@/shared/api";
 // import { UpdateItemDialog } from "./update-item-dialog";
@@ -14,6 +16,10 @@ function ItemActions({ item, listId }: { item: Item; listId: string }) {
 }
 
 export function ItemsList({ items }: { items: Item[] }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>(
+    "routes/dashboard.lists.$id"
+  );
+
   if (items?.length === 0) {
     return (
       <div className="border border-dashed rounded-2xl py-16 text-center">
@@ -28,10 +34,10 @@ export function ItemsList({ items }: { items: Item[] }) {
           </div>
         </div>
         <h2 className="text-xl font-bold mb-2 tracking-tight">
-          Your list is empty
+          {data?.t.dashboard.list.empty.title}
         </h2>
         <p className="text-center text-muted-foreground">
-          Your wishes appears here.
+          {data?.t.dashboard.list.empty.subtitle}
         </p>
       </div>
     );

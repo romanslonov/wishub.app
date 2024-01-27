@@ -3,8 +3,9 @@ import { Switch } from "~/components/ui/switch";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
 import { useEffect, useRef } from "react";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useRouteLoaderData } from "@remix-run/react";
 import { List } from "@prisma/client";
+import { LocaleData } from "~/locales";
 
 export function TogglePublic({
   list,
@@ -13,6 +14,9 @@ export function TogglePublic({
   list: List;
   defaultValue?: boolean;
 }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>(
+    "routes/dashboard.lists.$id"
+  );
   const fetcher = useFetcher<{ message: string }>();
   const formRef = useRef<HTMLFormElement>(null);
   const isSubmitting = fetcher.state === "submitting";
@@ -41,13 +45,13 @@ export function TogglePublic({
             htmlFor="list-public-switch"
             className="font-bold text-lg text-foreground tracking-tight"
           >
-            Public
+            {data?.t.dashboard.list.settings.public.label}
           </Label>
           {isSubmitting && <Spinner className="w-4 h-4" />}
         </div>
 
         <p className="text-muted-foreground text-sm">
-          Change the list visibility to other users.
+          {data?.t.dashboard.list.settings.public.description}
         </p>
       </div>
       <Switch

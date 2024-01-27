@@ -54,6 +54,30 @@
           }
         }
       }
+    },
+    "list": {
+      "meta": {
+        "title": "Your list"
+      },
+      "back_to_lists": "Back to lists",
+      "empty": {
+        "title": "Your wishlist is empty",
+        "subtitle": "Your wishes appears here."
+      },
+      "actions": {
+        "add_wish": "Add a wish",
+        "copy_url": "Copy URL"
+      },
+      "settings": {
+        "description": {
+          "label": "Description",
+          "empty": "No description"
+        },
+        "public": {
+          "label": "Public",
+          "description": "Change the list visibility to other users."
+        }
+      }
     }
   },
   "auth": {
