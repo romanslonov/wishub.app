@@ -7,8 +7,8 @@ import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Your Wish Lists" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.dashboard.lists.meta.title }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
