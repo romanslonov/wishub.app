@@ -9,6 +9,7 @@ import {
 import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
 import { cn } from "./lib/cn";
 import { Toaster } from "./components/ui/toast";
+import { ProgressBar } from "./components/progress-bar";
 
 export default function App({ lang }: { lang: string }) {
   const theme = useTheme();
@@ -27,6 +28,7 @@ export default function App({ lang }: { lang: string }) {
         <Scripts />
         <LiveReload />
         <Toaster />
+        <ProgressBar />
       </body>
     </html>
   );
