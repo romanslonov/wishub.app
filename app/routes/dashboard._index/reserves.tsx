@@ -39,7 +39,7 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
       {reserves.map((item) => (
         <li
           key={item.id}
-          className="flex items-center gap-4 shadow-sm lg:gap-8 relative justify-between border p-6 rounded-xl"
+          className="flex items-center gap-4 shadow-sm bg-card lg:gap-8 relative justify-between border p-6 rounded-xl"
         >
           <div className="flex items-center gap-4">
             <div>

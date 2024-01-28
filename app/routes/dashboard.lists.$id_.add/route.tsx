@@ -146,7 +146,7 @@ export default function DashboardListsIdAddRoute() {
   }, [actionData, navigate]);
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4">
+    <div className="max-w-2xl space-y-4 p-4 mx-auto">
       <div className="space-y-4">
         <Link
           to={`/dashboard/lists/${listId}`}
@@ -158,82 +158,88 @@ export default function DashboardListsIdAddRoute() {
           Add wishes
         </h1>
       </div>
-      <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
-        <ul className="space-y-4">
-          {items.map((item, index) => (
-            <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
-              <div className="h-8 flex justify-between items-center gap-2">
-                <p className="font-medium font-mono">#{index + 1}</p>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  type="button"
-                  disabled={loaders.has(index) || index === 0}
-                  className="w-8 h-8 flex items-center justify-center"
-                  onClick={() =>
-                    setValue("items", [...items.filter((_, i) => i !== index)])
-                  }
-                >
-                  <MinusCircle size={16} />
-                </Button>
-              </div>
-              <div className="space-y-2">
-                <div className="space-y-2">
-                  <Label htmlFor={`url-${index}`}>URL</Label>
-                  <div className="relative">
-                    <Input
-                      id={`url-${index}`}
-                      {...register(`items.${index}.url`, {
-                        onChange(e) {
-                          handleURLInputChange(e, index);
-                        },
-                      })}
-                      disabled={loaders.has(index)}
-                      placeholder="Enter a wish URL"
-                    />
-                    {loaders.has(index) && (
-                      <Spinner className="absolute top-2 right-2" />
-                    )}
-                  </div>
-                  {errors.items && (
-                    <Message>{errors.items[index]?.url?.message}</Message>
-                  )}
+      <div className="bg-card shadow-sm border rounded-2xl p-6">
+        <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
+          <ul className="space-y-4">
+            {items.map((item, index) => (
+              <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
+                <div className="h-8 flex justify-between items-center gap-2">
+                  <p className="font-medium font-mono">#{index + 1}</p>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    type="button"
+                    disabled={loaders.has(index) || index === 0}
+                    className="w-8 h-8 flex items-center justify-center"
+                    onClick={() =>
+                      setValue("items", [
+                        ...items.filter((_, i) => i !== index),
+                      ])
+                    }
+                  >
+                    <MinusCircle size={16} />
+                  </Button>
                 </div>
-                {(item.name ||
-                  getFieldState(`items.${index}.name`).invalid) && (
-                  <div className="">
-                    <div className="space-y-2">
-                      <Label htmlFor={`name-${index}`}>Name</Label>
+                <div className="space-y-2">
+                  <div className="space-y-2">
+                    <Label htmlFor={`url-${index}`}>URL</Label>
+                    <div className="relative">
                       <Input
-                        id={`name-${index}`}
-                        {...register(`items.${index}.name`)}
-                        placeholder="Enter a wish name"
+                        id={`url-${index}`}
+                        {...register(`items.${index}.url`, {
+                          onChange(e) {
+                            handleURLInputChange(e, index);
+                          },
+                        })}
+                        disabled={loaders.has(index)}
+                        placeholder="Enter a wish URL"
                       />
-                      {errors.items && (
-                        <Message>{errors.items[index]?.name?.message}</Message>
+                      {loaders.has(index) && (
+                        <Spinner className="absolute top-2 right-2" />
                       )}
                     </div>
+                    {errors.items && (
+                      <Message>{errors.items[index]?.url?.message}</Message>
+                    )}
                   </div>
-                )}
-              </div>
+                  {(item.name ||
+                    getFieldState(`items.${index}.name`).invalid) && (
+                    <div className="">
+                      <div className="space-y-2">
+                        <Label htmlFor={`name-${index}`}>Name</Label>
+                        <Input
+                          id={`name-${index}`}
+                          {...register(`items.${index}.name`)}
+                          placeholder="Enter a wish name"
+                        />
+                        {errors.items && (
+                          <Message>
+                            {errors.items[index]?.name?.message}
+                          </Message>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+            <li>
+              <Button
+                type="button"
+                size={"icon"}
+                className="w-full"
+                variant={"outline"}
+                onClick={() => setValue("items", [...items, defaultItemValue])}
+              >
+                <PlusCircle size={20} />
+              </Button>
             </li>
-          ))}
-          <li>
-            <Button
-              type="button"
-              size={"icon"}
-              className="w-full"
-              variant={"outline"}
-              onClick={() => setValue("items", [...items, defaultItemValue])}
-            >
-              <PlusCircle size={20} />
-            </Button>
-          </li>
-        </ul>
-        <Button className="w-full" type="submit">
-          {isSubmitting ? "Adding..." : "Add wishes"}
-        </Button>
-      </Form>
+          </ul>
+          <Button className="w-full" type="submit">
+            {isSubmitting ? "Adding..." : "Add wishes"}
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }

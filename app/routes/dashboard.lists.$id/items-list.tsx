@@ -22,7 +22,7 @@ export function ItemsList({ items }: { items: Item[] }) {
 
   if (items?.length === 0) {
     return (
-      <div className="border border-dashed rounded-2xl py-16 text-center">
+      <div className="border border-dashed bg-card rounded-2xl py-16 text-center">
         <div className="relative mb-8 h-48">
           <div className="absolute shadow-md top-0 left-[58%] sm:left-[53%] translate-x-[-53%] border w-32 h-48 rounded-xl bg-background transform rotate-12 mx-auto p-4 space-y-2">
             <div className="bg-gradient-to-b from-muted to-muted/50 h-16 rounded-md w-full"></div>

@@ -157,7 +157,7 @@ export default function DashboardListsCreate() {
   }, [actionData, navigate]);
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 border rounded-2xl p-8">
+    <div className="max-w-2xl mx-auto bg-card space-y-8 border rounded-2xl p-8">
       <h1 className="font-bold tracking-tight text-2xl">Create list</h1>
 
       <Form

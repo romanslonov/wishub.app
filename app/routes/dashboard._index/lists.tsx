@@ -48,7 +48,7 @@ export function Lists({
         <li key={item.id}>
           <Link
             to={`./lists/${item.id}`}
-            className="border p-6 rounded-xl shadow-sm block hover:border-foreground transition-colors"
+            className="border p-6 rounded-xl shadow-sm block bg-card hover:border-foreground transition-colors"
           >
             <time className="text-sm text-muted-foreground">
               {new Date(item.createdAt).toDateString()}

@@ -73,7 +73,7 @@ export default function RecoverPasswordRoute() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
-      <div className="max-w-md w-full p-8">
+      <div className="max-w-md bg-card rounded-2xl shadow-sm border w-full p-8">
         <div className="text-center space-y-1 mb-8">
           <Unlock className="w-12 h-12 mx-auto text-primary mb-4" />
           <h1 className="font-bold text-2xl">Reset your password</h1>
