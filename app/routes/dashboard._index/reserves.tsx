@@ -8,7 +8,7 @@ export function Reserves({ reserves }: { reserves: Item[] }) {
 
   if (reserves === null || reserves.length === 0) {
     return (
-      <div className="border border-dashed rounded-2xl py-16 px-8 text-center">
+      <div className="border border-dashed bg-card rounded-2xl py-16 px-8 text-center">
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="space-y-2">
             <div className="border shadow-sm rounded-xl h-16 w-32 p-2">
