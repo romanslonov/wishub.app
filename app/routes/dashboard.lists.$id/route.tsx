@@ -17,7 +17,13 @@ import {
   MetaFunction,
   json,
 } from "@remix-run/node";
-import { getListWithItems, removeList, updateList } from "./actions.server";
+import {
+  getListWithItems,
+  removeItem,
+  removeList,
+  updateItem,
+  updateList,
+} from "./actions.server";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -48,11 +54,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export async function action({ request, params }: ActionFunctionArgs) {
   await requireUserSession(request);
 
-  if (request.method === "PUT") {
-    const formData = await request.formData();
+  const formData = await request.formData();
 
-    console.log(Object.fromEntries(formData));
-
+  if (formData.get("intent") === "update-list") {
     try {
       const data = z
         .object({
@@ -71,7 +75,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         {
           status: 200,
           message: "List was updated.",
-          action: "put",
+          action: "update-list",
         },
         { status: 200 }
       );
@@ -88,14 +92,80 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
   }
 
-  if (request.method === "DELETE") {
+  if (formData.get("intent") === "update-list-item") {
+    try {
+      const data = z
+        .object({
+          itemId: z.string().min(1, "Item ID is required."),
+          url: z.string().min(1, "URL is required.").url("URL is invalid"),
+          name: z.string().min(1, "Name is required.").max(255),
+        })
+        .parse(Object.fromEntries(formData));
+
+      const { itemId, ...payload } = data;
+
+      await updateItem({ itemId, data: payload });
+
+      return json(
+        {
+          status: 200,
+          message: "Wish was updated.",
+          action: "update-list",
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.log(error);
+      return json(
+        {
+          status: 500,
+          message: "Something goes wrong.",
+          action: "put",
+        },
+        { status: 500 }
+      );
+    }
+  }
+
+  if (formData.get("intent") === "delete-list-item") {
+    try {
+      const data = z
+        .object({
+          itemId: z.string().min(1, "Item ID is required."),
+        })
+        .parse(Object.fromEntries(formData));
+
+      await removeItem(data.itemId);
+
+      return json(
+        {
+          status: 200,
+          message: "Wish was removed.",
+          action: "delete-list-item",
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.log(error);
+      return json(
+        {
+          status: 500,
+          message: "Something goes wrong.",
+        },
+        { status: 500 }
+      );
+    }
+  }
+
+  if (formData.get("intent") === "delete-list") {
     await removeList(params.id!);
 
     return json(
       {
         status: 200,
         message: "List was removed.",
-        action: "delete",
+        redirectTo: "/dashboard",
+        action: "delete-list",
       },
       { status: 200 }
     );
@@ -112,14 +182,26 @@ export default function DashboardListsIdRoute() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (actionData?.action === "delete" && actionData?.status === 200) {
+    if (actionData?.status === 200) {
       toast.success(actionData.message);
-      navigate("/dashboard");
-    } else if (actionData?.action === "put" && actionData?.status === 200) {
-      toast.success(actionData.message);
-      setIsUpdateDialogOpen(false);
     } else if (actionData?.status === 500 || actionData?.status === 400) {
       toast.error(actionData.message);
+    }
+
+    if (
+      actionData?.status === 200 &&
+      "action" in actionData &&
+      actionData.action === "update-list"
+    ) {
+      setIsUpdateDialogOpen(false);
+    }
+
+    if (
+      actionData &&
+      "redirectTo" in actionData &&
+      typeof actionData.redirectTo === "string"
+    ) {
+      navigate(actionData.redirectTo);
     }
   }, [actionData, navigate]);
 

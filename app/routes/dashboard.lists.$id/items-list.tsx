@@ -2,15 +2,14 @@ import { type Item } from "@prisma/client";
 import { useRouteLoaderData } from "@remix-run/react";
 import { ListItem } from "~/components/list-item";
 import { LocaleData } from "~/locales";
-// import { RemoveItemAlert } from "./remove-item-alert";
-// import { getListItems } from "@/shared/api";
-// import { UpdateItemDialog } from "./update-item-dialog";
+import { RemoveItemAlert } from "./remove-item-alert";
+import { UpdateItemDialog } from "./update-item-dialog";
 
-function ItemActions({ item, listId }: { item: Item; listId: string }) {
+function ItemActions({ item }: { item: Item }) {
   return (
     <div className="flex items-center gap-2">
-      {/* <UpdateItemDialog item={item} listId={listId} />
-      <RemoveItemAlert itemId={item.id} listId={listId} /> */}
+      <UpdateItemDialog item={item} />
+      <RemoveItemAlert itemId={item.id} />
     </div>
   );
 }
@@ -49,7 +48,7 @@ export function ItemsList({ items }: { items: Item[] }) {
         <ListItem
           item={item}
           key={item.id}
-          actions={<ItemActions item={item} listId={"listId"} />}
+          actions={<ItemActions item={item} />}
         />
       ))}
     </ul>

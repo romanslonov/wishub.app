@@ -42,6 +42,7 @@ export function UpdateListDialog({
           </DialogDescription>
         </DialogHeader>
         <Form method="put" id="update-list-form" className="space-y-4">
+          <input type="hidden" name="intent" value="update-list" />
           <div className="flex flex-col gap-2">
             <Label htmlFor="name">Name</Label>
             <Input required id="name" name="name" defaultValue={list.name} />

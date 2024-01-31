@@ -9,7 +9,7 @@ export function ListItem({
   actions: React.ReactNode;
 }) {
   return (
-    <li className="flex items-center gap-4 shadow-sm lg:gap-8 relative justify-between border p-6 rounded-xl">
+    <li className="flex items-center gap-4 shadow-sm bg-card lg:gap-8 relative justify-between border p-6 rounded-xl">
       {item.reserverId ? (
         <div className="absolute top-0 left-[50%] translate-x-[-50%] border border-t-0 font-mono py-1 text-xs rounded-b-md px-4 bg-muted">
           Reserved

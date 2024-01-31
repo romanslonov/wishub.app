@@ -25,7 +25,6 @@ export async function updateItem({
   data,
 }: {
   itemId: string;
-  listId: string;
   data: { name: string; url: string };
 }) {
   return prisma.item.update({ where: { id: itemId }, data });
@@ -35,6 +34,6 @@ export async function removeList(listId: string) {
   return prisma.list.delete({ where: { id: listId } });
 }
 
-export async function removeItem(listId: string, itemId: string) {
+export async function removeItem(itemId: string) {
   return prisma.item.delete({ where: { id: itemId } });
 }
