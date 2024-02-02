@@ -16,11 +16,12 @@ services:
     volumes:
       - caddy_data:/data
       - ./Caddyfile:/etc/caddy/Caddyfile
-  backend:
+
+  backend1:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: remix-backend
+    container_name: remix-backend-1
     command: ["npm", "run", "start"]
     environment:
       DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
@@ -28,6 +29,20 @@ services:
       - .env
     depends_on:
       - database
+
+  backend2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: remix-backend-2
+    command: ["npm", "run", "start"]
+    environment:
+      DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
+    env_file:
+      - .env
+    depends_on:
+      - database
+
   database:
     image: postgres:16.1-alpine
     restart: always
