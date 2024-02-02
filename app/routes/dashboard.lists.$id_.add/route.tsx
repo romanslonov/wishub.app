@@ -123,7 +123,7 @@ export default function DashboardListsIdAddRoute() {
       if (!title) {
         throw new Error();
       }
-
+      setValue(`items.${index}.url`, value);
       setValue(`items.${index}.name`, title, { shouldValidate: true });
     } catch (error) {
       setError(

@@ -1,10 +1,17 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { z } from "zod";
-import { requireUserSession } from "~/auth/require-user-session.server";
+import { getUser } from "~/auth/get-user.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const requestURL = new URL(request.url);
-  await requireUserSession(request);
+  const user = await getUser(request);
+
+  if (!user) {
+    return json(
+      { error: "You must be logged in to use this feature." },
+      { status: 401 }
+    );
+  }
 
   try {
     const url = z.string().url().parse(requestURL.searchParams.get("url"));
