@@ -169,7 +169,7 @@ export default function DashboardListsIdAddRoute() {
                     variant="outline"
                     size="icon"
                     type="button"
-                    disabled={loaders.has(index) || items.length < 1}
+                    disabled={loaders.has(index) || items.length <= 1}
                     className="w-8 h-8 flex items-center justify-center"
                     onClick={() =>
                       setValue("items", [
