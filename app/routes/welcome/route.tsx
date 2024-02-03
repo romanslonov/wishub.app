@@ -28,9 +28,9 @@ import { Navigation } from "~/components/navigation";
 import { MailOpen } from "lucide-react";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => [
+export const meta: MetaFunction<typeof loader> = ({ data }) => [
   {
-    title: "Confirm your account",
+    title: data?.t.welcome.meta.title,
   },
 ];
 
@@ -56,7 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
       const { code } = z
         .object({
-          code: z.string().min(6, "Verification code should be 6 characters."),
+          code: z.string().min(6, t.validation.verification_code.too_short),
         })
         .parse(Object.fromEntries(formData));
 
@@ -72,21 +72,21 @@ export async function action({ request }: ActionFunctionArgs) {
 
       if (!databaseCode || databaseCode.code !== code) {
         return json(
-          { error: "Code is invalid. Try to request a new one." },
+          { error: t.validation.verification_code.invalid },
           { status: 400 }
         );
       }
 
       if (!isWithinExpirationDate(databaseCode.expiresAt)) {
         return json(
-          { error: "Code is expired. Try to request a new one." },
+          { error: t.validation.verification_code.expired },
           { status: 400 }
         );
       }
 
       if (!user || user.email !== databaseCode.email) {
         return json(
-          { error: "Code is invalid. Try to request a new one." },
+          { error: t.validation.verification_code.invalid },
           { status: 400 }
         );
       }
@@ -155,16 +155,14 @@ export default function ConfirmationRoute() {
         <div className="shadow-sm border rounded-2xl p-6 max-w-lg w-full space-y-4">
           <div className="text-center space-y-1">
             <MailOpen className="w-12 h-12 mx-auto text-primary mb-4" />
-            <h1 className="font-bold text-2xl">Please confirm your email</h1>
-            <p className="text-muted-foreground">
-              We&apos;ve sent you confirmation code on your email.
-            </p>
+            <h1 className="font-bold text-2xl">{t.welcome.title}</h1>
+            <p className="text-muted-foreground">{t.welcome.subtitle}</p>
           </div>
           <Form method="post" className="space-y-4">
             <input type="hidden" value="confirmation" name="intent" />
             <div className="space-y-2">
               <Label htmlFor="code" hidden>
-                Code
+                {t.welcome.form.inputs.code.label}
               </Label>
               <Input
                 id="code"
@@ -173,11 +171,11 @@ export default function ConfirmationRoute() {
                 type="text"
                 minLength={6}
                 autoComplete="off"
-                placeholder="Enter your code from email"
+                placeholder={t.welcome.form.inputs.code.placeholder}
               />
             </div>
             <Button className="w-full" disabled={isConfirming}>
-              {isConfirming ? "Confirming..." : "Confirm email"}
+              {isConfirming ? t.welcome.form.submitting : t.welcome.form.submit}
             </Button>
           </Form>
           <div className="text-center">
@@ -189,7 +187,9 @@ export default function ConfirmationRoute() {
                 disabled={isResending}
                 className="p-0 h-auto mx-auto"
               >
-                {isResending ? "Sending..." : "Resend verification code"}
+                {isResending
+                  ? t.welcome.resend.submitting
+                  : t.welcome.resend.submit}
               </Button>
             </fetcher.Form>
           </div>

@@ -94,6 +94,27 @@
       }
     }
   },
+  "welcome": {
+    "meta": {
+      "title": "Welcome to Wishub"
+    },
+    "title": "Please, confirm your email",
+    "subtitle": "We've sent you confirmation code on your email. If you didn't get it, please check your spam folder or request a new one",
+    "form": {
+      "inputs": {
+        "code": {
+          "label": "Confirmation code",
+          "placeholder": "Enter the code"
+        }
+      },
+      "submit": "Confirm",
+      "submitting": "Confirming..."
+    },
+    "resend": {
+      "submit": "Resend verification code",
+      "submitting": "Resending..."
+    }
+  },
   "auth": {
     "login": {
       "meta": {
@@ -179,6 +200,12 @@
       "required": "Token is required.",
       "invalid": "Invalid token. Try to requesta a new one.",
       "expired": "Token is expired. Try to request a new one."
+    },
+    "verification_code": {
+      "required": "Verification code is required.",
+      "invalid": "Invalid verification code. Try to request a new one.",
+      "expired": "Verification code is expired. Try to request a new one.",
+      "too_short": "Verification code must be at least 6 characters."
     },
     "invalid_credentials": "Invalid credentials.",
     "unexpected_error": "Something goes wrong. Please try again later."
