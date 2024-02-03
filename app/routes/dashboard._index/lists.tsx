@@ -18,7 +18,7 @@ export function Lists({
 
   if (lists.length === 0) {
     return (
-      <div className="border border-dashed rounded-2xl py-16 text-center">
+      <div className="border border-dashed bg-card rounded-2xl py-16 text-center">
         <div className="flex pt-8 items-center justify-center mb-8">
           <div className="relative">
             <div className="bg-background absolute -z-10 -top-8 w-40 left-[50%] translate-x-[-50%] h-32 border p-2 rounded-xl"></div>
