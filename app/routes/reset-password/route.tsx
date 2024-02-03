@@ -1,5 +1,16 @@
-import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
-import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+} from "@remix-run/node";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { Unlock } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -13,22 +24,27 @@ import { sendPasswordResetToken } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Recover password" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.auth.reset_password.meta.title }];
 };
 
-const schema = z.object({
-  email: z.string().min(1, "Email is required.").email("Enter valid email."),
-});
+export async function loader({ request }: LoaderFunctionArgs) {
+  const t = await getLocaleData(request);
 
-export async function loader() {
-  return null;
+  return { t };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const t = await getLocaleData(request);
+
+  const schema = z.object({
+    email: z
+      .string()
+      .min(1, t.validation.email.required)
+      .email(t.validation.email.invalid),
+  });
 
   try {
     const { email } = schema.parse(Object.fromEntries(formData.entries()));
@@ -45,10 +61,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await sendPasswordResetToken({ email, link: verificationLink, t });
 
-    return json(
-      { message: "Reset link was sent to you email. Check your inbox." },
-      { status: 200 }
-    );
+    return json({ message: t.toasts.reset_link_was_sent }, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors }, { status: 400 });
@@ -59,6 +72,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function RecoverPasswordRoute() {
   const data = useActionData<typeof action>();
+  const { t } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const emailRef = useRef<HTMLInputElement>(null);
   const isSubmitting = navigation.state === "submitting";
@@ -79,9 +93,9 @@ export default function RecoverPasswordRoute() {
       <div className="max-w-md bg-card rounded-2xl shadow-sm border w-full p-8">
         <div className="text-center space-y-1 mb-8">
           <Unlock className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="font-bold text-2xl">Reset your password</h1>
+          <h1 className="font-bold text-2xl">{t.auth.reset_password.title}</h1>
           <p className="text-muted-foreground">
-            You get an email with a link to reset your password.
+            {t.auth.reset_password.subtitle}
           </p>
         </div>
         <Form method="post" className="space-y-4 mb-4">
@@ -103,7 +117,9 @@ export default function RecoverPasswordRoute() {
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending an email..." : "Send"}
+            {isSubmitting
+              ? "Sending an email..."
+              : t.auth.reset_password.submit}
           </Button>
         </Form>
         <div className="text-center mt-4 text-sm">
@@ -111,7 +127,7 @@ export default function RecoverPasswordRoute() {
             className="text-primary underline-offset-4 hover:underline"
             to="/login"
           >
-            Back to login
+            {t.auth.reset_password.login.link}
           </Link>
         </div>
       </div>

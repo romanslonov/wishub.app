@@ -3,7 +3,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { ListPlus, Lock, Unlock } from "lucide-react";
 import { Link, useRouteLoaderData } from "@remix-run/react";
 import { List } from "@prisma/client";
-import { LocaleData } from "~/locales";
+import { type LocaleData } from "~/locales";
 
 export function Lists({
   lists,

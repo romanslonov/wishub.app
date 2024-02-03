@@ -134,6 +134,21 @@
         "label": "Already have an account?",
         "link": "Login"
       }
+    },
+    "reset_password": {
+      "meta": {
+        "title": "Reset your password"
+      },
+      "title": "Reset your password",
+      "subtitle": "You get an email with a link to reset your password",
+      "email": {
+        "label": "Email"
+      },
+      "submit": "Send",
+      "submitting": "Sending link...",
+      "login": {
+        "link": "Back to login"
+      }
     }
   },
   "validation": {
@@ -165,5 +180,8 @@
       "button": "Set new password",
       "comment": "If you don&apos;t want to change your password or didn&apos;t request this, just ignore and delete this message."
     }
+  },
+  "toasts": {
+    "reset_link_was_sent": "Reset link was sent to you email. Check your inbox."
   }
 }
