@@ -17,7 +17,7 @@ export function sendVerificationEmail({
   return resend.emails.send({
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
-    subject: "Confirm your account",
+    subject: `${t.emails.confirm_email.title} Wishub`,
     react: ConfirmEmailTemplate({
       code,
       t,
@@ -40,7 +40,7 @@ export function sendPasswordResetToken({
   return resend.emails.send({
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
-    subject: "Reset your password",
+    subject: `${t.emails.reset_password.title}`,
     react: ResetPasswordTemplate({
       link,
       t,
