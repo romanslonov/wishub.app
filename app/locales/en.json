@@ -80,7 +80,7 @@
       }
     },
     "profile": {
-      "title": "Profile",
+      "title": "Your profile",
       "subtitle": "Manage your account settings",
       "form": {
         "inputs": {
@@ -199,6 +199,7 @@
     }
   },
   "toasts": {
-    "reset_link_was_sent": "Reset link was sent to you email. Check your inbox."
+    "reset_link_was_sent": "Reset link was sent to you email. Check your inbox.",
+    "profile_was_updated": "Profile was updated."
   }
 }

@@ -26,8 +26,8 @@ import { prisma } from "~/lib/prisma.server";
 import { useEffect } from "react";
 import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Your Profile" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.dashboard.profile.title }];
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -47,15 +47,17 @@ export async function action({ request }: ActionFunctionArgs) {
   const session = await requireUserSession(request);
   const data = await request.json();
 
+  const t = await getLocaleData(request);
+
   try {
     await prisma.user.update({
       where: { id: session.user.id },
       data: data,
     });
 
-    return json({ message: "Profile updated successfully." });
+    return json({ message: t.toasts.profile_was_updated });
   } catch (error) {
-    return json({ error: "Something goes wrong." });
+    return json({ error: t.validation.unexpected_error });
   }
 }
 
