@@ -47,6 +47,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  const t = await getLocaleData(request);
+
   if (request.method === "POST") {
     const user = await getUser(request);
     const formData = await request.formData();
@@ -105,7 +107,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
     } catch (error) {
-      return json({ error: "Something goes wrong." }, { status: 400 });
+      return json({ error: t.validation.unexpected_error }, { status: 400 });
     }
   }
 
@@ -118,7 +120,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const code = await generateEmailVerificationCode(user.id, user.email);
 
-    await sendVerificationEmail(user.email, code);
+    await sendVerificationEmail({ email: user.email, code, t });
 
     return json({ message: "New code was sent." }, { status: 200 });
   }

@@ -11,6 +11,7 @@ import { Label } from "~/components/ui/label";
 import { Message } from "~/components/ui/message";
 import { sendPasswordResetToken } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Recover password" }];
@@ -27,20 +28,22 @@ export async function loader() {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
+  const t = await getLocaleData(request);
+
   try {
     const { email } = schema.parse(Object.fromEntries(formData.entries()));
 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user || !user.emailVerified) {
-      return json({ error: "Invalid credentials." }, { status: 400 });
+      return json({ error: t.validation.invalid_credentials }, { status: 400 });
     }
 
     const verificationToken = await createPasswordResetToken(user.id);
     const verificationLink =
       `${process.env.BASE_URL}/reset-password/` + verificationToken;
 
-    await sendPasswordResetToken(email, verificationLink);
+    await sendPasswordResetToken({ email, link: verificationLink, t });
 
     return json(
       { message: "Reset link was sent to you email. Check your inbox." },
@@ -50,7 +53,7 @@ export async function action({ request }: ActionFunctionArgs) {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors }, { status: 400 });
     }
-    return json({ error: "Invalid credentials." }, { status: 400 });
+    return json({ error: t.validation.invalid_credentials }, { status: 400 });
   }
 }
 

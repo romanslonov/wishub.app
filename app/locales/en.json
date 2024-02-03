@@ -78,6 +78,20 @@
           "description": "Change the list visibility to other users."
         }
       }
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your account settings",
+      "form": {
+        "inputs": {
+          "name": {
+            "label": "Name",
+            "description": "The name usually used in public lists."
+          }
+        },
+        "submit": "Update profile",
+        "submitting": "Updating..."
+      }
     }
   },
   "auth": {
@@ -131,7 +145,25 @@
       "required": "Password is required.",
       "too_short": "Password must be at least 8 characters."
     },
+    "name": {
+      "required": "Name is required."
+    },
     "invalid_credentials": "Invalid credentials.",
     "unexpected_error": "Something goes wrong. Please try again later."
+  },
+  "emails": {
+    "confirm_email": {
+      "title": "Confirm email on",
+      "welcome": "Hello",
+      "description": "Paste code below in confirmation form",
+      "comment": "This email was sent automatically by wishub.app because your registered account. If you didn't, there's nothing to worry about, you can safely ignore it."
+    },
+    "reset_password": {
+      "title": "Reset your password",
+      "welcome": "Hello",
+      "description": "Someone recently requested a password change for your Wishub account. If this was you, you can set a new password here",
+      "button": "Set new password",
+      "comment": "If you don&apos;t want to change your password or didn&apos;t request this, just ignore and delete this message."
+    }
   }
 }

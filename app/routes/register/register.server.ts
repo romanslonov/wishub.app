@@ -46,7 +46,7 @@ export async function register(request: Request) {
 
     const code = await generateEmailVerificationCode(userId, email);
 
-    await sendVerificationEmail(email, code);
+    await sendVerificationEmail({ email, code, t });
 
     return redirect("/welcome", {
       headers: {

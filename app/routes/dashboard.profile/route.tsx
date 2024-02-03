@@ -24,12 +24,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { prisma } from "~/lib/prisma.server";
 import { useEffect } from "react";
-
-const schema = z.object({
-  name: z.string().min(1, "Name is required."),
-});
-
-type FormData = z.infer<typeof schema>;
+import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Your Profile" }];
@@ -38,12 +33,14 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const session = await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: session.user.id },
     select: { email: true, name: true },
   });
 
-  return json({ user });
+  return json({ user, t });
 };
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -63,11 +60,17 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function DashboardProfile() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, t } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
+
+  const schema = z.object({
+    name: z.string().min(1, t.validation.name.required),
+  });
+
+  type FormData = z.infer<typeof schema>;
 
   const {
     register,
@@ -95,9 +98,11 @@ export default function DashboardProfile() {
   return (
     <div className="max-w-xl mx-auto space-y-8">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+        <h1 className="text-2xl font-bold tracking-tight">
+          {t.dashboard.profile.title}
+        </h1>
         <p className="max-w-prose text-sm text-muted-foreground">
-          Manage your account settings and set e-mail preferences.
+          {t.dashboard.profile.subtitle}
         </p>
       </div>
       <div className="border rounded-2xl bg-card p-6 shadow-sm">
@@ -107,15 +112,9 @@ export default function DashboardProfile() {
           onSubmit={handleSubmit(onsubmit)}
         >
           <div className="flex items-center justify-center">
-            {/* <Avatar className="h-16 w-16">
-          <AvatarImage
-            src={user.image as string | undefined}
-            alt={user.email as string | undefined}
-          />
-          <AvatarFallback>
-            <div className="animate-pulse bg-muted"></div>
-          </AvatarFallback>
-        </Avatar> */}
+            <div className="bg-primary rounded-full text-2xl font-medium uppercase text-primary-foreground flex items-center justify-center w-20 h-20">
+              {user.email[0]}
+            </div>
           </div>
 
           <div className="space-y-1">
@@ -124,19 +123,23 @@ export default function DashboardProfile() {
           </div>
 
           <div className="space-y-1">
-            <Label id="name">Name</Label>
+            <Label id="name">
+              {t.dashboard.profile.form.inputs.name.label}
+            </Label>
             <Input id="name" {...register("name")} />
             {errors.name?.message ? (
               <Message>{errors.name.message}</Message>
             ) : (
               <Description id="name">
-                The name usually used in public lists.
+                {t.dashboard.profile.form.inputs.name.description}
               </Description>
             )}
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Updating..." : "Update profile"}
+            {isSubmitting
+              ? t.dashboard.profile.form.submitting
+              : t.dashboard.profile.form.submit}
           </Button>
         </Form>
       </div>
