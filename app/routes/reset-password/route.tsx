@@ -122,7 +122,7 @@ export default function RecoverPasswordRoute() {
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting
-              ? "Sending an email..."
+              ? t.auth.reset_password.submitting
               : t.auth.reset_password.submit}
           </Button>
         </Form>
