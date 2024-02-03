@@ -149,6 +149,18 @@
       "login": {
         "link": "Back to login"
       }
+    },
+    "set_password": {
+      "meta": {
+        "title": "Set new password"
+      },
+      "title": "Set new password",
+      "subtitle": "Set new secure password for your account",
+      "password": {
+        "label": "Password"
+      },
+      "submit": "Update password",
+      "submitting": "Updating password..."
     }
   },
   "validation": {
@@ -162,6 +174,11 @@
     },
     "name": {
       "required": "Name is required."
+    },
+    "token": {
+      "required": "Token is required.",
+      "invalid": "Invalid token. Try to requesta a new one.",
+      "expired": "Token is expired. Try to request a new one."
     },
     "invalid_credentials": "Invalid credentials.",
     "unexpected_error": "Something goes wrong. Please try again later."

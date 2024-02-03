@@ -21,24 +21,34 @@ import { Input } from "~/components/ui/input";
 import { Message } from "~/components/ui/message";
 import { prisma } from "~/lib/prisma.server";
 import { hashPassword } from "./hash-password.server";
+import { getLocaleData } from "~/locales";
+import { Label } from "~/components/ui/label";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Set new password" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.t.auth.set_password.meta.title }];
 };
 
-const schema = z.object({
-  token: z.string().min(1, "Token is required."),
-  password: z.string().min(8, "Password must be at least 8 characters."),
-});
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  const t = await getLocaleData(request);
 
-export async function loader({ params }: LoaderFunctionArgs) {
   return {
     token: params.token,
+    t,
   };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
+
+  const t = await getLocaleData(request);
+
+  const schema = z.object({
+    token: z.string().min(1, t.validation.token.required),
+    password: z
+      .string()
+      .min(1, t.validation.password.required)
+      .min(8, t.validation.password.too_short),
+  });
 
   try {
     const { password, token } = schema.parse(
@@ -52,17 +62,11 @@ export async function action({ request }: ActionFunctionArgs) {
     if (databaseToken) {
       await prisma.passwordResetToken.delete({ where: { id: token } });
     } else {
-      return json(
-        { error: "Invalid token. Try to request new one." },
-        { status: 400 }
-      );
+      return json({ error: t.validation.token.invalid }, { status: 400 });
     }
 
     if (!isWithinExpirationDate(databaseToken.expiresAt)) {
-      return json(
-        { error: "Token is expired, please request a new one." },
-        { status: 400 }
-      );
+      return json({ error: t.validation.token.expired }, { status: 400 });
     }
 
     await lucia.invalidateUserSessions(databaseToken.userId);
@@ -87,12 +91,12 @@ export async function action({ request }: ActionFunctionArgs) {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors }, { status: 400 });
     }
-    return json({ error: "Invalid credentials." }, { status: 400 });
+    return json({ error: t.validation.invalid_credentials }, { status: 400 });
   }
 }
 
 export default function RecoverPasswordTokenRoute() {
-  const { token } = useLoaderData<typeof loader>();
+  const { token, t } = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
   const navigation = useNavigation();
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -111,21 +115,27 @@ export default function RecoverPasswordTokenRoute() {
       <div className="max-w-md bg-card rounded-2xl shadow-sm border w-full p-8">
         <div className="text-center space-y-1 mb-8">
           <Sparkles className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="font-bold text-2xl">Set new password</h1>
+          <h1 className="font-bold text-2xl">{t.auth.set_password.title}</h1>
           <p className="text-muted-foreground">
-            Set new secure password for your account.
+            {t.auth.set_password.subtitle}
           </p>
         </div>
         <Form method="post" className="space-y-4 mb-4">
           <div className="space-y-2">
             <input type="hidden" name="token" value={token} />
-            <Input
-              ref={passwordRef}
-              required
-              name="password"
-              type="password"
-              placeholder="********"
-            />
+            <div className="space-y-1">
+              <Label htmlFor="password">
+                {t.auth.set_password.password.label}*
+              </Label>
+              <Input
+                id="password"
+                ref={passwordRef}
+                required
+                name="password"
+                type="password"
+                placeholder="********"
+              />
+            </div>
             {data &&
               "errors" in data &&
               data.errors.fieldErrors["email"]?.map((error) => (
@@ -134,7 +144,9 @@ export default function RecoverPasswordTokenRoute() {
           </div>
           {data && "error" in data && <Message>{data.error}</Message>}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Changing password..." : "Change password"}
+            {isSubmitting
+              ? t.auth.set_password.submitting
+              : t.auth.set_password.submit}
           </Button>
         </Form>
       </div>
