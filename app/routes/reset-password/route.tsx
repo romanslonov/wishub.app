@@ -59,7 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const verificationToken = await createPasswordResetToken(user.id);
     const verificationLink =
-      `https://${locale === "en" ? "" : locale}${
+      `https://${locale === "en" ? "" : `${locale}.`}${
         process.env.DOMAIN
       }/reset-password/` + verificationToken;
 
