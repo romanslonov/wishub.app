@@ -59,8 +59,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const verificationToken = await createPasswordResetToken(user.id);
     const verificationLink =
-      `${locale === "en" ? "" : locale}${
-        process.env.BASE_URL
+      `https://${locale === "en" ? "" : locale}${
+        process.env.DOMAIN
       }/reset-password/` + verificationToken;
 
     await sendPasswordResetToken({ email, link: verificationLink, t });
