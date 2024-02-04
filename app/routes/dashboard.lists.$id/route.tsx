@@ -130,12 +130,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
     try {
       const data = z
         .object({
-          itemId: z.string().min(1, "Item ID is required."),
+          itemId: z.string(),
           url: z
             .string()
             .min(1, t.validation.url.required)
             .url(t.validation.url.invalid),
-          name: z.string().min(1, t.validation.name.required).max(255),
+          name: z
+            .string()
+            .min(1, t.validation.wish_name.required)
+            .max(255, t.validation.wish_name.too_long),
         })
         .parse(Object.fromEntries(formData));
 
@@ -147,7 +150,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         {
           status: 200,
           message: t.toasts.wish_was_updated,
-          action: "update-list",
+          action: "update-list-item",
         },
         { status: 200 }
       );
@@ -219,7 +222,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function DashboardListsIdRoute() {
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [isUpdateListDialogOpen, setIsUpdateListDialogOpen] = useState(false);
   const { list, t } = useLoaderData<typeof loader>();
   const routeData = useRouteLoaderData<{ ENV: Record<string, string> }>("root");
   const actionData = useActionData<typeof action>();
@@ -237,7 +240,7 @@ export default function DashboardListsIdRoute() {
       "action" in actionData &&
       actionData.action === "update-list"
     ) {
-      setIsUpdateDialogOpen(false);
+      setIsUpdateListDialogOpen(false);
     }
 
     if (
@@ -275,8 +278,8 @@ export default function DashboardListsIdRoute() {
             <>
               <UpdateListDialog
                 list={list}
-                isOpen={isUpdateDialogOpen}
-                setIsOpen={setIsUpdateDialogOpen}
+                isOpen={isUpdateListDialogOpen}
+                setIsOpen={setIsUpdateListDialogOpen}
               />
               <RemoveListAlert />
             </>

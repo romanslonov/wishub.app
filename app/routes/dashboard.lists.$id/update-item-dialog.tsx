@@ -11,19 +11,27 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { type Item } from "@prisma/client";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message } from "~/components/ui/message";
-import { useRouteLoaderData } from "@remix-run/react";
+import { useFetcher, useRouteLoaderData } from "@remix-run/react";
 import { LocaleData } from "~/locales";
+import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 export function UpdateItemDialog({ item }: { item: Item }) {
   const data = useRouteLoaderData<{ t: LocaleData }>(
     "routes/dashboard.lists.$id"
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const fetcher = useFetcher<{ message: string; status: number }>({
+    key: `update-list-item-${item.id}`,
+  });
+  const isSubmitting = fetcher.state === "submitting";
 
   const schema = z.object({
     url: z
@@ -32,14 +40,16 @@ export function UpdateItemDialog({ item }: { item: Item }) {
       .url(data?.t.validation.url.invalid),
     name: z
       .string()
-      .min(1, "Name is required.")
-      .max(255, data?.t.validation.name.too_long),
+      .min(1, data?.t.validation.wish_name.required)
+      .max(255, data?.t.validation.wish_name.too_long),
   });
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    setValue,
+    setError,
+    formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     defaultValues: {
       name: item.name,
@@ -48,7 +58,52 @@ export function UpdateItemDialog({ item }: { item: Item }) {
     resolver: zodResolver(schema),
   });
 
-  async function onsubmit() {}
+  async function onsubmit() {
+    return fetcher.submit(formRef.current, { method: "put" });
+  }
+
+  async function handleURLInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target;
+
+    try {
+      if (!schema.pick({ url: true }).safeParse({ url: value }).success) {
+        return;
+      }
+
+      setIsLoading(true);
+
+      const response = await fetch(`/api/extract?url=${value}`, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.json());
+      }
+
+      const { title } = await response.json();
+
+      if (!title) {
+        throw new Error();
+      }
+      setValue("url", value);
+      setValue("name", title, { shouldValidate: true });
+    } catch (error) {
+      setError(
+        "name",
+        { message: data?.t.validation.wish_name.unable_to_fetch },
+        { shouldFocus: true }
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (fetcher.data) {
+      toast.success(fetcher.data.message);
+      fetcher.data.status === 200 && setIsOpen(false);
+    }
+  }, [fetcher.data]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -64,14 +119,32 @@ export function UpdateItemDialog({ item }: { item: Item }) {
             {data?.t.modals.update_wish.description}
           </DialogDescription>
         </DialogHeader>
-        <form className="space-y-4" onSubmit={handleSubmit(onsubmit)}>
+        <fetcher.Form
+          ref={formRef}
+          method="put"
+          className="space-y-4"
+          onSubmit={handleSubmit(onsubmit)}
+        >
           <input type="hidden" name="intent" value="update-list-item" />
           <input type="hidden" name="itemId" value={item.id} />
           <div className="flex flex-col gap-2">
             <Label htmlFor="url">
               {data?.t.modals.update_wish.form.url.label}
             </Label>
-            <Input id="url" {...register("url")} />
+            <div className="relative">
+              <Input
+                id="url"
+                name="url"
+                {...(register("url"),
+                {
+                  defaultValue: item.url,
+                  onChange(e) {
+                    handleURLInputChange(e);
+                  },
+                })}
+              />
+              {isLoading && <Spinner className="absolute top-2 right-2" />}
+            </div>
             {errors.url?.message && <Message>{errors.url.message}</Message>}
           </div>
           <div className="flex flex-col gap-2">
@@ -86,7 +159,7 @@ export function UpdateItemDialog({ item }: { item: Item }) {
               ? data?.t.modals.update_wish.form.submitting
               : data?.t.modals.update_wish.form.submit}
           </Button>
-        </form>
+        </fetcher.Form>
       </DialogContent>
     </Dialog>
   );
