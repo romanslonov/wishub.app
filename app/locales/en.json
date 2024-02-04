@@ -228,5 +228,27 @@
   "toasts": {
     "reset_link_was_sent": "Reset link was sent to you email. Check your inbox.",
     "profile_was_updated": "Profile was updated."
+  },
+  "modals": {
+    "update_list": {
+      "title": "Update list",
+      "description": "Make changes to your list here. Click save when you are done.",
+      "form": {
+        "name": {
+          "label": "Name"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "submit": "Save changes",
+        "submitting": "Saving changes..."
+      }
+    },
+    "remove_list": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete your list and all wishes in it.",
+      "submit": "Continue",
+      "submitting": "Removing list..."
+    }
   }
 }

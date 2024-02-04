@@ -228,5 +228,27 @@
   "toasts": {
     "reset_link_was_sent": "Ссылка для сброка пароля была отправлена. Проверьте свою почту.",
     "profile_was_updated": "Профиль был обновлен."
+  },
+  "modals": {
+    "update_list": {
+      "title": "Изменение листа",
+      "description": "Make changes to your list here. Click save when you are done.",
+      "form": {
+        "name": {
+          "label": "Название"
+        },
+        "description": {
+          "label": "Описание"
+        },
+        "submit": "Сохранить изменения",
+        "submitting": "Сохраняем изменения..."
+      }
+    },
+    "remove_list": {
+      "title": "Вы уверены?",
+      "description": "Это действие не может быть отменено. Это приведет к безвозвратному удалению вашего списка и всех желаний в нем.",
+      "submit": "Продолжить",
+      "submitting": "Удаляем список..."
+    }
   }
 }

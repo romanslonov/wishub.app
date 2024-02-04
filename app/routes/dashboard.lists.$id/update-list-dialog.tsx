@@ -13,7 +13,8 @@ import { Label } from "~/components/ui/label";
 import { List } from "@prisma/client";
 import { Pencil } from "lucide-react";
 import { Textarea } from "~/components/ui/textarea";
-import { Form, useNavigation } from "@remix-run/react";
+import { Form, useNavigation, useRouteLoaderData } from "@remix-run/react";
+import { LocaleData } from "~/locales";
 
 export function UpdateListDialog({
   list,
@@ -24,6 +25,9 @@ export function UpdateListDialog({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>(
+    "routes/dashboard.lists.$id"
+  );
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -36,19 +40,23 @@ export function UpdateListDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[580px]">
         <DialogHeader>
-          <DialogTitle>Update list</DialogTitle>
+          <DialogTitle>{data?.t.modals.update_list.title}</DialogTitle>
           <DialogDescription>
-            Make changes to your list here. Click save when you are done.
+            {data?.t.modals.update_list.description}
           </DialogDescription>
         </DialogHeader>
         <Form method="put" id="update-list-form" className="space-y-4">
           <input type="hidden" name="intent" value="update-list" />
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">
+              {data?.t.modals.update_list.form.name.label}
+            </Label>
             <Input required id="name" name="name" defaultValue={list.name} />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">
+              {data?.t.modals.update_list.form.description.label}
+            </Label>
             <Textarea
               id="description"
               name="description"
@@ -58,7 +66,9 @@ export function UpdateListDialog({
         </Form>
         <DialogFooter>
           <Button type="submit" form="update-list-form" disabled={isSubmitting}>
-            {isSubmitting ? "Updating..." : "Save changes"}
+            {isSubmitting
+              ? data?.t.modals.update_list.form.submitting
+              : data?.t.modals.update_list.form.submit}
           </Button>
         </DialogFooter>
       </DialogContent>

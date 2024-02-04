@@ -11,9 +11,13 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { Form, useNavigation } from "@remix-run/react";
+import { Form, useNavigation, useRouteLoaderData } from "@remix-run/react";
+import { LocaleData } from "~/locales";
 
 export function RemoveListAlert() {
+  const data = useRouteLoaderData<{ t: LocaleData }>(
+    "routes/dashboard.lists.$id"
+  );
   const navigation = useNavigation();
 
   const isSubmitting = navigation.state === "submitting";
@@ -27,10 +31,11 @@ export function RemoveListAlert() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {data?.t.modals.remove_list.title}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your list
-            and all wishes in it.
+            {data?.t.modals.remove_list.description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Form id="delete-list-form" method="delete">
@@ -43,7 +48,9 @@ export function RemoveListAlert() {
             disabled={isSubmitting}
             type="submit"
           >
-            {isSubmitting ? "Removing list..." : "Continue"}
+            {isSubmitting
+              ? data?.t.modals.remove_list.submitting
+              : data?.t.modals.remove_list.submit}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
