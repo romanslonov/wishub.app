@@ -111,6 +111,30 @@
         "submit": "Add wishes",
         "submitting": "Adding..."
       }
+    },
+    "create_list": {
+      "meta": {
+        "title": "Create new wish list"
+      },
+      "title": "Create new wish list",
+      "wishes": "Wishes",
+      "form": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter a list name"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter a list description",
+          "description": "Optional."
+        },
+        "toggle": {
+          "label": "Public",
+          "description": "If public, you can share a link to your list."
+        },
+        "submit": "Create list",
+        "submitting": "Creating..."
+      }
     }
   },
   "welcome": {
@@ -231,6 +255,9 @@
     "wish_name": {
       "required": "Wish name is required.",
       "unable_to_fetch": "Не удалось получить название желания. Пожалуйста, введите название самостоятельно."
+    },
+    "list_name": {
+      "required": "Please enter a list name."
     },
     "verification_code": {
       "required": "Verification code is required.",

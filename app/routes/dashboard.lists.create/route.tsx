@@ -7,6 +7,7 @@ import {
 import {
   Form,
   useActionData,
+  useLoaderData,
   useNavigate,
   useNavigation,
   useSubmit,
@@ -27,39 +28,48 @@ import { Description } from "~/components/ui/description";
 import { Switch } from "~/components/ui/switch";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { Spinner } from "~/components/ui/spinner";
+import { getLocaleData } from "~/locales";
 
-export const meta: MetaFunction = () => [{ title: "Create new wish list" }];
-
-const urlSchema = z.string().min(1, "URL is required.").url("URL is invalid.");
-
-const schema = z.object({
-  name: z.string().min(1, "Please enter a list name."),
-  description: z.string().optional(),
-  public: z.boolean().default(false),
-  items: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Please enter a wish name."),
-        url: urlSchema,
-      })
-    )
-    .default([]),
-});
-
-type FormData = z.infer<typeof schema>;
+export const meta: MetaFunction<typeof loader> = ({ data }) => [
+  { title: data?.t.dashboard.create_list.meta.title },
+];
 
 const defaultItemValue = { url: "", name: "" };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
 
-  return null;
+  const t = await getLocaleData(request);
+
+  return { t };
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { user } = await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const formData = await request.json();
+
+  const urlSchema = z
+    .string()
+    .min(1, t.validation.url.required)
+    .url(t.validation.url.invalid);
+
+  const schema = z.object({
+    name: z.string().min(1, t.validation.list_name.required),
+    description: z.string().optional(),
+    public: z.boolean().default(false),
+    items: z
+      .array(
+        z.object({
+          name: z.string().min(1, t.validation.wish_name.required),
+          url: urlSchema,
+        })
+      )
+      .default([]),
+  });
+
   try {
     const data = schema.parse(formData);
 
@@ -67,23 +77,46 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     return json({
       list,
-      message: "List created.",
+      message: t.toasts.list_was_created,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors });
     }
-    return json({ error: "Something goes wrong." }, { status: 500 });
+    return json({ error: t.validation.unexpected_error }, { status: 500 });
   }
 };
 
 export default function DashboardListsCreate() {
+  const { t } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
   const [loaders, setLoaders] = useState(new Set());
+
+  const urlSchema = z
+    .string()
+    .min(1, t.validation.url.required)
+    .url(t.validation.url.invalid);
+
+  const schema = z.object({
+    name: z.string().min(1, t.validation.list_name.required),
+    description: z.string().optional(),
+    public: z.boolean().default(false),
+    items: z
+      .array(
+        z.object({
+          name: z.string().min(1, t.validation.wish_name.required),
+          url: urlSchema,
+        })
+      )
+      .default([]),
+  });
+
+  type FormData = z.infer<typeof schema>;
+
   const {
     register,
     handleSubmit,
@@ -139,7 +172,7 @@ export default function DashboardListsCreate() {
     } catch (error) {
       setError(
         `items.${index}.name`,
-        { message: "Unable to fetch a wish name. Please, type name yourself." },
+        { message: t.validation.wish_name.unable_to_fetch },
         { shouldFocus: true }
       );
     } finally {
@@ -157,8 +190,10 @@ export default function DashboardListsCreate() {
   }, [actionData, navigate]);
 
   return (
-    <div className="max-w-2xl mx-auto bg-card space-y-8 border rounded-2xl p-8">
-      <h1 className="font-bold tracking-tight text-2xl">Create list</h1>
+    <div className="max-w-2xl mx-auto bg-card space-y-8 border rounded-2xl p-4 md:p-8">
+      <h1 className="font-bold tracking-tight text-2xl">
+        {t.dashboard.create_list.title}
+      </h1>
 
       <Form
         method="post"
@@ -166,25 +201,31 @@ export default function DashboardListsCreate() {
         className="space-y-4"
       >
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">
+            {t.dashboard.create_list.form.name.label}
+          </Label>
           <Input
             id="name"
             {...register("name")}
-            placeholder="Enter a list name"
+            placeholder={t.dashboard.create_list.form.name.placeholder}
           />
           {errors.name && <Message>{errors.name?.message}</Message>}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="description">
+            {t.dashboard.create_list.form.description.label}
+          </Label>
           <Textarea
             id="description"
             {...register("description")}
-            placeholder="Enter a list description"
+            placeholder={t.dashboard.create_list.form.description.placeholder}
           />
           {errors.name ? (
             <Message>{errors.description?.message}</Message>
           ) : (
-            <Description>Optional.</Description>
+            <Description>
+              {t.dashboard.create_list.form.description.description}
+            </Description>
           )}
         </div>
         <div className="space-y-2">
@@ -200,10 +241,12 @@ export default function DashboardListsCreate() {
                     name="public"
                     id="list-public-switch"
                   />
-                  <Label htmlFor="list-public-switch">Public</Label>
+                  <Label htmlFor="list-public-switch">
+                    {t.dashboard.create_list.form.toggle.label}
+                  </Label>
                 </div>
                 <Description>
-                  If public, you can share a link to your list.
+                  {t.dashboard.create_list.form.toggle.description}
                 </Description>
               </>
             )}
@@ -211,7 +254,9 @@ export default function DashboardListsCreate() {
         </div>
         <hr />
         <div>
-          <div className="font-bold text-sm mb-4">Wishes</div>
+          <div className="font-bold text-sm mb-4">
+            {t.dashboard.create_list.wishes}
+          </div>
           <ul className="space-y-4">
             {items.map((item, index) => (
               <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
@@ -234,7 +279,9 @@ export default function DashboardListsCreate() {
                 </div>
                 <div className="space-y-2">
                   <div className="space-y-2">
-                    <Label htmlFor={`url-${index}`}>URL</Label>
+                    <Label htmlFor={`url-${index}`}>
+                      {t.dashboard.add_wishes.form.url.label}
+                    </Label>
                     <div className="relative">
                       <Input
                         id={`url-${index}`}
@@ -244,7 +291,9 @@ export default function DashboardListsCreate() {
                           },
                         })}
                         disabled={loaders.has(index)}
-                        placeholder="Enter a wish URL"
+                        placeholder={
+                          t.dashboard.add_wishes.form.url.placeholder
+                        }
                       />
                       {loaders.has(index) && (
                         <Spinner className="absolute top-2 right-2" />
@@ -258,11 +307,15 @@ export default function DashboardListsCreate() {
                     getFieldState(`items.${index}.name`).invalid) && (
                     <div className="">
                       <div className="space-y-2">
-                        <Label htmlFor={`name-${index}`}>Name</Label>
+                        <Label htmlFor={`name-${index}`}>
+                          {t.dashboard.add_wishes.form.name.label}
+                        </Label>
                         <Input
                           id={`name-${index}`}
                           {...register(`items.${index}.name`)}
-                          placeholder="Enter a wish name"
+                          placeholder={
+                            t.dashboard.add_wishes.form.name.placeholder
+                          }
                         />
                         {errors.items && (
                           <Message>
@@ -289,7 +342,9 @@ export default function DashboardListsCreate() {
           </ul>
         </div>
         <Button className="w-full" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creating..." : "Create list"}
+          {isSubmitting
+            ? t.dashboard.create_list.form.submitting
+            : t.dashboard.create_list.form.submit}
         </Button>
       </Form>
     </div>
