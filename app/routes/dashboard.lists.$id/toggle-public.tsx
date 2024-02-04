@@ -33,7 +33,7 @@ export function TogglePublic({
       ref={formRef}
       className="flex items-center justify-between"
     >
-      <input type="hidden" defaultValue={list.name} name="name" />
+      <input type="hidden" name="intent" value="update-list-public" />
       <input
         type="hidden"
         defaultValue={list.description || ""}

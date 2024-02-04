@@ -58,6 +58,40 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
 
+  if (formData.get("intent") === "update-list-public") {
+    try {
+      const data = z
+        .object({
+          public: z.preprocess(
+            (value) => value === "on",
+            z.boolean().optional()
+          ),
+        })
+        .parse(Object.fromEntries(formData));
+
+      const response = await updateList(params.id!, data);
+
+      return json(
+        {
+          status: 200,
+          message: response.public
+            ? t.toasts.list_was_changed_to_public
+            : t.toasts.list_was_changed_to_private,
+          action: "update-list-public",
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      return json(
+        {
+          status: 500,
+          message: t.validation.unexpected_error,
+        },
+        { status: 500 }
+      );
+    }
+  }
+
   if (formData.get("intent") === "update-list") {
     try {
       const data = z
@@ -86,7 +120,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         {
           status: 500,
           message: t.validation.unexpected_error,
-          action: "put",
         },
         { status: 500 }
       );
@@ -123,7 +156,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         {
           status: 500,
           message: t.validation.unexpected_error,
-          action: "put",
         },
         { status: 500 }
       );
@@ -160,17 +192,27 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 
   if (formData.get("intent") === "delete-list") {
-    await removeList(params.id!);
+    try {
+      await removeList(params.id!);
 
-    return json(
-      {
-        status: 200,
-        message: t.toasts.list_was_removed,
-        redirectTo: "/dashboard",
-        action: "delete-list",
-      },
-      { status: 200 }
-    );
+      return json(
+        {
+          status: 200,
+          message: t.toasts.list_was_removed,
+          redirectTo: "/dashboard",
+          action: "delete-list",
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      return json(
+        {
+          status: 500,
+          message: t.validation.unexpected_error,
+        },
+        { status: 500 }
+      );
+    }
   }
 
   return null;

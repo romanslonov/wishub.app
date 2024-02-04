@@ -289,6 +289,8 @@
     "list_was_removed": "List was removed.",
     "list_was_updated": "List was updated.",
     "list_was_created": "List was created.",
+    "list_was_changed_to_public": "List is now public. You can share a link to it with your friends.",
+    "list_was_changed_to_private": "List is private now. Only you can see it.",
     "wishes_were_added": "Wishes were added.",
     "wish_was_removed": "Wish was removed.",
     "wish_was_updated": "Wish was updated."
