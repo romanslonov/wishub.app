@@ -231,8 +231,8 @@
   },
   "modals": {
     "update_list": {
-      "title": "Изменение листа",
-      "description": "Make changes to your list here. Click save when you are done.",
+      "title": "Изменение списка",
+      "description": "Внесите изменения в свой список здесь. Нажмите «Сохранить», когда закончите.",
       "form": {
         "name": {
           "label": "Название"
