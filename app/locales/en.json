@@ -11,7 +11,13 @@
       "dashboard": "Dashboard",
       "support": "Support",
       "logout": "Log out"
-    }
+    },
+    "created_by": "Created by",
+    "reserved_by": "Reserved by",
+    "reserved": "Reserved",
+    "unknown": "Unknown",
+    "by": "by",
+    "by_you": "by you"
   },
   "website": {
     "meta": {
@@ -294,7 +300,9 @@
     "list_was_changed_to_private": "List is private now. Only you can see it.",
     "wishes_were_added": "Wishes were added.",
     "wish_was_removed": "Wish was removed.",
-    "wish_was_updated": "Wish was updated."
+    "wish_was_updated": "Wish was updated.",
+    "gift_was_reserved": "Gift was reserved.",
+    "gift_was_unreserved": "You removed reserve from this gift."
   },
   "modals": {
     "update_list": {

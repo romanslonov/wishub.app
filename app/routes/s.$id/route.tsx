@@ -16,7 +16,11 @@ import { z } from "zod";
 import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: `${data?.list.name} by ${data?.list.owner.name}` }];
+  return [
+    {
+      title: `${data?.list.name} ${data?.t.common.by} ${data?.list.owner.name}`,
+    },
+  ];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -44,6 +48,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const session = await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   if (request.method === "POST") {
     const formData = await request.formData();
     try {
@@ -64,17 +70,11 @@ export async function action({ request }: ActionFunctionArgs) {
         await reserve(session.user.id, itemId);
       }
 
-      console.log({
-        action: action,
-        message: action === "reserve",
-        "You reserved this gift.": "You removed reserve from this gift.",
-      });
-
       return json({
         message:
           action === "reserve"
-            ? "You reserved this gift."
-            : "You removed reserve from this gift.",
+            ? t.toasts.gift_was_reserved
+            : t.toasts.gift_was_unreserved,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -83,7 +83,7 @@ export async function action({ request }: ActionFunctionArgs) {
           { status: 400 }
         );
       }
-      return json({ error: "Something goes wrong." }, { status: 500 });
+      return json({ error: t.validation.unexpected_error }, { status: 500 });
     }
   }
 }
@@ -97,7 +97,7 @@ export default function PublicListRoute() {
         <header className="mb-8">
           <h1 className="text-2xl tracking-tight font-bold">{list.name}</h1>
           <p className="text-muted-foreground text-sm">
-            Created by {list.owner.name ?? "Unknown"}
+            {t.common.created_by} {list.owner.name ?? t.common.unknown}
           </p>
         </header>
 

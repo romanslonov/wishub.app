@@ -3,9 +3,10 @@ import { type Item } from "@prisma/client";
 import { X, Bookmark, Link2 } from "lucide-react";
 import { HTMLAttributes, useEffect } from "react";
 import { toast } from "sonner";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useRouteLoaderData } from "@remix-run/react";
 import { cn } from "~/lib/cn";
 import { User } from "lucia";
+import { LocaleData } from "~/locales";
 
 interface ItemsListProps extends HTMLAttributes<HTMLUListElement> {
   items: Item[];
@@ -14,6 +15,7 @@ interface ItemsListProps extends HTMLAttributes<HTMLUListElement> {
 }
 
 export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
+  const data = useRouteLoaderData<{ t: LocaleData }>("routes/s.$id");
   return (
     <ul {...props}>
       {items.map((item) => (
@@ -23,7 +25,10 @@ export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
         >
           {item.reserverId ? (
             <div className="absolute top-0 left-[50%] translate-x-[-50%] border border-t-0 font-mono font-medium py-1 text-xs rounded-b-md px-4 bg-muted">
-              Reserved {item.reserverId === user?.id && <span>(by you)</span>}
+              {data?.t.common.reserved}{" "}
+              {item.reserverId === user?.id && (
+                <span>({data?.t.common.by_you})</span>
+              )}
             </div>
           ) : null}
           <div className="flex items-center gap-4">

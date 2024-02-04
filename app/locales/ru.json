@@ -11,7 +11,13 @@
       "dashboard": "Панель",
       "support": "Поддержка",
       "logout": "Выйти"
-    }
+    },
+    "created_by": "Автор списка",
+    "reserved_by": "Зарезервировано",
+    "reserved": "Зарезервировано",
+    "unknown": "Неизвестный",
+    "by": "от",
+    "by_you": "вами"
   },
   "website": {
     "meta": {
@@ -294,7 +300,9 @@
     "list_was_changed_to_private": "Список теперь приватный. Только вы можете видеть его.",
     "wishes_were_added": "Желания были добавлены.",
     "wish_was_removed": "Желание было удалено.",
-    "wish_was_updated": "Желание было обновлено."
+    "wish_was_updated": "Желание было обновлено.",
+    "gift_was_reserved": "Вы зарезервировали этот подарок.",
+    "gift_was_unreserved": "Вы отменили резервирование этого подарка."
   },
   "modals": {
     "update_list": {
