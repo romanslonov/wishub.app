@@ -42,7 +42,9 @@ export function RemoveListAlert() {
           <input type="hidden" name="intent" value="delete-list" />
         </Form>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>
+            {data?.t.modals.remove_list.cancel}
+          </AlertDialogCancel>
           <AlertDialogAction
             form="delete-list-form"
             disabled={isSubmitting}

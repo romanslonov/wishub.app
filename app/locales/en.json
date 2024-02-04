@@ -194,12 +194,17 @@
       "too_short": "Password must be at least 8 characters."
     },
     "name": {
-      "required": "Name is required."
+      "required": "Name is required.",
+      "too_long": "Name must be at most 255 characters."
     },
     "token": {
       "required": "Token is required.",
       "invalid": "Invalid token. Try to requesta a new one.",
       "expired": "Token is expired. Try to request a new one."
+    },
+    "url": {
+      "required": "URL is required.",
+      "invalid": "Invalid URL."
     },
     "verification_code": {
       "required": "Verification code is required.",
@@ -227,7 +232,13 @@
   },
   "toasts": {
     "reset_link_was_sent": "Reset link was sent to you email. Check your inbox.",
-    "profile_was_updated": "Profile was updated."
+    "profile_was_updated": "Profile was updated.",
+    "list_was_removed": "List was removed.",
+    "list_was_updated": "List was updated.",
+    "list_was_created": "List was created.",
+    "wish_was_added": "Wish was added.",
+    "wish_was_removed": "Wish was removed.",
+    "wish_was_updated": "Wish was updated."
   },
   "modals": {
     "update_list": {
@@ -248,7 +259,29 @@
       "title": "Are you absolutely sure?",
       "description": "This action cannot be undone. This will permanently delete your list and all wishes in it.",
       "submit": "Continue",
-      "submitting": "Removing list..."
+      "submitting": "Removing list...",
+      "cancel": "Cancel"
+    },
+    "update_wish": {
+      "title": "Update wish",
+      "description": "Make changes to your wish here. Click save when you are done.",
+      "form": {
+        "url": {
+          "label": "URL"
+        },
+        "name": {
+          "label": "Name"
+        },
+        "submit": "Save changes",
+        "submitting": "Saving changes..."
+      }
+    },
+    "remove_wish": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete your wish.",
+      "submit": "Continue",
+      "submitting": "Removing wish...",
+      "cancel": "Cancel"
     }
   }
 }

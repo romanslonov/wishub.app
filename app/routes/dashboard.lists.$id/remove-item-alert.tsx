@@ -11,9 +11,13 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { Form, useNavigation } from "@remix-run/react";
+import { Form, useNavigation, useRouteLoaderData } from "@remix-run/react";
+import { LocaleData } from "~/locales";
 
 export function RemoveItemAlert({ itemId }: { itemId: string }) {
+  const data = useRouteLoaderData<{ t: LocaleData }>(
+    "routes/dashboard.lists.$id"
+  );
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -26,10 +30,11 @@ export function RemoveItemAlert({ itemId }: { itemId: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {data?.t.modals.remove_wish.title}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            wish.
+            {data?.t.modals.remove_wish.description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Form id="delete-list-item-form" method="delete">
@@ -37,13 +42,17 @@ export function RemoveItemAlert({ itemId }: { itemId: string }) {
           <input type="hidden" name="itemId" value={itemId} />
         </Form>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>
+            {data?.t.modals.remove_wish.cancel}
+          </AlertDialogCancel>
           <AlertDialogAction
             form="delete-list-item-form"
             disabled={isSubmitting}
             type="submit"
           >
-            {isSubmitting ? "Deleting..." : "Continue"}
+            {isSubmitting
+              ? data?.t.modals.remove_wish.submitting
+              : data?.t.modals.remove_wish.submit}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

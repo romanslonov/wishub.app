@@ -54,13 +54,15 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export async function action({ request, params }: ActionFunctionArgs) {
   await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const formData = await request.formData();
 
   if (formData.get("intent") === "update-list") {
     try {
       const data = z
         .object({
-          name: z.string().min(1, "Name is required."),
+          name: z.string().min(1, t.validation.name.required),
           description: z.string().optional(),
           public: z.preprocess(
             (value) => value === "on",
@@ -74,7 +76,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 200,
-          message: "List was updated.",
+          message: t.toasts.list_was_updated,
           action: "update-list",
         },
         { status: 200 }
@@ -84,7 +86,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 500,
-          message: "Something goes wrong.",
+          message: t.validation.unexpected_error,
           action: "put",
         },
         { status: 500 }
@@ -97,8 +99,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
       const data = z
         .object({
           itemId: z.string().min(1, "Item ID is required."),
-          url: z.string().min(1, "URL is required.").url("URL is invalid"),
-          name: z.string().min(1, "Name is required.").max(255),
+          url: z
+            .string()
+            .min(1, t.validation.url.required)
+            .url(t.validation.url.invalid),
+          name: z.string().min(1, t.validation.name.required).max(255),
         })
         .parse(Object.fromEntries(formData));
 
@@ -109,7 +114,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 200,
-          message: "Wish was updated.",
+          message: t.toasts.wish_was_updated,
           action: "update-list",
         },
         { status: 200 }
@@ -119,7 +124,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 500,
-          message: "Something goes wrong.",
+          message: t.validation.unexpected_error,
           action: "put",
         },
         { status: 500 }
@@ -140,7 +145,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 200,
-          message: "Wish was removed.",
+          message: t.toasts.wish_was_removed,
           action: "delete-list-item",
         },
         { status: 200 }
@@ -150,7 +155,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return json(
         {
           status: 500,
-          message: "Something goes wrong.",
+          message: t.validation.unexpected_error,
         },
         { status: 500 }
       );
@@ -163,7 +168,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return json(
       {
         status: 200,
-        message: "List was removed.",
+        message: t.toasts.list_was_removed,
         redirectTo: "/dashboard",
         action: "delete-list",
       },
