@@ -93,48 +93,46 @@ export default function RecoverPasswordRoute() {
   }, [data]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <div className="max-w-md bg-card rounded-2xl shadow-sm border w-full p-8">
-        <div className="text-center space-y-1 mb-8">
-          <Unlock className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="font-bold text-2xl">{t.auth.reset_password.title}</h1>
-          <p className="text-muted-foreground">
-            {t.auth.reset_password.subtitle}
-          </p>
-        </div>
-        <Form method="post" className="space-y-4 mb-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email*</Label>
-            <Input
-              id="email"
-              ref={emailRef}
-              required
-              name="email"
-              type="email"
-              placeholder="example@domain.com"
-            />
-            {data &&
-              "errors" in data &&
-              data.errors.fieldErrors["email"]?.map((error) => (
-                <Message key={error}>{error}</Message>
-              ))}
-          </div>
-          {data && "error" in data && <Message>{data.error}</Message>}
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting
-              ? t.auth.reset_password.submitting
-              : t.auth.reset_password.submit}
-          </Button>
-        </Form>
-        <div className="text-center mt-4 text-sm">
-          <Link
-            className="text-primary underline-offset-4 hover:underline"
-            to="/login"
-          >
-            {t.auth.reset_password.login.link}
-          </Link>
-        </div>
+    <>
+      <div className="text-center space-y-1 mb-8">
+        <Unlock className="w-12 h-12 mx-auto text-primary mb-4" />
+        <h1 className="font-bold text-2xl">{t.auth.reset_password.title}</h1>
+        <p className="text-muted-foreground">
+          {t.auth.reset_password.subtitle}
+        </p>
       </div>
-    </div>
+      <Form method="post" className="space-y-4 mb-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email*</Label>
+          <Input
+            id="email"
+            ref={emailRef}
+            required
+            name="email"
+            type="email"
+            placeholder="example@domain.com"
+          />
+          {data &&
+            "errors" in data &&
+            data.errors.fieldErrors["email"]?.map((error) => (
+              <Message key={error}>{error}</Message>
+            ))}
+        </div>
+        {data && "error" in data && <Message>{data.error}</Message>}
+        <Button className="w-full" type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? t.auth.reset_password.submitting
+            : t.auth.reset_password.submit}
+        </Button>
+      </Form>
+      <div className="text-center mt-4 text-sm">
+        <Link
+          className="text-primary underline-offset-4 hover:underline"
+          to="/login"
+        >
+          {t.auth.reset_password.login.link}
+        </Link>
+      </div>
+    </>
   );
 }
