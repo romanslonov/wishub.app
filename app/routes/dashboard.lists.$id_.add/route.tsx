@@ -17,39 +17,55 @@ import { z } from "zod";
 import { ChangeEvent, useEffect, useState } from "react";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { addListItems } from "./actions.server";
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+} from "@remix-run/node";
 import { toast } from "sonner";
 import { Message } from "~/components/ui/message";
 import { cn } from "~/lib/cn";
 import { Spinner } from "~/components/ui/spinner";
-
-const urlSchema = z.string().min(1, "URL is required.").url("URL is invalid");
-
-const schema = z.object({
-  items: z
-    .array(
-      z.object({
-        url: urlSchema,
-        name: z.string().min(1, "Please enter a wish name"),
-      })
-    )
-    .min(1, "Please add at least one wish"),
-});
+import { getLocaleData } from "~/locales";
 
 const defaultItemValue = { url: "", name: "" };
 
-type FormData = z.infer<typeof schema>;
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `${data?.t.dashboard.add_wishes.meta.title}` }];
+};
 
 export async function loader({ request, params: { id } }: LoaderFunctionArgs) {
   await requireUserSession(request);
 
-  return { listId: id };
+  const t = await getLocaleData(request);
+
+  return { listId: id, t };
 }
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   await requireUserSession(request);
 
+  const t = await getLocaleData(request);
+
   const formData = await request.json();
+
+  const urlSchema = z
+    .string()
+    .min(1, t.validation.url.required)
+    .url(t.validation.url.invalid);
+
+  const schema = z.object({
+    items: z
+      .array(
+        z.object({
+          url: urlSchema,
+          name: z.string().min(1, t.validation.name.required),
+        })
+      )
+      .min(1, t.validation.wishes.required),
+  });
+
   try {
     const data = schema.parse(formData);
 
@@ -57,24 +73,43 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
     return json({
       listId: params.id!,
-      message: "Wishes were added.",
+      message: t.toasts.wishes_were_added,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return json({ errors: error.formErrors });
     }
-    return json({ error: "Something goes wrong." }, { status: 500 });
+    return json({ error: t.validation.unexpected_error }, { status: 500 });
   }
 };
 
 export default function DashboardListsIdAddRoute() {
-  const { listId } = useLoaderData<typeof loader>();
+  const { listId, t } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
   const submit = useSubmit();
   const [loaders, setLoaders] = useState(new Set());
+
+  const urlSchema = z
+    .string()
+    .min(1, t.validation.url.required)
+    .url(t.validation.url.invalid);
+
+  const schema = z.object({
+    items: z
+      .array(
+        z.object({
+          url: urlSchema,
+          name: z.string().min(1, t.validation.name.required),
+        })
+      )
+      .min(1, t.validation.wishes.required),
+  });
+
+  type FormData = z.infer<typeof schema>;
+
   const {
     handleSubmit,
     watch,
@@ -128,7 +163,7 @@ export default function DashboardListsIdAddRoute() {
     } catch (error) {
       setError(
         `items.${index}.name`,
-        { message: "Unable to get a wish name. Please, type name yourself." },
+        { message: t.validation.wish_name.unable_to_fetch },
         { shouldFocus: true }
       );
     } finally {
@@ -152,10 +187,10 @@ export default function DashboardListsIdAddRoute() {
           to={`/dashboard/lists/${listId}`}
           className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
-          Back to list
+          {t.dashboard.add_wishes.back}
         </Link>
         <h1 className="text-3xl line-clamp-2 font-bold tracking-tight">
-          Add wishes
+          {t.dashboard.add_wishes.title}
         </h1>
       </div>
       <div className="bg-card shadow-sm border rounded-2xl p-6">
@@ -182,7 +217,9 @@ export default function DashboardListsIdAddRoute() {
                 </div>
                 <div className="space-y-2">
                   <div className="space-y-2">
-                    <Label htmlFor={`url-${index}`}>URL</Label>
+                    <Label htmlFor={`url-${index}`}>
+                      {t.dashboard.add_wishes.form.url.label}
+                    </Label>
                     <div className="relative">
                       <Input
                         id={`url-${index}`}
@@ -192,7 +229,9 @@ export default function DashboardListsIdAddRoute() {
                           },
                         })}
                         disabled={loaders.has(index)}
-                        placeholder="Enter a wish URL"
+                        placeholder={
+                          t.dashboard.add_wishes.form.url.placeholder
+                        }
                       />
                       {loaders.has(index) && (
                         <Spinner className="absolute top-2 right-2" />
@@ -206,11 +245,15 @@ export default function DashboardListsIdAddRoute() {
                     getFieldState(`items.${index}.name`).invalid) && (
                     <div className="">
                       <div className="space-y-2">
-                        <Label htmlFor={`name-${index}`}>Name</Label>
+                        <Label htmlFor={`name-${index}`}>
+                          {t.dashboard.add_wishes.form.name.label}
+                        </Label>
                         <Input
                           id={`name-${index}`}
                           {...register(`items.${index}.name`)}
-                          placeholder="Enter a wish name"
+                          placeholder={
+                            t.dashboard.add_wishes.form.name.placeholder
+                          }
                         />
                         {errors.items && (
                           <Message>
@@ -236,7 +279,9 @@ export default function DashboardListsIdAddRoute() {
             </li>
           </ul>
           <Button className="w-full" type="submit">
-            {isSubmitting ? "Adding..." : "Add wishes"}
+            {isSubmitting
+              ? t.dashboard.add_wishes.form.submitting
+              : t.dashboard.add_wishes.form.submit}
           </Button>
         </Form>
       </div>

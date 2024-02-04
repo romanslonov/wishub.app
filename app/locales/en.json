@@ -92,6 +92,25 @@
         "submit": "Update profile",
         "submitting": "Updating..."
       }
+    },
+    "add_wishes": {
+      "meta": {
+        "title": "Add wishes"
+      },
+      "back": "Back to list",
+      "title": "Add wishes",
+      "form": {
+        "url": {
+          "label": "URL",
+          "placeholder": "Enter a wish URL"
+        },
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter a wish name"
+        },
+        "submit": "Add wishes",
+        "submitting": "Adding..."
+      }
     }
   },
   "welcome": {
@@ -206,6 +225,13 @@
       "required": "URL is required.",
       "invalid": "Invalid URL."
     },
+    "wishes": {
+      "required": "Please add at least one wish."
+    },
+    "wish_name": {
+      "required": "Wish name is required.",
+      "unable_to_fetch": "Не удалось получить название желания. Пожалуйста, введите название самостоятельно."
+    },
     "verification_code": {
       "required": "Verification code is required.",
       "invalid": "Invalid verification code. Try to request a new one.",
@@ -236,7 +262,7 @@
     "list_was_removed": "List was removed.",
     "list_was_updated": "List was updated.",
     "list_was_created": "List was created.",
-    "wish_was_added": "Wish was added.",
+    "wishes_were_added": "Wishes were added.",
     "wish_was_removed": "Wish was removed.",
     "wish_was_updated": "Wish was updated."
   },

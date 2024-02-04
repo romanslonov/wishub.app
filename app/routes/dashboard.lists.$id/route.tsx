@@ -82,7 +82,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         { status: 200 }
       );
     } catch (error) {
-      console.log(error);
       return json(
         {
           status: 500,
@@ -120,7 +119,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         { status: 200 }
       );
     } catch (error) {
-      console.log(error);
       return json(
         {
           status: 500,
@@ -151,7 +149,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         { status: 200 }
       );
     } catch (error) {
-      console.log(error);
       return json(
         {
           status: 500,
