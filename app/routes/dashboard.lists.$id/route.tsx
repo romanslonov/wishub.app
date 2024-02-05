@@ -98,10 +98,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         .object({
           name: z.string().min(1, t.validation.name.required),
           description: z.string().optional(),
-          public: z.preprocess(
-            (value) => value === "on",
-            z.boolean().optional()
-          ),
         })
         .parse(Object.fromEntries(formData));
 
