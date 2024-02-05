@@ -28,9 +28,7 @@ export function UpdateItemDialog({ item }: { item: Item }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
-  const fetcher = useFetcher<{ message: string; status: number }>({
-    key: `update-list-item-${item.id}`,
-  });
+  const fetcher = useFetcher<{ message: string; status: number }>();
   const isSubmitting = fetcher.state === "submitting";
 
   const schema = z.object({

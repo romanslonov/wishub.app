@@ -17,9 +17,7 @@ export function TogglePublic({
   const data = useRouteLoaderData<{ t: LocaleData }>(
     "routes/dashboard.lists.$id"
   );
-  const fetcher = useFetcher<{ message: string }>({
-    key: `update-list-public-${list.id}`,
-  });
+  const fetcher = useFetcher<{ message: string }>();
   const formRef = useRef<HTMLFormElement>(null);
   const isSubmitting = fetcher.state === "submitting";
 
