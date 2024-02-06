@@ -7,7 +7,7 @@
     },
     "user_menu": {
       "title": "Your account",
-      "profile": "Profile",
+      "settings": "Settings",
       "dashboard": "Dashboard",
       "support": "Support",
       "logout": "Log out"

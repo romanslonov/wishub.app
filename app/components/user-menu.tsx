@@ -34,15 +34,15 @@ export function UserMenu({ user, t }: { user: User; t: LocaleData }) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link to="/dashboard/profile">
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>{t.common.user_menu.profile}</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link to="/dashboard">
               <LayoutDashboard className="mr-2 h-4 w-4" />
               <span>{t.common.user_menu.dashboard}</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/dashboard/profile">
+              <UserIcon className="mr-2 h-4 w-4" />
+              <span>{t.common.user_menu.settings}</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

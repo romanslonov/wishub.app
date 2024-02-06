@@ -14,7 +14,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Navigation({ user, t, className }: Props) {
   return (
-    <header className={cn("border-b bg-card", className)}>
+    <header className={cn("border-b", className)}>
       <div className="flex h-16 justify-between items-center px-4 md:px-8 mx-auto max-w-7xl">
         <Link
           to={user ? "/dashboard" : "/"}
