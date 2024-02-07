@@ -3,10 +3,10 @@ version: "3.7"
 services:
   frontend:
     build:
-      context: ./
-      dockerfile: CaddyDockerfile
+      context: .
+      dockerfile: Dockerfile.frontend
     image: caddy:cloudflare
-    container_name: remix-frontend
+    container_name: frontend
     hostname: frontend
     env_file:
       - .env
@@ -20,11 +20,9 @@ services:
   backend1:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: remix-backend-1
+      dockerfile: Dockerfile.backend1
+    container_name: backend-1
     command: ["npm", "run", "start"]
-    environment:
-      DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
     env_file:
       - .env
     depends_on:
@@ -33,11 +31,9 @@ services:
   backend2:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: remix-backend-2
+      dockerfile: Dockerfile.backend2
+    container_name: backend-2
     command: ["npm", "run", "start"]
-    environment:
-      DATABASE_URL: "postgresql://postgres:example@database:5432/lucia"
     env_file:
       - .env
     depends_on:
@@ -46,9 +42,9 @@ services:
   database:
     image: postgres:16.1-alpine
     restart: always
-    container_name: remix-database
-    environment:
-      POSTGRES_PASSWORD: example
+    container_name: database
+    env_file:
+      - .env
     ports:
       - 127.0.0.1:5432:5432
     volumes:
