@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     image: caddy:cloudflare
-    container_name: frontend
+    container_name: wishub-frontend
     hostname: frontend
     env_file:
       - .env
@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend1
-    container_name: backend-1
+    container_name: wishub-backend-1
     command: ["npm", "run", "start"]
     env_file:
       - .env
@@ -32,7 +32,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend2
-    container_name: backend-2
+    container_name: wishub-backend-2
     command: ["npm", "run", "start"]
     env_file:
       - .env
@@ -42,7 +42,7 @@ services:
   database:
     image: postgres:16.1-alpine
     restart: always
-    container_name: database
+    container_name: wishub-database
     env_file:
       - .env
     ports:
