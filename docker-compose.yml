@@ -46,7 +46,6 @@ services:
     image: postgres:16.1-alpine
     restart: always
     container_name: wishub-database
-    restart: always
     env_file:
       - .env
     ports:
