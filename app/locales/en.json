@@ -24,9 +24,20 @@
       "title": "Wishub - Create wish lists and share with you friends"
     },
     "header": {
-      "title": "Make Wishes, Share Joy",
+      "title": "Gift Only What Truly Matters",
       "subtitle": "Create wishlists, reserve gifts and present what truly matters.",
       "cta": "Join now"
+    },
+    "sections": {
+      "create_wishlist": {
+        "title": "Create wishlist, add wishes in a few clicks"
+      },
+      "share_wishlist": {
+        "title": "Share lists with your friends"
+      },
+      "reserve_gifts": {
+        "title": "Guest? Reserve a gift"
+      }
     }
   },
   "dashboard": {
