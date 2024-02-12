@@ -5,15 +5,21 @@ import {
 } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import {
+  Baby,
+  Cake,
+  Gem,
+  Heart,
   Infinity,
+  MailCheck,
   MousePointerClick,
+  PartyPopper,
   Sparkles,
   WalletCards,
 } from "lucide-react";
 import { getUser } from "~/auth/get-user.server";
 import { Footer } from "~/components/footer";
 import { Navigation } from "~/components/navigation";
-import { buttonVariants } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
 import { getLocaleData } from "~/locales";
 
@@ -35,7 +41,7 @@ export default function Index() {
   return (
     <div className="min-h-screen flex relative flex-col">
       <div className="absolute inset-0 justify-center pointer-events-none hidden lg:flex">
-        <div className="max-w-7xl px-4 md:px-8 mx-auto relative h-full w-full before:absolute before:bg-[repeating-linear-gradient(0deg,hsl(var(--secondary))_0_4px,transparent_0_8px)] before:top-0 before:left-0 before:h-full before:w-px after:absolute after:bg-[repeating-linear-gradient(0deg,hsl(var(--secondary))_0_4px,transparent_0_8px)] after:top-0 before:bottom-0 after:bottom-0 after:right-0 after:h-full after:w-px"></div>
+        <div className="max-w-7xl px-4 md:px-8 mx-auto relative h-full w-full before:absolute before:bg-[repeating-linear-gradient(0deg,hsl(var(--border))_0_4px,transparent_0_8px)] before:top-0 before:left-0 before:h-full before:w-px after:absolute after:bg-[repeating-linear-gradient(0deg,hsl(var(--border))_0_4px,transparent_0_8px)] after:top-0 before:bottom-0 after:bottom-0 after:right-0 after:h-full after:w-px"></div>
       </div>
       <Navigation user={user} t={t} className="border-b-0" />
       <main className="flex-1">
@@ -75,9 +81,14 @@ export default function Index() {
             </div>
           </div>
           <img
+            src="/preview_dark.png"
+            alt="Preview dashboard"
+            className="mx-auto hidden dark:block max-w-7xl border shadow-2xl w-full bg-muted rounded-2xl"
+          />
+          <img
             src="/preview_light.png"
             alt="Preview dashboard"
-            className="mx-auto max-w-7xl border-2 shadow-2xl border-black w-full bg-muted rounded-2xl"
+            className="mx-auto max-w-7xl dark:hidden border shadow-2xl w-full bg-muted rounded-2xl"
           />
         </section>
         <section className="text-center">
@@ -117,7 +128,7 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto min-h-screen flex flex-col items-center justify-center sticky top-0 snap-start">
             <div className="grid grid-cols-2 border-2 border-black min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 border-black py-32 bg-[#DCE6EE]">
+              <div className="flex items-center justify-center border-r-2 border-black py-32 bg-sky-200">
                 <h2 className="text-black text-5xl font-bold max-w-xs mx-auto text-center">
                   {t.website.sections.reserve_gifts.title}
                 </h2>
@@ -126,7 +137,7 @@ export default function Index() {
             </div>
           </div>
         </section>
-        <section className="py-32 space-y-16">
+        <section className="py-16 space-y-16">
           <div className="text-center">
             <h2 className="text-4xl tracking-tight font-bold">And even more</h2>
             <p className="text-4xl tracking-tight font-bold text-muted-foreground">
@@ -134,24 +145,73 @@ export default function Index() {
             </p>
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
-            <div className="grid grid-cols-12 gap-4">
-              <div className="col-span-7 border-2 border-foreground bg-card rounded-2xl p-8">
-                1
+            <div className="grid grid-cols-2 gap-4">
+              <div className="border bg-card rounded-2xl p-8">
+                <div className="flex items-center mb-4">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center border-2 border-black bg-red-400">
+                    <Gem />
+                  </div>
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-sky-400">
+                    <Baby />
+                  </div>
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-violet-400">
+                    <PartyPopper />
+                  </div>
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-pink-400">
+                    <Heart />
+                  </div>
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-green-400">
+                    <Cake />
+                  </div>
+                </div>
+                <h2 className="text-2xl tracking-tight font-bold">
+                  Any type of events
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  Select from predefined types or set your own.
+                </p>
               </div>
-              <div className="col-span-5 border-2 border-foreground bg-card rounded-2xl p-8">
-                1
-              </div>
-              <div className="col-span-5 border-2 border-foreground bg-card rounded-2xl p-8">
-                1
-              </div>
-              <div className="col-span-7 border-2 border-foreground bg-card rounded-2xl p-8">
-                1
+              <div className="border bg-card rounded-2xl p-8">
+                <MailCheck className="w-16 h-16 mb-4" />
+                <h2 className="text-2xl tracking-tight font-bold">Share</h2>
+                <p className="text-lg text-muted-foreground">
+                  Share wishlist via link or send invitation using email.
+                </p>
               </div>
             </div>
           </div>
         </section>
+        <section className="pb-16 text-center">
+          <div className="max-w-7xl px-4 md:px-8 mx-auto">
+            <div className="bg-card border space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
+              <div>
+                <h2 className="text-4xl tracking-tight font-bold">
+                  Start sharing
+                </h2>
+                <p className="text-4xl tracking-tight font-bold text-muted-foreground">
+                  and giving joy today
+                </p>
+              </div>
+              <Link
+                className={cn(buttonVariants({ size: "lg" }))}
+                to="/register"
+              >
+                <Sparkles className="inline-block mr-2" size={20} />
+                {t.website.header.cta}
+              </Link>
+            </div>
+          </div>
+        </section>
+        <footer className="text-muted-foreground text-center pb-8 text-sm">
+          2023. Wishub.{" "}
+          <a
+            href="/"
+            className="text-foreground font-medium underline underline-offset-4 hover:no-underline"
+          >
+            Open source.
+          </a>
+        </footer>
       </main>
-      {/* <Footer /> */}
     </div>
   );
 }
