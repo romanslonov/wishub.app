@@ -11,7 +11,6 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { Sparkles } from "lucide-react";
 import { isWithinExpirationDate } from "oslo";
 import { useEffect, useRef } from "react";
 import { z } from "zod";
@@ -23,6 +22,7 @@ import { prisma } from "~/lib/prisma.server";
 import { hashPassword } from "./hash-password.server";
 import { getLocaleData } from "~/locales";
 import { Label } from "~/components/ui/label";
+import { Logo } from "~/components/logo";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.set_password.meta.title }];
@@ -113,7 +113,7 @@ export default function RecoverPasswordTokenRoute() {
   return (
     <>
       <div className="text-center space-y-1 mb-8">
-        <Sparkles className="w-12 h-12 mx-auto text-primary mb-4" />
+        <Logo sizes={48} className="mx-auto mb-4" />
         <h1 className="font-bold text-2xl">{t.auth.set_password.title}</h1>
         <p className="text-muted-foreground">{t.auth.set_password.subtitle}</p>
       </div>

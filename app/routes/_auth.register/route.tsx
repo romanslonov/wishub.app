@@ -14,11 +14,11 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { useEffect, useRef } from "react";
-import { Ghost } from "lucide-react";
 import { Message } from "~/components/ui/message";
 import { Label } from "~/components/ui/label";
 import { getLocaleData } from "~/locales";
 import { register } from "./register.server";
+import { Logo } from "~/components/logo";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.register.meta.title }];
@@ -62,7 +62,7 @@ export default function RegisterRoute() {
   return (
     <>
       <div className="text-center space-y-1 mb-8">
-        <Ghost className="w-12 h-12 mx-auto text-primary mb-4" />
+        <Logo sizes={48} className="mx-auto mb-4" />
         <h1 className="font-bold text-2xl mb-4">{t.auth.register.title}</h1>
         <p className="text-muted-foreground">{t.auth.register.subtitle}</p>
       </div>

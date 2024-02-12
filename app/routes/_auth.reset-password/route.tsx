@@ -11,11 +11,11 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { Unlock } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createPasswordResetToken } from "~/auth/generate-password-reset-token";
+import { Logo } from "~/components/logo";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -95,7 +95,7 @@ export default function RecoverPasswordRoute() {
   return (
     <>
       <div className="text-center space-y-1 mb-8">
-        <Unlock className="w-12 h-12 mx-auto text-primary mb-4" />
+        <Logo sizes={48} className="mx-auto mb-4" />
         <h1 className="font-bold text-2xl">{t.auth.reset_password.title}</h1>
         <p className="text-muted-foreground">
           {t.auth.reset_password.subtitle}

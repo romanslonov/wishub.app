@@ -1,11 +1,12 @@
 import { cn } from "~/lib/cn";
 import { UserMenu } from "./user-menu";
 import { buttonVariants } from "~/components/ui/button";
-import { Ghost, ListPlus } from "lucide-react";
+import { ListPlus } from "lucide-react";
 import { User } from "lucia";
 import { Link } from "@remix-run/react";
 import { LocaleData } from "~/locales";
 import { LocaleSwitcher } from "./locale-switcher";
+import { Logo } from "./logo";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   user: User | null;
@@ -20,8 +21,8 @@ export function Navigation({ user, t, className }: Props) {
           to={user ? "/dashboard" : "/"}
           className="inline-flex items-center gap-2"
         >
-          <Ghost size={24} />
-          <span className="font-bold">Wishub</span>
+          <Logo />
+          <span className="font-bold">wishub.</span>
         </Link>
         <div className="flex items-center gap-4">
           {user ? (

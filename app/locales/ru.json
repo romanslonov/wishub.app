@@ -83,7 +83,8 @@
       },
       "actions": {
         "add_wish": "Добавить желание",
-        "copy_url": "Скопировать ссылку"
+        "copy_url": "Скопировать ссылку",
+        "share_with_friends": "Поделиться с друзьями"
       },
       "settings": {
         "description": {

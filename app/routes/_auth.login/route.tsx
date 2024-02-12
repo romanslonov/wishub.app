@@ -16,9 +16,9 @@ import {
 } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { Message } from "~/components/ui/message";
-import { Ghost } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { getLocaleData } from "~/locales";
+import { Logo } from "~/components/logo";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.login.meta.title }];
@@ -57,7 +57,7 @@ export default function Login() {
   return (
     <>
       <div className="space-y-1 mb-8 text-center">
-        <Ghost className="w-12 h-12 mx-auto text-primary mb-4" />
+        <Logo sizes={48} className="mx-auto mb-4" />
         <h1 className="font-bold text-2xl">{t.auth.login.title}</h1>
         <p className="text-muted-foreground">{t.auth.login.subtitle}</p>
       </div>
