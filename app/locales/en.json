@@ -26,7 +26,18 @@
     "header": {
       "title": "Gift only what truly matters",
       "subtitle": "Create wishlists, reserve gifts and present what truly matters.",
-      "cta": "Join now"
+      "cta": "Join now",
+      "features": {
+        "unlimited": {
+          "title": "Unlimited wishlists"
+        },
+        "easy": {
+          "title": "Easy to use"
+        },
+        "no_cards": {
+          "title": "No cards required"
+        }
+      }
     },
     "sections": {
       "create_wishlist": {

@@ -63,19 +63,19 @@ export default function Index() {
             <div className="flex items-center gap-2">
               <Infinity />
               <span className="text-sm font-medium text-muted-foreground">
-                Unlimited wishlists
+                {t.website.header.features.unlimited.title}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <MousePointerClick />
               <span className="text-sm font-medium text-muted-foreground">
-                Easy to use
+                {t.website.header.features.easy.title}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <WalletCards />
               <span className="text-sm font-medium text-muted-foreground">
-                No cards required
+                {t.website.header.features.no_cards.title}
               </span>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function Index() {
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#D5F0D8]">
-                <h2 className="text-black text-5xl font-bold max-w-sm mx-auto text-center">
+                <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   {t.website.sections.create_wishlist.title}
                 </h2>
               </div>
@@ -118,7 +118,7 @@ export default function Index() {
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#E9DCEE]">
-                <h2 className="text-black text-5xl font-bold max-w-sm mx-auto text-center">
+                <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   {t.website.sections.share_wishlist.title}
                 </h2>
               </div>
@@ -128,7 +128,7 @@ export default function Index() {
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-sky-200">
-                <h2 className="text-black text-5xl font-bold max-w-xs mx-auto text-center">
+                <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   {t.website.sections.reserve_gifts.title}
                 </h2>
               </div>
@@ -147,19 +147,19 @@ export default function Index() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border bg-card rounded-2xl p-8">
                 <div className="flex items-center mb-4">
-                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center border-2 border-black bg-red-400">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center border-2 border-card bg-red-400">
                     <Gem />
                   </div>
-                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-sky-400">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-card bg-sky-400">
                     <Baby />
                   </div>
-                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-violet-400">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-card bg-violet-400">
                     <PartyPopper />
                   </div>
-                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-pink-400">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-card bg-pink-400">
                     <Heart />
                   </div>
-                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-black bg-green-400">
+                  <div className="h-16 w-16 rounded-full text-black flex items-center justify-center -ml-8 border-2 border-card bg-green-400">
                     <Cake />
                   </div>
                 </div>
