@@ -17,9 +17,8 @@ import {
   WalletCards,
 } from "lucide-react";
 import { getUser } from "~/auth/get-user.server";
-import { Footer } from "~/components/footer";
 import { Navigation } from "~/components/navigation";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
 import { getLocaleData } from "~/locales";
 
@@ -45,13 +44,13 @@ export default function Index() {
       </div>
       <Navigation user={user} t={t} className="border-b-0" />
       <main className="flex-1">
-        <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8 space-y-16">
+        <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8 space-y-8 md:space-y-16">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-7xl font-bold max-w-2xl mx-auto text-balance">
+              <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
                 {t.website.header.title}
               </h1>
-              <p className="text-muted-foreground text-2xl max-w-prose text-balance mx-auto mb-16">
+              <p className="text-muted-foreground text-xl md:text-2xl max-w-prose text-balance mx-auto mb-16">
                 {t.website.header.subtitle}
               </p>
             </div>
@@ -60,7 +59,7 @@ export default function Index() {
               {t.website.header.cta}
             </Link>
           </div>
-          <div className="flex justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             <div className="flex items-center gap-2">
               <Infinity />
               <span className="text-sm font-medium text-muted-foreground">
@@ -83,7 +82,7 @@ export default function Index() {
           <img
             src="/preview_dark.png"
             alt="Preview dashboard"
-            className="mx-auto hidden dark:block max-w-7xl border shadow-2xl w-full bg-muted rounded-2xl"
+            className="mx-auto hidden dark:block max-w-7xl border shadow-2xl w-full bg-muted rounded-lg md:rounded-2xl"
           />
           <img
             src="/preview_light.png"
@@ -99,26 +98,26 @@ export default function Index() {
             for your next event
           </p>
         </section>
-        <section className="py-16 snap-y snap-mandatory min-h-screen">
-          <div className="max-w-7xl px-4 md:px-8 mx-auto min-h-screen flex flex-col items-center justify-center sticky top-0 snap-start">
-            <div className="grid grid-cols-2 border-2 border-black min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 border-black py-32 bg-[#D5F0D8]">
+        <section className="pt-16 snap-y snap-mandatory md:min-h-screen space-y-8 md:space-y-0">
+          <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
+              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#D5F0D8]">
                 <h2 className="text-black text-5xl font-bold max-w-sm mx-auto text-center">
                   {t.website.sections.create_wishlist.title}
                 </h2>
               </div>
               <div className="bg-muted flex items-center justify-center">
-                <img
+                {/* <img
                   src="/creating_list.gif"
                   alt="Creating list"
                   className="border-2 border-black max-w-md rounded-xl"
-                />
+                /> */}
               </div>
             </div>
           </div>
-          <div className="max-w-7xl px-4 md:px-8 mx-auto min-h-screen flex flex-col items-center justify-center sticky top-0 snap-start">
-            <div className="grid grid-cols-2 border-2 border-black min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 border-black py-32 bg-[#E9DCEE]">
+          <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
+              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#E9DCEE]">
                 <h2 className="text-black text-5xl font-bold max-w-sm mx-auto text-center">
                   {t.website.sections.share_wishlist.title}
                 </h2>
@@ -126,9 +125,9 @@ export default function Index() {
               <div className="bg-muted"></div>
             </div>
           </div>
-          <div className="max-w-7xl px-4 md:px-8 mx-auto min-h-screen flex flex-col items-center justify-center sticky top-0 snap-start">
-            <div className="grid grid-cols-2 border-2 border-black min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 border-black py-32 bg-sky-200">
+          <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
+              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-sky-200">
                 <h2 className="text-black text-5xl font-bold max-w-xs mx-auto text-center">
                   {t.website.sections.reserve_gifts.title}
                 </h2>
@@ -145,7 +144,7 @@ export default function Index() {
             </p>
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border bg-card rounded-2xl p-8">
                 <div className="flex items-center mb-4">
                   <div className="h-16 w-16 rounded-full text-black flex items-center justify-center border-2 border-black bg-red-400">
@@ -183,7 +182,7 @@ export default function Index() {
         </section>
         <section className="pb-16 text-center">
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
-            <div className="bg-card border space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
+            <div className="bg-card border px-4 space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
               <div>
                 <h2 className="text-4xl tracking-tight font-bold">
                   Start sharing
