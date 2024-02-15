@@ -50,7 +50,7 @@ export default function Index() {
               <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
                 {t.website.header.title}
               </h1>
-              <p className="text-muted-foreground text-xl md:text-2xl max-w-prose text-balance mx-auto mb-16">
+              <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl text-balance mx-auto mb-16">
                 {t.website.header.subtitle}
               </p>
             </div>
@@ -90,20 +90,20 @@ export default function Index() {
             className="mx-auto max-w-7xl dark:hidden border shadow-2xl w-full bg-muted rounded-2xl"
           />
         </section>
-        <section className="text-center">
-          <p className="text-4xl tracking-tight font-bold">
-            Everything you need
-          </p>
-          <p className="text-4xl tracking-tight font-bold text-muted-foreground">
-            for your next event
-          </p>
-        </section>
-        <section className="pt-16 snap-y snap-mandatory md:min-h-screen space-y-8 md:space-y-0">
+        <section className="snap-y snap-mandatory md:min-h-screen space-y-8 md:space-y-0">
+          <div className="text-center">
+            <p className="text-4xl tracking-tight font-bold">
+              {t.website.sections.main_features.title.part1}
+            </p>
+            <p className="text-4xl tracking-tight font-bold text-muted-foreground">
+              {t.website.sections.main_features.title.part2}
+            </p>
+          </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#D5F0D8]">
+              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-[#D5F0D8]">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  {t.website.sections.create_wishlist.title}
+                  {t.website.sections.main_features.create_wishlist.title}
                 </h2>
               </div>
               <div className="bg-muted flex items-center justify-center">
@@ -117,9 +117,9 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-[#E9DCEE]">
+              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-[#E9DCEE]">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  {t.website.sections.share_wishlist.title}
+                  {t.website.sections.main_features.share_wishlist.title}
                 </h2>
               </div>
               <div className="bg-muted"></div>
@@ -127,9 +127,9 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 border-black py-32 bg-sky-200">
+              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-sky-200">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  {t.website.sections.reserve_gifts.title}
+                  {t.website.sections.main_features.reserve_gifts.title}
                 </h2>
               </div>
               <div className="bg-muted"></div>
@@ -138,9 +138,11 @@ export default function Index() {
         </section>
         <section className="py-16 space-y-16">
           <div className="text-center">
-            <h2 className="text-4xl tracking-tight font-bold">And even more</h2>
+            <h2 className="text-4xl tracking-tight font-bold">
+              {t.website.sections.extra_features.title.part1}
+            </h2>
             <p className="text-4xl tracking-tight font-bold text-muted-foreground">
-              Explore extra features
+              {t.website.sections.extra_features.title.part2}
             </p>
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
@@ -164,17 +166,19 @@ export default function Index() {
                   </div>
                 </div>
                 <h2 className="text-2xl tracking-tight font-bold">
-                  Any type of events
+                  {t.website.sections.extra_features.events.title}
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Select from predefined types or set your own.
+                  {t.website.sections.extra_features.events.text}
                 </p>
               </div>
               <div className="border bg-card rounded-2xl p-8">
                 <MailCheck className="w-16 h-16 mb-4" />
-                <h2 className="text-2xl tracking-tight font-bold">Share</h2>
+                <h2 className="text-2xl tracking-tight font-bold">
+                  {t.website.sections.extra_features.share.title}
+                </h2>
                 <p className="text-lg text-muted-foreground">
-                  Share wishlist via link or send invitation using email.
+                  {t.website.sections.extra_features.share.text}
                 </p>
               </div>
             </div>
@@ -185,10 +189,10 @@ export default function Index() {
             <div className="bg-card border px-4 space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
               <div>
                 <h2 className="text-4xl tracking-tight font-bold">
-                  Start sharing
+                  {t.website.sections.join.title.part1}
                 </h2>
                 <p className="text-4xl tracking-tight font-bold text-muted-foreground">
-                  and giving joy today
+                  {t.website.sections.join.title.part2}
                 </p>
               </div>
               <Link

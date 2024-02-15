@@ -40,14 +40,40 @@
       }
     },
     "sections": {
-      "create_wishlist": {
-        "title": "Create wishlist, add wishes in a few clicks"
+      "main_features": {
+        "title": {
+          "part1": "Everything you need",
+          "part2": "for your next event"
+        },
+        "create_wishlist": {
+          "title": "Create wishlist, add wishes in a few clicks"
+        },
+        "share_wishlist": {
+          "title": "Share lists with your friends"
+        },
+        "reserve_gifts": {
+          "title": "Guest? Reserve a gift"
+        }
       },
-      "share_wishlist": {
-        "title": "Share lists with your friends"
+      "extra_features": {
+        "title": {
+          "part1": "And even more",
+          "part2": "explore extra features"
+        },
+        "events": {
+          "title": "Any type of events",
+          "text": "Select from predefined types or set your own."
+        },
+        "share": {
+          "title": "Share",
+          "text": "Share wishlist via link or send invitation using email."
+        }
       },
-      "reserve_gifts": {
-        "title": "Guest? Reserve a gift"
+      "join": {
+        "title": {
+          "part1": "Start sharing",
+          "part2": "and giving joy today"
+        }
       }
     }
   },
