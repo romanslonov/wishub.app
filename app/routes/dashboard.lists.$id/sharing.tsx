@@ -5,7 +5,7 @@ import { ClipboardCopy, ClipboardCheck, Send } from "lucide-react";
 import { useRouteLoaderData } from "@remix-run/react";
 import { LocaleData } from "~/locales";
 
-export function CopyToClipboard({ text }: { text: string }) {
+export function Sharing({ text }: { text: string }) {
   const data = useRouteLoaderData<{ t: LocaleData }>(
     "routes/dashboard.lists.$id"
   );

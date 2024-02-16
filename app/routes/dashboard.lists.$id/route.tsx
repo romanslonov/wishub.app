@@ -10,7 +10,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
 import { ItemsList } from "./items-list";
 import { TogglePublic } from "./toggle-public";
-import { CopyToClipboard } from "./copy-to-clipboard";
+import { Sharing } from "./sharing";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -31,6 +31,7 @@ import { RemoveListAlert } from "./remove-list-alert";
 import { UpdateListDialog } from "./update-list-dialog";
 import { z } from "zod";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -299,7 +300,7 @@ export default function DashboardListsIdRoute() {
           </div>
           <TogglePublic list={list} defaultValue={list?.public} />
           {list?.public ? (
-            <CopyToClipboard text={`${routeData?.ENV.ORIGIN}/s/${list.id}`} />
+            <Sharing text={`${routeData?.ENV.ORIGIN}/s/${list.id}`} />
           ) : null}
         </div>
       </div>
@@ -308,9 +309,5 @@ export default function DashboardListsIdRoute() {
 }
 
 export function ErrorBoundary() {
-  return (
-    <div>
-      <h1>Error</h1>
-    </div>
-  );
+  return <ErrorState />;
 }

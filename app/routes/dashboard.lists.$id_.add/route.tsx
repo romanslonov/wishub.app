@@ -28,6 +28,7 @@ import { Message } from "~/components/ui/message";
 import { cn } from "~/lib/cn";
 import { Spinner } from "~/components/ui/spinner";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 const defaultItemValue = { url: "", name: "" };
 
@@ -287,4 +288,8 @@ export default function DashboardListsIdAddRoute() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }

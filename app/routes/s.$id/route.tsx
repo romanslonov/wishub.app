@@ -14,6 +14,7 @@ import { requireUserSession } from "~/auth/require-user-session.server";
 import { reserve, unreserve } from "./actions.server";
 import { z } from "zod";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -110,4 +111,8 @@ export default function PublicListRoute() {
       </div>
     </>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }

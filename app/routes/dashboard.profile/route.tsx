@@ -25,6 +25,7 @@ import { z } from "zod";
 import { prisma } from "~/lib/prisma.server";
 import { useEffect } from "react";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.profile.title }];
@@ -147,4 +148,8 @@ export default function DashboardProfile() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }

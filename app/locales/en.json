@@ -121,7 +121,7 @@
       "actions": {
         "add_wish": "Add a wish",
         "copy_url": "Copy URL",
-        "share_with_friends": "Share with friends"
+        "share_with_friends": "Share via email"
       },
       "settings": {
         "description": {
@@ -396,5 +396,9 @@
       "submitting": "Removing wish...",
       "cancel": "Cancel"
     }
+  },
+  "error_boundary": {
+    "title": "Something went wrong",
+    "subtitle": "Please try to refresh the page or come back later. We already notified about this issue and will fix it as soon as possible."
   }
 }

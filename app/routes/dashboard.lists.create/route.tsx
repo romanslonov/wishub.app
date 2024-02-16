@@ -29,6 +29,7 @@ import { Switch } from "~/components/ui/switch";
 import { requireUserSession } from "~/auth/require-user-session.server";
 import { Spinner } from "~/components/ui/spinner";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
   { title: data?.t.dashboard.create_list.meta.title },
@@ -349,4 +350,8 @@ export default function DashboardListsCreate() {
       </Form>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }

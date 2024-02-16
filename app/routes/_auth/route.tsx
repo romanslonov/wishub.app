@@ -1,4 +1,5 @@
 import { Outlet } from "@remix-run/react";
+import { ErrorState } from "~/components/error-state";
 
 export default function AuthLayout() {
   return (
@@ -8,4 +9,8 @@ export default function AuthLayout() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }

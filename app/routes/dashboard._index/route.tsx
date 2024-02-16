@@ -6,6 +6,7 @@ import { getLists, getReserves } from "./actions.server";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { getLocaleData } from "~/locales";
+import { ErrorState } from "~/components/error-state";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.lists.meta.title }];
@@ -55,4 +56,8 @@ export default function DashboardIndex() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorState />;
 }
