@@ -48,7 +48,17 @@ export default function Index() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
-                {t.website.header.title}
+                <div className="">{t.website.header.title.part1}</div>
+                <div className="relative inline-block max-w-fit px-2 mx-auto">
+                  <span className="relative z-10">
+                    {t.website.header.title.part2}
+                  </span>
+                  <img
+                    src="/underline.svg"
+                    className="mx-auto absolute inset-x-0 -bottom-2"
+                    alt="asd"
+                  />
+                </div>
               </h1>
               <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl text-balance mx-auto mb-16">
                 {t.website.header.subtitle}
@@ -124,7 +134,16 @@ export default function Index() {
                 </h2>
               </div>
               <div className="bg-muted flex items-center justify-center">
-                <img src="/creating_wishlist.png" alt="Creating list" />
+                <img
+                  className="dark:hidden"
+                  src="/creating_light.webp"
+                  alt="Creating list light"
+                />
+                <img
+                  className="hidden dark:block"
+                  src="/creating_dark.webp"
+                  alt="Creating list dark"
+                />
               </div>
             </div>
           </div>
@@ -147,7 +166,16 @@ export default function Index() {
                 </h2>
               </div>
               <div className="bg-muted flex items-center justify-center">
-                <img src="/sharing_wishlist.png" alt="Sharing list" />
+                <img
+                  className="hidden dark:block"
+                  src="/sharing_dark.webp"
+                  alt="Sharing list dark"
+                />
+                <img
+                  className="dark:hidden"
+                  src="/sharing_light.webp"
+                  alt="Sharing list light"
+                />
               </div>
             </div>
           </div>
@@ -164,7 +192,16 @@ export default function Index() {
                 </h2>
               </div>
               <div className="bg-muted flex items-center justify-center">
-                <img src="/reserving_gift.png" alt="Reserving gift" />
+                <img
+                  className="hidden dark:block"
+                  src="/reserving_dark.webp"
+                  alt="Reserving gift dark"
+                />
+                <img
+                  className="dark:hidden"
+                  src="/reserving_light.webp"
+                  alt="Reserving gift light"
+                />
               </div>
             </div>
           </div>

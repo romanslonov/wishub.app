@@ -24,7 +24,10 @@
       "title": "Wishub - Create wish lists and share with you friends"
     },
     "header": {
-      "title": "Gift only what truly matters",
+      "title": {
+        "part1": "Gift only what",
+        "part2": "truly matters"
+      },
       "subtitle": "Create wishlists, reserve gifts and present what truly matters.",
       "cta": "Join now",
       "features": {
