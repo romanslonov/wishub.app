@@ -44,13 +44,23 @@ export default function Index() {
       </div>
       <Navigation user={user} t={t} className="border-b-0" />
       <main className="flex-1">
-        <section className="mx-auto max-w-7xl text-center px-4 py-32 md:px-8 space-y-8 md:space-y-16">
+        <section className="relative -z-10 mx-auto max-w-7xl text-center px-4 pt-16 pb-32 md:px-8 space-y-8 md:space-y-16">
+          <div className="absolute -z-10 inset-0 h-[800px] w-full bg-dot">
+            <div className="absolute inset-0 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+          </div>
           <div className="space-y-8">
             <div className="space-y-4">
+              <div className="w-fit bg-card py-1.5 pl-2 pr-6 ring-4 flex items-center gap-2 ring-muted rounded-full font-medium text-sm shadow-sm border mx-auto">
+                <span className="bg-yellow-500 uppercase font-bold text-xs text-black rounded-full px-2 py-0.5">
+                  News
+                </span>
+                <span className="">Wishub in beta 🎉</span>
+              </div>
               <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
                 <div className="">{t.website.header.title.part1}</div>
-                <div className="border-b-4 pb-2 border-yellow-500 w-fit mx-auto">
+                <div className="w-fit mx-auto">
                   {t.website.header.title.part2}
+                  <img src="/underline.svg" alt="underline" className="mt-2" />
                 </div>
               </h1>
               <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl text-balance mx-auto mb-16">
@@ -247,11 +257,11 @@ export default function Index() {
             </div>
           </div>
         </section>
-        <section className="pb-16 text-center">
+        <section className="dark pb-16 text-center">
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
             <div className="bg-card border px-4 space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
               <div>
-                <h2 className="text-4xl tracking-tight font-bold">
+                <h2 className="text-4xl text-foreground tracking-tight font-bold">
                   {t.website.sections.join.title.part1}
                 </h2>
                 <p className="text-4xl tracking-tight font-bold text-muted-foreground">
