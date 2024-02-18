@@ -49,15 +49,8 @@ export default function Index() {
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
                 <div className="">{t.website.header.title.part1}</div>
-                <div className="relative inline-block max-w-fit px-2 mx-auto">
-                  <span className="relative z-10">
-                    {t.website.header.title.part2}
-                  </span>
-                  <img
-                    src="/underline.svg"
-                    className="mx-auto absolute inset-x-0 -bottom-2"
-                    alt="asd"
-                  />
+                <div className="border-b-4 pb-2 border-yellow-500 w-fit mx-auto">
+                  {t.website.header.title.part2}
                 </div>
               </h1>
               <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl text-balance mx-auto mb-16">
