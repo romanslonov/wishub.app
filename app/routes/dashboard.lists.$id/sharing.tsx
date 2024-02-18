@@ -20,7 +20,12 @@ export function Sharing({ text }: { text: string }) {
 
   return (
     <div className="flex gap-2 items-center">
-      <Button onClick={handleCopyToClipboard} size="sm" variant={"secondary"}>
+      <Button
+        className="flex-1 md:flex-initial lg:flex-1"
+        onClick={handleCopyToClipboard}
+        size="sm"
+        variant={"secondary"}
+      >
         <ClipboardCopy className="w-5 h-5 mr-2" />{" "}
         {data?.t.dashboard.list.actions.copy_url}
       </Button>
@@ -29,6 +34,7 @@ export function Sharing({ text }: { text: string }) {
         disabled
         size="sm"
         variant={"secondary"}
+        className="flex-1 md:flex-initial lg:flex-1"
       >
         <Send className="w-5 h-5 mr-2" />{" "}
         {data?.t.dashboard.list.actions.share_with_friends}
