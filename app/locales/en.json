@@ -46,13 +46,23 @@
           "part2": "for your next event"
         },
         "create_wishlist": {
-          "title": "Create wishlist, add wishes in a few clicks"
+          "title": {
+            "part1": "Create wishlist,",
+            "part2": "add wishes",
+            "part3": "in a few clicks"
+          }
         },
         "share_wishlist": {
-          "title": "Share lists with your friends"
+          "title": {
+            "part1": "Share wishlists",
+            "part2": "with your friends"
+          }
         },
         "reserve_gifts": {
-          "title": "Guest? Reserve a gift"
+          "title": {
+            "part1": "Guest?",
+            "part2": "Reserve a gifts"
+          }
         }
       },
       "extra_features": {
