@@ -96,9 +96,17 @@ export default function PublicListRoute() {
       <Navigation user={user} t={t} />
       <div className="max-w-4xl w-full flex-1 mx-auto p-4 md:p-8">
         <header className="mb-8">
-          <h1 className="text-2xl tracking-tight font-bold">{list.name}</h1>
+          <h1 className="text-2xl tracking-tight font-bold mb-1">
+            {list.name}
+          </h1>
           <p className="text-muted-foreground text-sm">
             {t.common.created_by} {list.owner.name ?? t.common.unknown}
+          </p>
+          <hr className="my-4" />
+          <p className="">
+            &laquo;
+            {list.description}
+            &raquo;
           </p>
         </header>
 
