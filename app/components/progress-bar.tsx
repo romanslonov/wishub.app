@@ -2,7 +2,6 @@ import { useNavigation } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { useSpinDelay } from "spin-delay";
 import { cn } from "~/lib/cn";
-import { Loader2 } from "lucide-react";
 
 export function ProgressBar() {
   const transition = useNavigation();
@@ -46,15 +45,6 @@ export function ProgressBar() {
           delayedPending && transition.state === "loading" && "w-8/12"
         )}
       />
-      {delayedPending && (
-        <div className="absolute flex items-center justify-center">
-          <Loader2
-            size={16}
-            className="m-1 animate-spin text-primary"
-            aria-hidden
-          />
-        </div>
-      )}
     </div>
   );
 }
