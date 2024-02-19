@@ -18,23 +18,11 @@ services:
       - caddy_data:/data
       - ./Caddyfile:/etc/caddy/Caddyfile
 
-  backend1:
+  backend:
     build:
       context: .
-      dockerfile: Dockerfile.backend1
-    container_name: wishub-backend-1
-    command: ["npm", "run", "start"]
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - database
-
-  backend2:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend2
-    container_name: wishub-backend-2
+      dockerfile: Dockerfile.backend
+    container_name: wishub-backend
     command: ["npm", "run", "start"]
     restart: always
     env_file:

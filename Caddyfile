@@ -1,62 +1,27 @@
 {$DOMAIN}:80 {
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
-}
+  reverse_proxy to http://backend:3000
 
 {$DOMAIN}:443 {
   tls {
     dns cloudflare {$CLOUDFLARE_API_TOKEN}
   }
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
-}
+  reverse_proxy to http://backend:3000
 
 www.{$DOMAIN}:80 {
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
-}
+  reverse_proxy to http://backend:3000
 
 www.{$DOMAIN}:443 {
   tls {
     dns cloudflare {$CLOUDFLARE_API_TOKEN}
   }
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
-}
+  reverse_proxy to http://backend:3000
 
 ru.{$DOMAIN}:80 {
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
-}
+  reverse_proxy to http://backend:3000
 
 ru.{$DOMAIN}:443 {
   tls {
     dns cloudflare {$CLOUDFLARE_API_TOKEN}
   }
-  reverse_proxy to http://backend1:3000 http://backend2:3000 {
-    health_path /health
-    health_interval 10s
-    health_timeout 5s
-    health_status 200
-  }
+  reverse_proxy to http://backend:3000
 }
