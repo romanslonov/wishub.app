@@ -19,7 +19,7 @@ export function Sharing({ text }: { text: string }) {
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center flex-wrap">
       <Button
         className="flex-1 md:flex-initial lg:flex-1"
         onClick={handleCopyToClipboard}

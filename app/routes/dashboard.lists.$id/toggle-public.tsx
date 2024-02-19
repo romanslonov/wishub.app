@@ -31,7 +31,7 @@ export function TogglePublic({
     <fetcher.Form
       method="put"
       ref={formRef}
-      className="flex items-center justify-between"
+      className="flex items-center justify-between gap-2"
     >
       <input type="hidden" name="intent" value="update-list-public" />
       <input
