@@ -10,13 +10,16 @@ import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
 import { cn } from "./lib/cn";
 import { Toaster } from "./components/ui/toast";
 import { ProgressBar } from "./components/progress-bar";
+import { LocaleData } from "./locales";
 
 export default function App({
   lang,
   origin,
+  t,
 }: {
   lang: string;
   origin: string;
+  t: LocaleData;
 }) {
   const theme = useTheme();
   return (
@@ -49,26 +52,26 @@ export default function App({
         <meta property="og:locale" content={lang} />
         <meta
           property="og:description"
-          content="Create wishlists, reserve gifts and present what truly matters."
+          content={`Wishub - ${t.website.meta.title}`}
         />
         <meta property="og:site_name" content="Wishub" />
-        <meta property="og:image" content={`${origin}/og-image.png`} />
+        <meta property="og:image" content={`${origin}/og-image-${lang}.png`} />
         <meta
           property="og:image:alt"
-          content="Wishub - Start sharing and giving joy today."
+          content={`Wishub - ${t.website.sections.join.title.part1} ${t.website.sections.join.title.part2}`}
         />
         {/* twitter tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="wishubdotapp" />
-        <meta name="twitter:title" content="Wishub"></meta>
+        <meta name="twitter:title" content="Wishub" />
         <meta
           name="twitter:description"
-          content="Create wishlists, reserve gifts and present what truly matters."
+          content={`Wishub - ${t.website.meta.title}`}
         />
-        <meta name="twitter:image" content={`${origin}/og-image.png`} />
+        <meta name="twitter:image" content={`${origin}/og-image-${lang}.png`} />
         <meta
           name="twitter:image:alt"
-          content="Wishub - Start sharing and giving joy today."
+          content={`Wishub - ${t.website.sections.join.title.part1} ${t.website.sections.join.title.part2}`}
         />
         <NonFlashOfWrongThemeEls />
         <Meta />

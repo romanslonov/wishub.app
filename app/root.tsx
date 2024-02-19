@@ -2,7 +2,7 @@ import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/globals.css";
 import { ThemeProvider } from "./theme-provder";
 import App from "./app";
-import { getLocaleFromRequest } from "./locales";
+import { getLocaleData, getLocaleFromRequest } from "./locales";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
@@ -12,6 +12,7 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const lang = getLocaleFromRequest(request);
+  const t = await getLocaleData(request);
   const url = new URL(request.url);
 
   return json({
@@ -20,6 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ORIGIN: url.origin,
     },
     lang,
+    t,
   });
 }
 
@@ -27,7 +29,7 @@ export default function Root() {
   const data = useLoaderData<typeof loader>();
   return (
     <ThemeProvider>
-      <App lang={data.lang} origin={data.ENV.ORIGIN} />
+      <App lang={data.lang} origin={data.ENV.ORIGIN} t={data.t} />
     </ThemeProvider>
   );
 }
