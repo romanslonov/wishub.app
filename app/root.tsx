@@ -27,7 +27,7 @@ export default function Root() {
   const data = useLoaderData<typeof loader>();
   return (
     <ThemeProvider>
-      <App lang={data.lang} />
+      <App lang={data.lang} origin={data.ENV.ORIGIN} />
     </ThemeProvider>
   );
 }

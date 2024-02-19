@@ -257,7 +257,7 @@ export default function Index() {
             </div>
           </div>
         </section>
-        <section className="dark pb-16 text-center">
+        <section className="pb-16 text-center">
           <div className="max-w-7xl px-4 md:px-8 mx-auto">
             <div className="bg-card border px-4 space-y-4 h-[50vh] rounded-2xl flex flex-col items-center justify-center gap-4">
               <div>
