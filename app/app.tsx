@@ -26,6 +26,12 @@ export default function App({
     <html lang={lang} className={cn(theme)}>
       <head>
         <meta charSet="utf-8" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+          type="image/x-icon"
+          sizes="48x48"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* theme colors preference */}
         <meta
@@ -38,13 +44,21 @@ export default function App({
           media="(prefers-color-scheme: dark)"
           content="#131316"
         />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        ></meta>
         <meta name="color-scheme" content="dark light" />
         {/* pwa */}
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link
+          rel="apple-touch-icon"
+          href="/apple-icon-180x180.png"
+          type="image/png"
+          sizes="180x180"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-icon-180x180.png"
+        />
         {/* open graph tags */}
         <meta property="og:title" content="Wishub" />
         <meta property="og:type" content="website" />
