@@ -50,10 +50,7 @@ export default function App({
         <meta property="og:type" content="website" />
         <meta property="og:url" content={origin} />
         <meta property="og:locale" content={lang} />
-        <meta
-          property="og:description"
-          content={`Wishub - ${t.website.meta.title}`}
-        />
+        <meta property="og:description" content={t.website.meta.title} />
         <meta property="og:site_name" content="Wishub" />
         <meta property="og:image" content={`${origin}/og-image-${lang}.png`} />
         <meta
@@ -64,10 +61,7 @@ export default function App({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="wishubdotapp" />
         <meta name="twitter:title" content="Wishub" />
-        <meta
-          name="twitter:description"
-          content={`Wishub - ${t.website.meta.title}`}
-        />
+        <meta name="twitter:description" content={t.website.meta.title} />
         <meta name="twitter:image" content={`${origin}/og-image-${lang}.png`} />
         <meta
           name="twitter:image:alt"
