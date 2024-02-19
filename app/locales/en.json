@@ -24,6 +24,9 @@
       "title": "Wishub - Create wish lists and share with you friends"
     },
     "header": {
+      "banner": {
+        "text": "Wishub in beta"
+      },
       "title": {
         "part1": "Gift only what",
         "part2": "truly matters"
@@ -38,7 +41,7 @@
           "title": "Easy to use"
         },
         "no_cards": {
-          "title": "No cards required"
+          "title": "Absolutely free"
         }
       }
     },

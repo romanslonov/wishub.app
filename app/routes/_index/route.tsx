@@ -44,7 +44,7 @@ export default function Index() {
       </div>
       <Navigation user={user} t={t} className="border-b-0" />
       <main className="flex-1">
-        <section className="relative -z-10 mx-auto max-w-7xl text-center px-4 pt-16 pb-32 md:px-8 space-y-8 md:space-y-16">
+        <section className="relative mx-auto max-w-7xl text-center px-4 pt-16 pb-32 md:px-8 space-y-8 md:space-y-16">
           <div className="absolute -z-10 inset-0 h-[800px] w-full bg-dot">
             <div className="absolute inset-0 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
           </div>
@@ -54,7 +54,7 @@ export default function Index() {
                 <span className="bg-yellow-500 uppercase font-bold text-xs text-black rounded-full px-2 py-0.5">
                   News
                 </span>
-                <span className="">Wishub in beta 🎉</span>
+                <span className="">{t.website.header.banner.text} 🎉</span>
               </div>
               <h1 className="text-5xl md:text-7xl font-bold max-w-2xl mx-auto text-balance">
                 <div className="">{t.website.header.title.part1}</div>
