@@ -15,7 +15,7 @@ export async function getReserves(ownerId: string) {
     },
     include: {
       list: {
-        include: { owner: true },
+        include: { owner: { select: { name: true, id: true } } },
       },
     },
   });

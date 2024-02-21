@@ -114,9 +114,12 @@
         },
         "reserves": {
           "name": "Reserved gifts",
-          "card": {
-            "list": "List",
-            "by": "by"
+          "table": {
+            "headings": {
+              "name": "Name",
+              "list": "List",
+              "start_in": "Event starts in"
+            }
           },
           "empty": {
             "title": "You don't have any reserved gifts yet",
