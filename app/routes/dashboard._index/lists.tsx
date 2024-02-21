@@ -2,19 +2,22 @@ import { cn } from "~/lib/cn";
 import { buttonVariants } from "~/components/ui/button";
 import { ListPlus, Lock, Unlock } from "lucide-react";
 import { Link, useRouteLoaderData } from "@remix-run/react";
-import { List } from "@prisma/client";
 import { type LocaleData } from "~/locales";
 
-export function Lists({
-  lists,
-}: {
-  lists: (List & {
-    _count: {
-      items: number;
-    };
-  })[];
-}) {
+interface Props {
+  lists: {
+    id: string;
+    createdAt: string;
+    name: string;
+    _count: { items: number };
+    public: boolean;
+  }[];
+}
+
+export function Lists({ lists }: Props) {
   const data = useRouteLoaderData<{ t: LocaleData }>("routes/dashboard._index");
+
+  console.log("lists", lists);
 
   if (lists.length === 0) {
     return (

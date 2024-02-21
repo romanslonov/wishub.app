@@ -9,7 +9,6 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { type Item } from "@prisma/client";
 import { Pencil } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +20,11 @@ import { LocaleData } from "~/locales";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
 
-export function UpdateItemDialog({ item }: { item: Item }) {
+export function UpdateItemDialog({
+  item,
+}: {
+  item: { id: string; name: string; url: string };
+}) {
   const data = useRouteLoaderData<{ t: LocaleData }>(
     "routes/dashboard.lists.$id"
   );

@@ -10,7 +10,6 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { List } from "@prisma/client";
 import { Pencil } from "lucide-react";
 import { Textarea } from "~/components/ui/textarea";
 import { Form, useNavigation, useRouteLoaderData } from "@remix-run/react";
@@ -21,7 +20,7 @@ export function UpdateListDialog({
   isOpen,
   setIsOpen,
 }: {
-  list: List;
+  list: { name: string; description: string | null };
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {

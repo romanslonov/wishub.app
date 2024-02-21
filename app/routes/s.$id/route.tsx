@@ -31,7 +31,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const list = await prisma.list.findFirst({
     where: { id: params.id, public: true },
-    include: { owner: true },
+    include: { owner: { select: { name: true } } },
   });
 
   if (!list) {

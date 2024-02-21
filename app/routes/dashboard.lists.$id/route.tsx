@@ -249,6 +249,10 @@ export default function DashboardListsIdRoute() {
     }
   }, [actionData, navigate]);
 
+  if (!list) {
+    return;
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">

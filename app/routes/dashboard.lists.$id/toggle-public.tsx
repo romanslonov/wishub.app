@@ -4,14 +4,13 @@ import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
 import { useEffect, useRef } from "react";
 import { useFetcher, useRouteLoaderData } from "@remix-run/react";
-import { List } from "@prisma/client";
 import { LocaleData } from "~/locales";
 
 export function TogglePublic({
   list,
   defaultValue = false,
 }: {
-  list: List;
+  list: { description: string | null; public: boolean };
   defaultValue?: boolean;
 }) {
   const data = useRouteLoaderData<{ t: LocaleData }>(

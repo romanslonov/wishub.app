@@ -1,9 +1,16 @@
-import { type Item } from "@prisma/client";
 import { useRouteLoaderData } from "@remix-run/react";
 import { ListItem } from "~/components/list-item";
 import { LocaleData } from "~/locales";
 import { RemoveItemAlert } from "./remove-item-alert";
 import { UpdateItemDialog } from "./update-item-dialog";
+
+interface Item {
+  id: string;
+  name: string;
+  url: string;
+  createdAt: string;
+  reserverId: string | null;
+}
 
 function ItemActions({ item }: { item: Item }) {
   return (

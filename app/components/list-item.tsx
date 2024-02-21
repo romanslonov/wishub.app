@@ -1,11 +1,15 @@
-import { type Item } from "@prisma/client";
 import { Link2 } from "lucide-react";
 
 export function ListItem({
   item,
   actions,
 }: {
-  item: Item;
+  item: {
+    reserverId: string | null;
+    createdAt: string;
+    url: string;
+    name: string;
+  };
   actions: React.ReactNode;
 }) {
   return (

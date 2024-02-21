@@ -1,5 +1,4 @@
 import { Button } from "~/components/ui/button";
-import { type Item } from "@prisma/client";
 import { X, Bookmark, Link2 } from "lucide-react";
 import { HTMLAttributes, useEffect } from "react";
 import { toast } from "sonner";
@@ -9,7 +8,13 @@ import { User } from "lucia";
 import { LocaleData } from "~/locales";
 
 interface ItemsListProps extends HTMLAttributes<HTMLUListElement> {
-  items: Item[];
+  items: {
+    id: string;
+    reserverId: string | null;
+    createdAt: string;
+    url: string;
+    name: string;
+  }[];
   user: User | null;
   isMyself: boolean;
 }
@@ -17,7 +22,7 @@ interface ItemsListProps extends HTMLAttributes<HTMLUListElement> {
 export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
   const data = useRouteLoaderData<{ t: LocaleData }>("routes/s.$id");
   return (
-    <ul {...props}>
+    <ul className={props.className}>
       {items.map((item) => (
         <li
           key={item.id}
@@ -58,7 +63,12 @@ export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
   );
 }
 
-function ItemActions({ item, isMyself }: { item: Item; isMyself: boolean }) {
+interface ItemActionsProps {
+  item: { id: string; reserverId: string | null };
+  isMyself: boolean;
+}
+
+function ItemActions({ item, isMyself }: ItemActionsProps) {
   const fetcher = useFetcher<{ message?: string; error?: string }>();
 
   useEffect(() => {
