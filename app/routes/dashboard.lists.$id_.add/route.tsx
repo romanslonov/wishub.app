@@ -29,7 +29,6 @@ import { cn } from "~/lib/cn";
 import { Spinner } from "~/components/ui/spinner";
 import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
-import { DevTool } from "@hookform/devtools";
 import { ClientOnly } from "remix-utils/client-only";
 
 const defaultItemValue = { url: "", name: "" };
@@ -292,8 +291,6 @@ export default function DashboardListsIdAddRoute() {
             </Form>
           )}
         </ClientOnly>
-
-        <ClientOnly>{() => <DevTool control={control} />}</ClientOnly>
       </div>
     </div>
   );
