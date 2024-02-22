@@ -420,5 +420,11 @@
   "error_boundary": {
     "title": "Something went wrong",
     "subtitle": "Please try to refresh the page or come back later. We already notified about this issue and will fix it as soon as possible."
+  },
+  "404": {
+    "meta": {
+      "title": "Wishub - Page not found"
+    },
+    "title": "We couldn't find that page"
   }
 }
