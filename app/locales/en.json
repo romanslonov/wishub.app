@@ -330,7 +330,7 @@
     "wish_name": {
       "required": "Wish name is required.",
       "too_long": "Wish name must be at most 255 characters.",
-      "unable_to_fetch": "Не удалось получить название желания. Пожалуйста, введите название самостоятельно."
+      "unable_to_fetch": "Unable to get the name of the wish. Please enter the name yourself."
     },
     "list_name": {
       "required": "Please enter a list name."

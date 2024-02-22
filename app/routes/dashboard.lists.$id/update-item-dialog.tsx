@@ -19,6 +19,7 @@ import { useFetcher, useRouteLoaderData } from "@remix-run/react";
 import { LocaleData } from "~/locales";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { getItemSchema } from "~/lib/schemas";
 
 export function UpdateItemDialog({
   item,
@@ -34,22 +35,14 @@ export function UpdateItemDialog({
   const fetcher = useFetcher<{ message: string; status: number }>();
   const isSubmitting = fetcher.state === "submitting";
 
-  const schema = z.object({
-    url: z
-      .string()
-      .min(1, data?.t.validation.url.required)
-      .url(data?.t.validation.url.invalid),
-    name: z
-      .string()
-      .min(1, data?.t.validation.wish_name.required)
-      .max(255, data?.t.validation.wish_name.too_long),
-  });
+  const schema = getItemSchema(data?.t.validation);
 
   const {
     register,
     handleSubmit,
     setValue,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     defaultValues: {
@@ -90,11 +83,13 @@ export function UpdateItemDialog({
       setValue("name", title, { shouldValidate: true });
     } catch (error) {
       setValue("url", value);
-      setError(
-        "name",
-        { message: data?.t.validation.wish_name.unable_to_fetch },
-        { shouldFocus: true }
-      );
+      if (!getValues("name")) {
+        setError(
+          "name",
+          { message: data?.t.validation.wish_name.unable_to_fetch },
+          { shouldFocus: true }
+        );
+      }
     } finally {
       setIsLoading(false);
     }

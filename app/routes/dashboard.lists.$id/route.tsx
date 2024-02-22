@@ -32,6 +32,7 @@ import { UpdateListDialog } from "./update-list-dialog";
 import { z } from "zod";
 import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
+import { getItemSchema } from "~/lib/schemas";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -125,18 +126,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (formData.get("intent") === "update-list-item") {
     try {
-      const data = z
-        .object({
-          itemId: z.string(),
-          url: z
-            .string()
-            .min(1, t.validation.url.required)
-            .url(t.validation.url.invalid),
-          name: z
-            .string()
-            .min(1, t.validation.wish_name.required)
-            .max(255, t.validation.wish_name.too_long),
-        })
+      const itemSchema = getItemSchema(t.validation);
+      const data = itemSchema
+        .extend({ itemId: z.string() })
         .parse(Object.fromEntries(formData));
 
       const { itemId, ...payload } = data;
