@@ -19,7 +19,7 @@ import { z } from "zod";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createList } from "./actions.server";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Message } from "~/components/ui/message";
 import { MinusCircle, PlusCircle } from "lucide-react";
@@ -121,11 +121,11 @@ export default function DashboardListsCreate() {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     setError,
     getFieldState,
     control,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -134,9 +134,10 @@ export default function DashboardListsCreate() {
       description: "",
       items: [],
     },
+    mode: "onChange",
   });
 
-  const items = watch("items");
+  const { fields, append, remove } = useFieldArray({ name: "items", control });
 
   async function onsubmit(data: FormData) {
     submit(data, { method: "POST", encType: "application/json" });
@@ -160,7 +161,7 @@ export default function DashboardListsCreate() {
       });
 
       if (!response.ok) {
-        throw new Error();
+        throw new Error(await response.json());
       }
 
       const { title } = await response.json();
@@ -171,6 +172,7 @@ export default function DashboardListsCreate() {
       setValue(`items.${index}.url`, value);
       setValue(`items.${index}.name`, title, { shouldValidate: true });
     } catch (error) {
+      setValue(`items.${index}.url`, value);
       setError(
         `items.${index}.name`,
         { message: t.validation.wish_name.unable_to_fetch },
@@ -259,8 +261,8 @@ export default function DashboardListsCreate() {
             {t.dashboard.create_list.wishes}
           </div>
           <ul className="space-y-4">
-            {items.map((item, index) => (
-              <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
+            {fields.map((field, index) => (
+              <li key={field.id} className="space-y-2 bg-muted rounded-xl p-4">
                 <div className="h-8 flex justify-between items-center gap-2">
                   <p className="font-medium font-mono">#{index + 1}</p>
                   <Button
@@ -269,23 +271,19 @@ export default function DashboardListsCreate() {
                     disabled={loaders.has(index)}
                     type="button"
                     className="w-8 h-8 flex items-center justify-center"
-                    onClick={() =>
-                      setValue("items", [
-                        ...items.filter((_, i) => i !== index),
-                      ])
-                    }
+                    onClick={() => remove(index)}
                   >
                     <MinusCircle size={16} />
                   </Button>
                 </div>
                 <div className="space-y-2">
                   <div className="space-y-2">
-                    <Label htmlFor={`url-${index}`}>
+                    <Label htmlFor={`url-${field.id}`}>
                       {t.dashboard.add_wishes.form.url.label}
                     </Label>
                     <div className="relative">
                       <Input
-                        id={`url-${index}`}
+                        id={`url-${field.id}`}
                         {...register(`items.${index}.url`, {
                           onChange(e) {
                             handleURLInputChange(e, index);
@@ -304,15 +302,15 @@ export default function DashboardListsCreate() {
                       <Message>{errors.items[index]?.url?.message}</Message>
                     )}
                   </div>
-                  {(item.name ||
+                  {(getValues(`items.${index}.name`) ||
                     getFieldState(`items.${index}.name`).invalid) && (
                     <div className="">
                       <div className="space-y-2">
-                        <Label htmlFor={`name-${index}`}>
+                        <Label htmlFor={`name-${field.id}`}>
                           {t.dashboard.add_wishes.form.name.label}
                         </Label>
                         <Input
-                          id={`name-${index}`}
+                          id={`name-${field.id}`}
                           {...register(`items.${index}.name`)}
                           placeholder={
                             t.dashboard.add_wishes.form.name.placeholder
@@ -335,7 +333,7 @@ export default function DashboardListsCreate() {
                 size={"icon"}
                 className="w-full"
                 variant={"outline"}
-                onClick={() => setValue("items", [...items, defaultItemValue])}
+                onClick={() => append(defaultItemValue)}
               >
                 <PlusCircle size={20} />
               </Button>

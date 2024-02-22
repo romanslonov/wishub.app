@@ -89,6 +89,7 @@ export function UpdateItemDialog({
       setValue("url", value);
       setValue("name", title, { shouldValidate: true });
     } catch (error) {
+      setValue("url", value);
       setError(
         "name",
         { message: data?.t.validation.wish_name.unable_to_fetch },
