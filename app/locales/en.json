@@ -21,7 +21,9 @@
   },
   "website": {
     "meta": {
-      "title": "Wishub - Create wish lists and share with you friends"
+      "title": "Wishub - Create wish lists and share with you friends",
+      "description": "Create wishlists, reserve gifts and present what truly matters. Wishub is a free and easy to use platform for sharing wishlists with your friends.",
+      "keywords": "wishub, wishlist, gift, present, share, event"
     },
     "header": {
       "banner": {

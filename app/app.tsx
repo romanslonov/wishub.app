@@ -26,6 +26,8 @@ export default function App({
     <html lang={lang} className={cn(theme)}>
       <head>
         <meta charSet="utf-8" />
+        <meta name="description" content={t.website.meta.description} />
+        <meta name="keywords" content={t.website.meta.keywords} />
         <link
           rel="icon"
           href="/favicon.ico"
