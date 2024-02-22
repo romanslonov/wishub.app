@@ -26,7 +26,7 @@ export default function NotFoundRoute() {
           404
         </h1>
       </div>
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 px-4">
         <Logo sizes={48} className="mx-auto" />
         <h2 className="text-2xl font-medium ">{t[404].title}</h2>
         <Link to="/" className={cn(buttonVariants({ size: "lg" }))}>
