@@ -11,7 +11,7 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -29,6 +29,8 @@ import { cn } from "~/lib/cn";
 import { Spinner } from "~/components/ui/spinner";
 import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
+import { DevTool } from "@hookform/devtools";
+import { ClientOnly } from "remix-utils/client-only";
 
 const defaultItemValue = { url: "", name: "" };
 
@@ -113,11 +115,12 @@ export default function DashboardListsIdAddRoute() {
 
   const {
     handleSubmit,
-    watch,
     register,
     setError,
     getFieldState,
     setValue,
+    control,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -127,7 +130,7 @@ export default function DashboardListsIdAddRoute() {
     mode: "onChange",
   });
 
-  const items = watch("items");
+  const { fields, append, remove } = useFieldArray({ name: "items", control });
 
   async function onsubmit(data: FormData) {
     submit(data, { method: "POST", encType: "application/json" });
@@ -162,6 +165,7 @@ export default function DashboardListsIdAddRoute() {
       setValue(`items.${index}.url`, value);
       setValue(`items.${index}.name`, title, { shouldValidate: true });
     } catch (error) {
+      setValue(`items.${index}.url`, value);
       setError(
         `items.${index}.name`,
         { message: t.validation.wish_name.unable_to_fetch },
@@ -195,96 +199,101 @@ export default function DashboardListsIdAddRoute() {
         </h1>
       </div>
       <div className="bg-card shadow-sm border rounded-2xl p-6">
-        <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
-          <ul className="space-y-4">
-            {items.map((item, index) => (
-              <li key={index} className="space-y-2 bg-muted rounded-xl p-4">
-                <div className="h-8 flex justify-between items-center gap-2">
-                  <p className="font-medium font-mono">#{index + 1}</p>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    type="button"
-                    disabled={loaders.has(index) || items.length <= 1}
-                    className="w-8 h-8 flex items-center justify-center"
-                    onClick={() =>
-                      setValue("items", [
-                        ...items.filter((_, i) => i !== index),
-                      ])
-                    }
+        <ClientOnly>
+          {() => (
+            <Form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
+              <ul className="space-y-4">
+                {fields.map((field, index) => (
+                  <li
+                    key={field.id}
+                    className="space-y-2 bg-muted rounded-xl p-4"
                   >
-                    <MinusCircle size={16} />
-                  </Button>
-                </div>
-                <div className="space-y-2">
-                  <div className="space-y-2">
-                    <Label htmlFor={`url-${index}`}>
-                      {t.dashboard.add_wishes.form.url.label}
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id={`url-${index}`}
-                        {...register(`items.${index}.url`, {
-                          onChange(e) {
-                            handleURLInputChange(e, index);
-                          },
-                        })}
-                        disabled={loaders.has(index)}
-                        placeholder={
-                          t.dashboard.add_wishes.form.url.placeholder
-                        }
-                      />
-                      {loaders.has(index) && (
-                        <Spinner className="absolute top-2 right-2" />
-                      )}
+                    <div className="h-8 flex justify-between items-center gap-2">
+                      <p className="font-medium font-mono">#{index + 1}</p>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        type="button"
+                        disabled={loaders.has(index) || fields.length <= 1}
+                        className="w-8 h-8 flex items-center justify-center"
+                        onClick={() => remove(index)}
+                      >
+                        <MinusCircle size={16} />
+                      </Button>
                     </div>
-                    {errors.items && (
-                      <Message>{errors.items[index]?.url?.message}</Message>
-                    )}
-                  </div>
-                  {(item.name ||
-                    getFieldState(`items.${index}.name`).invalid) && (
-                    <div className="">
+                    <div className="space-y-2">
                       <div className="space-y-2">
-                        <Label htmlFor={`name-${index}`}>
-                          {t.dashboard.add_wishes.form.name.label}
+                        <Label htmlFor={`url-${field.id}`}>
+                          {t.dashboard.add_wishes.form.url.label}
                         </Label>
-                        <Input
-                          id={`name-${index}`}
-                          {...register(`items.${index}.name`)}
-                          placeholder={
-                            t.dashboard.add_wishes.form.name.placeholder
-                          }
-                        />
+                        <div className="relative">
+                          <Input
+                            id={`url-${field.id}`}
+                            {...register(`items.${index}.url`, {
+                              onChange(e) {
+                                handleURLInputChange(e, index);
+                              },
+                            })}
+                            disabled={loaders.has(index)}
+                            placeholder={
+                              t.dashboard.add_wishes.form.url.placeholder
+                            }
+                          />
+                          {loaders.has(index) && (
+                            <Spinner className="absolute top-2 right-2" />
+                          )}
+                        </div>
                         {errors.items && (
-                          <Message>
-                            {errors.items[index]?.name?.message}
-                          </Message>
+                          <Message>{errors.items[index]?.url?.message}</Message>
                         )}
                       </div>
+                      {(getValues(`items.${index}.name`) ||
+                        getFieldState(`items.${index}.name`).invalid) && (
+                        <div className="">
+                          <div className="space-y-2">
+                            <Label htmlFor={`name-${field.id}`}>
+                              {t.dashboard.add_wishes.form.name.label}
+                            </Label>
+                            <Input
+                              id={`name-${field.id}`}
+                              {...register(`items.${index}.name`)}
+                              placeholder={
+                                t.dashboard.add_wishes.form.name.placeholder
+                              }
+                            />
+                            {errors.items && (
+                              <Message>
+                                {errors.items[index]?.name?.message}
+                              </Message>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </li>
-            ))}
-            <li>
-              <Button
-                type="button"
-                size={"icon"}
-                className="w-full"
-                variant={"outline"}
-                onClick={() => setValue("items", [...items, defaultItemValue])}
-              >
-                <PlusCircle size={20} />
+                  </li>
+                ))}
+                <li>
+                  <Button
+                    type="button"
+                    size={"icon"}
+                    className="w-full"
+                    variant={"outline"}
+                    onClick={() => append(defaultItemValue)}
+                  >
+                    <PlusCircle size={20} />
+                  </Button>
+                </li>
+              </ul>
+              <Button className="w-full" type="submit">
+                {isSubmitting
+                  ? t.dashboard.add_wishes.form.submitting
+                  : t.dashboard.add_wishes.form.submit}
               </Button>
-            </li>
-          </ul>
-          <Button className="w-full" type="submit">
-            {isSubmitting
-              ? t.dashboard.add_wishes.form.submitting
-              : t.dashboard.add_wishes.form.submit}
-          </Button>
-        </Form>
+            </Form>
+          )}
+        </ClientOnly>
+
+        <ClientOnly>{() => <DevTool control={control} />}</ClientOnly>
       </div>
     </div>
   );
