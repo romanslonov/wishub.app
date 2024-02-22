@@ -6,6 +6,7 @@ import {
 } from "@remix-run/node";
 import {
   Form,
+  Link,
   useActionData,
   useLoaderData,
   useNavigate,
@@ -14,7 +15,7 @@ import {
 } from "@remix-run/react";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { z } from "zod";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
 import { FormItems } from "~/components/form-items";
 import { getItemSchema } from "~/lib/schemas";
+import { cn } from "~/lib/cn";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
   { title: data?.t.dashboard.create_list.meta.title },
@@ -117,85 +119,98 @@ export default function DashboardListsCreate() {
   }, [actionData, navigate]);
 
   return (
-    <div className="max-w-2xl mx-auto bg-card space-y-8 border rounded-2xl p-4 md:p-8">
-      <h1 className="font-bold tracking-tight text-2xl">
-        {t.dashboard.create_list.title}
-      </h1>
-
-      <FormProvider {...form}>
-        <Form
-          method="post"
-          onSubmit={form.handleSubmit(onsubmit)}
-          className="space-y-4"
+    <div className="max-w-2xl mx-auto p-4">
+      <div className="mb-4">
+        <Link
+          to="/dashboard/"
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
-          <div className="space-y-2">
-            <Label htmlFor="name">
-              {t.dashboard.create_list.form.name.label}
-            </Label>
-            <Input
-              id="name"
-              {...form.register("name")}
-              placeholder={t.dashboard.create_list.form.name.placeholder}
-            />
-            {form.formState.errors.name && (
-              <Message>{form.formState.errors.name?.message}</Message>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="description">
-              {t.dashboard.create_list.form.description.label}
-            </Label>
-            <Textarea
-              id="description"
-              {...form.register("description")}
-              placeholder={t.dashboard.create_list.form.description.placeholder}
-            />
-            {form.formState.errors.name ? (
-              <Message>{form.formState.errors.description?.message}</Message>
-            ) : (
-              <Description>
-                {t.dashboard.create_list.form.description.description}
-              </Description>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Controller
-              name="public"
-              control={form.control}
-              render={({ field }) => (
-                <>
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      name="public"
-                      id="list-public-switch"
-                    />
-                    <Label htmlFor="list-public-switch">
-                      {t.dashboard.create_list.form.toggle.label}
-                    </Label>
-                  </div>
-                  <Description>
-                    {t.dashboard.create_list.form.toggle.description}
-                  </Description>
-                </>
+          {t.dashboard.add_wishes.back}
+        </Link>
+      </div>
+
+      <div className="bg-card space-y-8 border p-6 rounded-2xl">
+        <h1 className="font-bold tracking-tight text-2xl">
+          {t.dashboard.create_list.title}
+        </h1>
+
+        <FormProvider {...form}>
+          <Form
+            method="post"
+            onSubmit={form.handleSubmit(onsubmit)}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="name">
+                {t.dashboard.create_list.form.name.label}
+              </Label>
+              <Input
+                id="name"
+                {...form.register("name")}
+                placeholder={t.dashboard.create_list.form.name.placeholder}
+              />
+              {form.formState.errors.name && (
+                <Message>{form.formState.errors.name?.message}</Message>
               )}
-            />
-          </div>
-          <hr />
-          <div>
-            <div className="font-bold text-sm mb-4">
-              {t.dashboard.create_list.wishes}
             </div>
-            <FormItems />
-          </div>
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting
-              ? t.dashboard.create_list.form.submitting
-              : t.dashboard.create_list.form.submit}
-          </Button>
-        </Form>
-      </FormProvider>
+            <div className="space-y-2">
+              <Label htmlFor="description">
+                {t.dashboard.create_list.form.description.label}
+              </Label>
+              <Textarea
+                id="description"
+                {...form.register("description")}
+                placeholder={
+                  t.dashboard.create_list.form.description.placeholder
+                }
+              />
+              {form.formState.errors.name ? (
+                <Message>{form.formState.errors.description?.message}</Message>
+              ) : (
+                <Description>
+                  {t.dashboard.create_list.form.description.description}
+                </Description>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Controller
+                name="public"
+                control={form.control}
+                render={({ field }) => (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        name="public"
+                        id="list-public-switch"
+                      />
+                      <Label htmlFor="list-public-switch">
+                        {t.dashboard.create_list.form.toggle.label}
+                      </Label>
+                    </div>
+                    <Description>
+                      {t.dashboard.create_list.form.toggle.description}
+                    </Description>
+                  </>
+                )}
+              />
+            </div>
+            <hr />
+            <div>
+              <div className="font-bold text-sm mb-4">
+                {t.dashboard.create_list.wishes}
+              </div>
+              <FormItems />
+            </div>
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? t.dashboard.create_list.form.submitting
+                : t.dashboard.create_list.form.submit}
+            </Button>
+          </Form>
+        </FormProvider>
+      </div>
     </div>
   );
 }

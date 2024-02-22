@@ -108,18 +108,18 @@ export default function DashboardListsIdAddRoute() {
 
   return (
     <div className="max-w-2xl space-y-4 p-4 mx-auto">
-      <div className="space-y-4">
+      <div className="mb-4">
         <Link
           to={`/dashboard/lists/${listId}`}
           className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
           {t.dashboard.add_wishes.back}
         </Link>
-        <h1 className="text-3xl line-clamp-2 font-bold tracking-tight">
-          {t.dashboard.add_wishes.title}
-        </h1>
       </div>
       <div className="bg-card shadow-sm border rounded-2xl p-6">
+        <h1 className="text-2xl font-bold tracking-tight mb-8">
+          {t.dashboard.add_wishes.title}
+        </h1>
         <FormProvider {...form}>
           <Form onSubmit={form.handleSubmit(onsubmit)} className="space-y-4">
             <FormItems />
