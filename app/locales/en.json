@@ -118,6 +118,7 @@
             "headings": {
               "name": "Name",
               "list": "List",
+              "author": "Author",
               "start_in": "Event starts in"
             }
           },

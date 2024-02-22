@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "@remix-run/react";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { LocaleData } from "~/locales";
 
 interface Props {
@@ -47,10 +47,13 @@ export function Reserves({ reserves }: Props) {
   return (
     <div className="space-y-1.5">
       <div className="hidden md:grid bg-card border p-2 rounded-lg grid-cols-12 font-semibold text-xs text-muted-foreground gap-4 pl-6 pr-6">
-        <div className="col-span-6">
+        <div className="col-span-6 lg:col-span-8">
           {data?.t.dashboard.lists.sections.reserves.table.headings.name}
         </div>
-        <div className="col-span-6 pr-3 text-end">
+        <div className="col-span-3 lg:col-span-2">
+          {data?.t.dashboard.lists.sections.reserves.table.headings.author}
+        </div>
+        <div className="col-span-3 lg:col-span-2 pr-3 text-end">
           {data?.t.dashboard.lists.sections.reserves.table.headings.list}
         </div>
         {/* <div className="col-span-2 text-end">
@@ -64,7 +67,7 @@ export function Reserves({ reserves }: Props) {
             className="shadow-sm bg-card relative border px-3 md:px-6 py-3 rounded-xl"
           >
             <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-4">
-              <div className="col-span-6">
+              <div className="col-span-6 lg:col-span-8">
                 <a
                   href={item.url}
                   target="_blank"
@@ -75,7 +78,18 @@ export function Reserves({ reserves }: Props) {
                   <ArrowUpRight className="inline w-4 h-4" />
                 </a>
               </div>
-              <div className="col-span-6 flex items-center justify-end">
+              <div className="col-span-3 lg:col-span-2">
+                {/* <span className="text-muted-foreground">List</span>{" "} */}
+                <div className="font-medium inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border text-xs">
+                  <div className="bg-foreground shrink-0 text-background w-5 h-5 rounded-full font-bold inline-flex items-center justify-center">
+                    {item.list.owner.name[0]}
+                  </div>
+                  <div className="inline-flex whitespace-nowrap items-center gap-0.5">
+                    <span>{item.list.owner.name}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="col-span-3 lg:col-span-2 flex items-center justify-end">
                 {/* <span className="text-muted-foreground">List</span>{" "} */}
                 <a
                   href={`/s/${item.list.id}`}
