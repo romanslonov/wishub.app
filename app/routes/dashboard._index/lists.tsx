@@ -17,8 +17,6 @@ interface Props {
 export function Lists({ lists }: Props) {
   const data = useRouteLoaderData<{ t: LocaleData }>("routes/dashboard._index");
 
-  console.log("lists", lists);
-
   if (lists.length === 0) {
     return (
       <div className="border border-dashed bg-card rounded-2xl py-16 text-center">

@@ -14,8 +14,6 @@ interface Props {
 export function Reserves({ reserves }: Props) {
   const data = useRouteLoaderData<{ t: LocaleData }>("routes/dashboard._index");
 
-  console.log("reserves", reserves);
-
   if (reserves === null || reserves.length === 0) {
     return (
       <div className="border border-dashed bg-card rounded-2xl py-16 px-8 text-center">
