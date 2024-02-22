@@ -20,7 +20,7 @@ import { getUser } from "~/auth/get-user.server";
 import { Navigation } from "~/components/navigation";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
-import { getLocaleData } from "~/locales";
+import { getLocaleData, getLocaleFromRequest } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.website.meta.title }];
@@ -29,13 +29,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);
 
+  const locale = await getLocaleFromRequest(request);
+
   const t = await getLocaleData(request);
 
-  return json({ user, t });
+  return json({ user, t, locale });
 }
 
 export default function Index() {
-  const { user, t } = useLoaderData<typeof loader>();
+  const { user, t, locale } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen flex relative flex-col">
@@ -93,14 +95,24 @@ export default function Index() {
             </div>
           </div>
           <img
-            src="/preview_dark.png"
+            src={`/preview_${locale}_dark.webp`}
             alt="Preview dashboard"
-            className="mx-auto hidden dark:block max-w-7xl border shadow-2xl w-full bg-muted rounded-lg md:rounded-2xl"
+            className="mx-auto hidden md:dark:block max-w-7xl w-full shadow-xl border rounded-lg md:rounded-xl"
           />
           <img
-            src="/preview_light.png"
+            src={`/preview_${locale}_light.webp`}
             alt="Preview dashboard"
-            className="mx-auto max-w-7xl dark:hidden border shadow-2xl w-full bg-muted rounded-2xl"
+            className="mx-auto max-w-7xl hidden md:block md:dark:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
+          />
+          <img
+            src={`/preview_${locale}_mobile_light.webp`}
+            alt="Preview dashboard"
+            className="mx-auto max-w-xl dark:hidden md:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
+          />
+          <img
+            src={`/preview_${locale}_mobile_dark.webp`}
+            alt="Preview dashboard"
+            className="mx-auto max-w-xl hidden dark:block md:dark:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
           />
         </section>
         <section className="snap-y snap-mandatory md:min-h-screen space-y-8 md:space-y-0">
