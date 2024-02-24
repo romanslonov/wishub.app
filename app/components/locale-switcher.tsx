@@ -21,12 +21,12 @@ export function LocaleSwitcher() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-32">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link hrefLang="en" to={`https://${data?.ENV.DOMAIN}`}>
               English
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link hrefLang="ru" to={`https://ru.${data?.ENV.DOMAIN}`}>
               Русский
             </Link>

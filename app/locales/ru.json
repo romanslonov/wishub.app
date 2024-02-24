@@ -2,7 +2,7 @@
   "common": {
     "navigation": {
       "create_list": "Создать список",
-      "login": "Войти",
+      "login": "Вход",
       "register": "Регистрация"
     },
     "user_menu": {

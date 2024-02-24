@@ -24,7 +24,7 @@ export function Navigation({ user, t, className }: Props) {
           <Logo />
           <span className="font-bold">wishub.</span>
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           {user ? (
             <>
               <Link

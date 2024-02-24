@@ -293,8 +293,10 @@ export default function Index() {
         <footer className="text-muted-foreground text-center pb-8 text-sm">
           2023. Wishub.{" "}
           <a
-            href="/"
+            href="https://github.com/romanslonov/wishub.app"
+            target="_blank"
             className="text-foreground font-medium underline underline-offset-4 hover:no-underline"
+            rel="noreferrer"
           >
             Open source.
           </a>
