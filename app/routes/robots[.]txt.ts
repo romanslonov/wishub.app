@@ -7,7 +7,8 @@ export const loader = () => {
     : `
       User-agent: *
       Allow: /
-      Disallow: /dashboard
+      Disallow: /dashboard/
+      Disallow: /s/
     `;
 
   return new Response(content, {
