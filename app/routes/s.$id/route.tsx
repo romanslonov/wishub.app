@@ -102,12 +102,16 @@ export default function PublicListRoute() {
           <p className="text-muted-foreground text-sm">
             {t.common.created_by} {list.owner.name ?? t.common.unknown}
           </p>
-          <hr className="my-4" />
-          <p className="">
-            &laquo;
-            {list.description}
-            &raquo;
-          </p>
+          {list.description ? (
+            <>
+              <hr className="my-4" />
+              <p className="">
+                &laquo;
+                {list.description}
+                &raquo;
+              </p>
+            </>
+          ) : null}
         </header>
 
         <ItemsList
