@@ -235,6 +235,14 @@
       "submitting": "Resending..."
     }
   },
+  "shared": {
+    "list": {
+      "empty": {
+        "title": "This wishlist is empty",
+        "subtitle": "The owner of this list didn't add any wishes yet."
+      }
+    }
+  },
   "auth": {
     "login": {
       "meta": {
