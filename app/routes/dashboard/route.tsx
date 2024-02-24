@@ -1,13 +1,14 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { requireUserSession } from "~/auth/require-user-session.server";
+import { protectedRoute } from "~/auth/protected-route";
 import { Navigation } from "~/components/navigation";
 import { getLocaleData } from "~/locales";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { user } = await requireUserSession(request);
-
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  protectedRoute(context);
   const t = await getLocaleData(request);
+
+  const { user } = context;
 
   return json({ user, t });
 };

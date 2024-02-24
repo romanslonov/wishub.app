@@ -1,5 +1,5 @@
 import type { LinksFunction } from "@remix-run/node";
-import stylesheet from "~/globals.css";
+import stylesheet from "~/globals.css?url";
 import { ThemeProvider } from "./theme-provder";
 import App from "./app";
 import { getLocaleData, getLocaleFromRequest } from "./locales";

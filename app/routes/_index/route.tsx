@@ -16,7 +16,6 @@ import {
   Sparkles,
   WalletCards,
 } from "lucide-react";
-import { getUser } from "~/auth/get-user.server";
 import { Navigation } from "~/components/navigation";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
@@ -26,9 +25,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.website.meta.title }];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
-
+export async function loader({
+  request,
+  context: { user },
+}: LoaderFunctionArgs) {
   const locale = await getLocaleFromRequest(request);
 
   const t = await getLocaleData(request);
