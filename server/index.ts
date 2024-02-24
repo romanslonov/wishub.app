@@ -1,10 +1,10 @@
 import { createRequestHandler } from "@remix-run/express";
-import { installGlobals } from "@remix-run/node";
+import { type ServerBuild, installGlobals } from "@remix-run/node";
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
-import { csrfProtection } from "~/auth/csrf-protection.js";
-import { validateRequest } from "~/auth/validate-request.js";
+import { csrfProtection } from "./csrf-protection.js";
+import { validateRequest } from "./validate-request.js";
 
 installGlobals();
 
@@ -18,16 +18,18 @@ const viteDevServer =
       );
 
 const remixHandler = createRequestHandler({
-  build: viteDevServer
+  build: (viteDevServer
     ? () => viteDevServer.ssrLoadModule("virtual:remix/server-build")
-    : await import("./build/server/index.js"),
+    : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore this should exist before running the server
+      // but it may not exist just yet.
+      // eslint-disable-next-line import/no-unresolved
+      await import("../build/server/index.js")) as unknown as ServerBuild,
   getLoadContext: async (request, response) => {
     const { session, user } = await validateRequest(request, response);
-    return {
-      session,
-      user,
-    };
+    return { session, user };
   },
+  mode: process.env.NODE_ENV,
 });
 
 const app = express();

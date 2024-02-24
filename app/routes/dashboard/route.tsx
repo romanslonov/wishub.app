@@ -5,10 +5,8 @@ import { Navigation } from "~/components/navigation";
 import { getLocaleData } from "~/locales";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  protectedRoute(context);
+  const { user } = protectedRoute(context);
   const t = await getLocaleData(request);
-
-  const { user } = context;
 
   return json({ user, t });
 };
