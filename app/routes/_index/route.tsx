@@ -126,7 +126,7 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-green-100">
+              <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-green-100">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   <div className="text-green-500">
                     {
@@ -164,7 +164,7 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-pink-100">
+              <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-pink-100">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   <div className="text-pink-500">
                     {
@@ -196,7 +196,7 @@ export default function Index() {
           </div>
           <div className="max-w-7xl px-4 md:px-8 mx-auto md:min-h-screen flex flex-col items-center justify-center md:sticky md:top-0 md:snap-start">
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-center border-r-2 px-8 md:px-16 border-black py-32 bg-sky-200">
+              <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-sky-200">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
                   <div className="text-sky-500">
                     {t.website.sections.main_features.reserve_gifts.title.part1}
