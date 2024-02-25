@@ -4,29 +4,29 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { NonFlashOfWrongThemeEls, useTheme } from "./theme-provder";
 import { cn } from "./lib/cn";
 import { Toaster } from "./components/ui/toast";
 import { ProgressBar } from "./components/progress-bar";
-import { LocaleData } from "./locales";
+import { Locale, LocaleData } from "./locales";
 
-export default function App({
-  lang,
-  origin,
-  t,
-}: {
-  lang: string;
-  origin: string;
-  t: LocaleData;
-}) {
+export default function App() {
+  const data = useRouteLoaderData<{
+    t: LocaleData;
+    lang: Locale;
+    origin: string;
+    ENV: { UMAMI_ID?: string };
+  }>("root");
   const theme = useTheme();
+
   return (
-    <html lang={lang} className={cn(theme)}>
+    <html lang={data?.lang} className={cn(theme)}>
       <head>
         <meta charSet="utf-8" />
-        <meta name="description" content={t.website.meta.description} />
-        <meta name="keywords" content={t.website.meta.keywords} />
+        <meta name="description" content={data?.t.website.meta.description} />
+        <meta name="keywords" content={data?.t.website.meta.keywords} />
         <link
           rel="icon"
           href="/favicon.ico"
@@ -63,30 +63,42 @@ export default function App({
         {/* open graph tags */}
         <meta property="og:title" content="Wishub" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={origin} />
-        <meta property="og:locale" content={lang} />
-        <meta property="og:description" content={t.website.meta.description} />
+        <meta property="og:url" content={data?.origin} />
+        <meta property="og:locale" content={data?.lang} />
+        <meta
+          property="og:description"
+          content={data?.t.website.meta.description}
+        />
         <meta property="og:site_name" content="Wishub" />
-        <meta property="og:image" content={`${origin}/og-image-${lang}.png`} />
+        <meta
+          property="og:image"
+          content={`${data?.origin}/og-image-${data?.lang}.png`}
+        />
         <meta
           property="og:image:alt"
-          content={`Wishub - ${t.website.sections.join.title.part1} ${t.website.sections.join.title.part2}`}
+          content={`Wishub - ${data?.t.website.sections.join.title.part1} ${data?.t.website.sections.join.title.part2}`}
         />
         {/* twitter tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="wishubdotapp" />
         <meta name="twitter:title" content="Wishub" />
-        <meta name="twitter:description" content={t.website.meta.description} />
-        <meta name="twitter:image" content={`${origin}/og-image-${lang}.png`} />
+        <meta
+          name="twitter:description"
+          content={data?.t.website.meta.description}
+        />
+        <meta
+          name="twitter:image"
+          content={`${data?.origin}/og-image-${data?.lang}.png`}
+        />
         <meta
           name="twitter:image:alt"
-          content={`Wishub - ${t.website.sections.join.title.part1} ${t.website.sections.join.title.part2}`}
+          content={`Wishub - ${data?.t.website.sections.join.title.part1} ${data?.t.website.sections.join.title.part2}`}
         />
-        {import.meta.env.VITE_UMAMI_ID ? (
+        {data?.ENV.UMAMI_ID ? (
           <script
             defer
             src="https://analytics.eu.umami.is/script.js"
-            data-website-id={import.meta.env.VITE_UMAMI_ID}
+            data-website-id={data?.ENV.UMAMI_ID}
           ></script>
         ) : null}
         <NonFlashOfWrongThemeEls />

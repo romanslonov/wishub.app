@@ -3,7 +3,6 @@ import stylesheet from "~/globals.css?url";
 import { ThemeProvider } from "./theme-provder";
 import App from "./app";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -16,6 +15,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return json({
     ENV: {
       DOMAIN: process.env.DOMAIN!,
+      UMAMI_ID: process.env.UMAMI_ID!,
       ORIGIN: url.origin,
     },
     lang,
@@ -24,10 +24,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 export default function Root() {
-  const data = useLoaderData<typeof loader>();
   return (
     <ThemeProvider>
-      <App lang={data.lang} origin={data.ENV.ORIGIN} t={data.t} />
+      <App />
     </ThemeProvider>
   );
 }
