@@ -16,8 +16,7 @@ export default function App() {
   const data = useRouteLoaderData<{
     t: LocaleData;
     lang: Locale;
-    origin: string;
-    ENV: { UMAMI_ID?: string };
+    ENV: { UMAMI_ID?: string; ORIGIN: string };
   }>("root");
   const theme = useTheme();
 
@@ -63,7 +62,7 @@ export default function App() {
         {/* open graph tags */}
         <meta property="og:title" content="Wishub" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={data?.origin} />
+        <meta property="og:url" content={data?.ENV.ORIGIN} />
         <meta property="og:locale" content={data?.lang} />
         <meta
           property="og:description"
@@ -72,7 +71,7 @@ export default function App() {
         <meta property="og:site_name" content="Wishub" />
         <meta
           property="og:image"
-          content={`${data?.origin}/og-image-${data?.lang}.png`}
+          content={`${data?.ENV.ORIGIN}/og-image-${data?.lang}.png`}
         />
         <meta
           property="og:image:alt"
@@ -88,7 +87,7 @@ export default function App() {
         />
         <meta
           name="twitter:image"
-          content={`${data?.origin}/og-image-${data?.lang}.png`}
+          content={`${data?.ENV.ORIGIN}/og-image-${data?.lang}.png`}
         />
         <meta
           name="twitter:image:alt"
