@@ -82,6 +82,13 @@ export default function App({
           name="twitter:image:alt"
           content={`Wishub - ${t.website.sections.join.title.part1} ${t.website.sections.join.title.part2}`}
         />
+        {import.meta.env.VITE_UMAMI_ID ? (
+          <script
+            defer
+            src="https://analytics.eu.umami.is/script.js"
+            data-website-id={import.meta.env.VITE_UMAMI_ID}
+          ></script>
+        ) : null}
         <NonFlashOfWrongThemeEls />
         <Meta />
         <Links />
