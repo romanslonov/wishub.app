@@ -30,7 +30,9 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "isbot": "^4.4.0",
     "lucia": "^3.0.1",
     "lucide-react": "^0.309.0",
@@ -46,7 +48,6 @@
     "spin-delay": "^1.2.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "cross-env": "^7.0.3",
     "tsx": "^4.7.1",
     "zod": "^3.22.4"
   },

@@ -3,6 +3,7 @@ import { type ServerBuild, installGlobals } from "@remix-run/node";
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 import { csrfProtection } from "./csrf-protection.js";
 import { validateRequest } from "./validate-request.js";
 import { getLocaleData, getLocaleFromRequest } from "~/locales/index.js";
@@ -37,8 +38,17 @@ const remixHandler = createRequestHandler({
 
 const app = express();
 
-// CSRF protection
 app.use(csrfProtection);
+
+const limiter = rateLimit({
+  windowMs: 15 * 1000,
+  limit: 25,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.set("trust proxy", true);
+app.use(limiter);
 
 app.use(compression());
 
