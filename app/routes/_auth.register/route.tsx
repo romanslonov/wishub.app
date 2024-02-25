@@ -5,7 +5,6 @@ import {
   type MetaFunction,
   LoaderFunctionArgs,
 } from "@remix-run/node";
-import { allowAnonymous } from "~/auth/allow-anonymous";
 import {
   Form,
   Link,
@@ -16,26 +15,26 @@ import {
 import { useEffect, useRef } from "react";
 import { Message } from "~/components/ui/message";
 import { Label } from "~/components/ui/label";
-import { getLocaleData } from "~/locales";
 import { register } from "./register.server";
 import { Logo } from "~/components/logo";
+import { onlyAnonymous } from "~/auth/guards/only-anonymous.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.register.meta.title }];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  await allowAnonymous(request);
+export async function loader({ context }: LoaderFunctionArgs) {
+  onlyAnonymous(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   return {
     t,
   };
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  return await register(request);
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  return await register(request, context);
 };
 
 export default function RegisterRoute() {

@@ -24,15 +24,14 @@ import {
   updateItem,
   updateList,
 } from "./actions.server";
-import { requireUserSession } from "~/auth/require-user-session.server";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { RemoveListAlert } from "./remove-list-alert";
 import { UpdateListDialog } from "./update-list-dialog";
 import { z } from "zod";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
 import { getItemSchema } from "~/lib/schemas";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -40,23 +39,21 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const session = await requireUserSession(request);
-
-  const t = await getLocaleData(request);
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const { session } = protectedRoute(context);
 
   const list = await getListWithItems({
     listId: params.id!,
-    ownerId: session.user.id,
+    ownerId: session.userId,
   });
 
-  return { list, t };
+  return { list, t: context.t };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
-  await requireUserSession(request);
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  protectedRoute(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   const formData = await request.formData();
 

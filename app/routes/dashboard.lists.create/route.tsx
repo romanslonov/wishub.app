@@ -26,29 +26,26 @@ import { Message } from "~/components/ui/message";
 import { Textarea } from "~/components/ui/textarea";
 import { Description } from "~/components/ui/description";
 import { Switch } from "~/components/ui/switch";
-import { requireUserSession } from "~/auth/require-user-session.server";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
 import { FormItems } from "~/components/form-items";
 import { getItemSchema } from "~/lib/schemas";
 import { cn } from "~/lib/cn";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
   { title: data?.t.dashboard.create_list.meta.title },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  await requireUserSession(request);
+export async function loader({ context }: LoaderFunctionArgs) {
+  protectedRoute(context);
 
-  const t = await getLocaleData(request);
-
-  return { t };
+  return { t: context.t };
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const { user } = await requireUserSession(request);
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  const { user } = protectedRoute(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   const formData = await request.json();
 

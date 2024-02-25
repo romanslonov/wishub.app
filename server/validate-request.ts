@@ -1,4 +1,4 @@
-import { lucia } from "~/auth/lucia";
+import { lucia } from "~/auth/lucia.server";
 import type { Request, Response } from "express";
 import { parseCookies } from "oslo/cookie";
 

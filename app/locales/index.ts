@@ -1,7 +1,9 @@
+import { type Request } from "express";
+
 export type Locale = "en" | "ru";
 
 export function getLocaleFromRequest(request: Request): Locale {
-  return (request.headers.get("current-locale") as "ru" | undefined) || "en";
+  return (request.headers?.["current-locale"] as "ru" | undefined) || "en";
 }
 
 export async function getLocaleData(request: Request) {

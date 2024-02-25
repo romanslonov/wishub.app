@@ -22,24 +22,18 @@ import { Label } from "~/components/ui/label";
 import { Message } from "~/components/ui/message";
 import { sendPasswordResetToken } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
-import { getLocaleData, getLocaleFromRequest } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.reset_password.meta.title }];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const t = await getLocaleData(request);
-
-  return { t };
+export async function loader({ context }: LoaderFunctionArgs) {
+  return { t: context.t };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { t, lang } = context;
   const formData = await request.formData();
-
-  const t = await getLocaleData(request);
-
-  const locale = getLocaleFromRequest(request);
 
   const schema = z.object({
     email: z
@@ -59,7 +53,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const verificationToken = await createPasswordResetToken(user.id);
     const verificationLink =
-      `https://${locale === "en" ? "" : `${locale}.`}${
+      `https://${lang === "en" ? "" : `${lang}.`}${
         process.env.DOMAIN
       }/reset-password/` + verificationToken;
 

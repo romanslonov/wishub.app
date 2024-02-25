@@ -1,10 +1,9 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { z } from "zod";
-import { getUser } from "~/auth/get-user.server";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const requestURL = new URL(request.url);
-  const user = await getUser(request);
+  const { user } = context;
 
   if (!user) {
     return json(

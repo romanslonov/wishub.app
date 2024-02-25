@@ -5,6 +5,7 @@ import express from "express";
 import morgan from "morgan";
 import { csrfProtection } from "./csrf-protection.js";
 import { validateRequest } from "./validate-request.js";
+import { getLocaleData, getLocaleFromRequest } from "~/locales/index.js";
 
 installGlobals();
 
@@ -27,7 +28,9 @@ const remixHandler = createRequestHandler({
       await import("../build/server/index.js")) as unknown as ServerBuild,
   getLoadContext: async (request, response) => {
     const { session, user } = await validateRequest(request, response);
-    return { session, user };
+    const lang = getLocaleFromRequest(request);
+    const t = await getLocaleData(request);
+    return { session, user, t, lang };
   },
   mode: process.env.NODE_ENV,
 });

@@ -14,13 +14,12 @@ import {
 import { isWithinExpirationDate } from "oslo";
 import { useEffect, useRef } from "react";
 import { z } from "zod";
-import { lucia } from "~/auth/lucia";
+import { lucia } from "~/auth/lucia.server";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Message } from "~/components/ui/message";
 import { prisma } from "~/lib/prisma.server";
 import { hashPassword } from "./hash-password.server";
-import { getLocaleData } from "~/locales";
 import { Label } from "~/components/ui/label";
 import { Logo } from "~/components/logo";
 
@@ -28,19 +27,17 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.auth.set_password.meta.title }];
 };
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
-  const t = await getLocaleData(request);
-
+export async function loader({ params, context }: LoaderFunctionArgs) {
   return {
     token: params.token,
-    t,
+    t: context.t,
   };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   const schema = z.object({
     token: z.string().min(1, t.validation.token.required),

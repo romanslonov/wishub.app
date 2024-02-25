@@ -1,12 +1,11 @@
-import { json, redirect } from "@remix-run/node";
+import { AppLoadContext, json, redirect } from "@remix-run/node";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { z } from "zod";
 import { generateEmailVerificationCode } from "~/auth/generate-email-verification-code";
-import { lucia } from "~/auth/lucia";
+import { lucia } from "~/auth/lucia.server";
 import { sendVerificationEmail } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
-import { getLocaleData } from "~/locales";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -17,8 +16,8 @@ const schema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters."),
 });
 
-export async function register(request: Request) {
-  const t = await getLocaleData(request);
+export async function register(request: Request, context: AppLoadContext) {
+  const { t } = context;
 
   try {
     const formData = await request.formData();

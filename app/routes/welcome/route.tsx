@@ -17,16 +17,15 @@ import { isWithinExpirationDate } from "oslo";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { getUser } from "~/auth/get-user.server";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { prisma } from "~/lib/prisma.server";
 import { sendVerificationEmail } from "~/lib/email";
-import { lucia } from "~/auth/lucia";
+import { lucia } from "~/auth/lucia.server";
 import { Navigation } from "~/components/navigation";
 import { MailOpen } from "lucide-react";
-import { getLocaleData } from "~/locales";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
   {
@@ -34,10 +33,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
   },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
+export async function loader({ context }: LoaderFunctionArgs) {
+  const { user } = protectedRoute(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   if (user && user.emailVerified) {
     throw redirect("/dashboard");
@@ -46,11 +45,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { user, t };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const t = await getLocaleData(request);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { t } = context;
 
   if (request.method === "POST") {
-    const user = await getUser(request);
+    const { user } = protectedRoute(context);
     const formData = await request.formData();
 
     try {
@@ -112,7 +111,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (request.method === "PUT") {
-    const user = await getUser(request);
+    const { user } = protectedRoute(context);
 
     if (!user?.id) {
       throw redirect("/login");

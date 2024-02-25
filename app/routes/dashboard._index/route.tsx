@@ -4,23 +4,20 @@ import { Reserves, ReservesSkeleton } from "./reserves";
 import { getLists, getReserves } from "./actions.server";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
-import { protectedRoute } from "~/auth/protected-route";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.lists.meta.title }];
 };
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ context }: LoaderFunctionArgs) {
   const { user } = protectedRoute(context);
-
-  const t = await getLocaleData(request);
 
   const lists = getLists(user.id);
   const reserves = getReserves(user.id);
 
-  return defer({ lists, reserves, t });
+  return defer({ lists, reserves, t: context.t });
 }
 
 export default function DashboardIndex() {

@@ -12,7 +12,6 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect } from "react";
-import { requireUserSession } from "~/auth/require-user-session.server";
 import { addListItems } from "./actions.server";
 import {
   ActionFunctionArgs,
@@ -22,10 +21,10 @@ import {
 } from "@remix-run/node";
 import { toast } from "sonner";
 import { cn } from "~/lib/cn";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
 import { FormItems } from "~/components/form-items";
 import { getItemSchema } from "~/lib/schemas";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 const defaultItemValue = { url: "", name: "" };
 
@@ -33,18 +32,20 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.t.dashboard.add_wishes.meta.title}` }];
 };
 
-export async function loader({ request, params: { id } }: LoaderFunctionArgs) {
-  await requireUserSession(request);
+export async function loader({ params: { id }, context }: LoaderFunctionArgs) {
+  protectedRoute(context);
 
-  const t = await getLocaleData(request);
-
-  return { listId: id, t };
+  return { listId: id, t: context.t };
 }
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  await requireUserSession(request);
+export const action = async ({
+  request,
+  params,
+  context,
+}: ActionFunctionArgs) => {
+  protectedRoute(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   const formData = await request.json();
 

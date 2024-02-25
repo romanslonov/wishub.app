@@ -19,25 +19,19 @@ import {
 import { Navigation } from "~/components/navigation";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
-import { getLocaleData, getLocaleFromRequest } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.website.meta.title }];
 };
 
 export async function loader({
-  request,
-  context: { user },
+  context: { user, t, lang },
 }: LoaderFunctionArgs) {
-  const locale = await getLocaleFromRequest(request);
-
-  const t = await getLocaleData(request);
-
-  return json({ user, t, locale });
+  return json({ user, t, lang });
 }
 
 export default function Index() {
-  const { user, t, locale } = useLoaderData<typeof loader>();
+  const { user, t, lang } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen flex relative flex-col">
@@ -95,22 +89,22 @@ export default function Index() {
             </div>
           </div>
           <img
-            src={`/preview_${locale}_dark.webp`}
+            src={`/preview_${lang}_dark.webp`}
             alt="Preview dashboard"
             className="mx-auto hidden md:dark:block max-w-7xl w-full shadow-xl border rounded-lg md:rounded-xl"
           />
           <img
-            src={`/preview_${locale}_light.webp`}
+            src={`/preview_${lang}_light.webp`}
             alt="Preview dashboard"
             className="mx-auto max-w-7xl hidden md:block md:dark:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
           />
           <img
-            src={`/preview_${locale}_mobile_light.webp`}
+            src={`/preview_${lang}_mobile_light.webp`}
             alt="Preview dashboard"
             className="mx-auto max-w-xl dark:hidden md:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
           />
           <img
-            src={`/preview_${locale}_mobile_dark.webp`}
+            src={`/preview_${lang}_mobile_dark.webp`}
             alt="Preview dashboard"
             className="mx-auto max-w-xl hidden dark:block md:dark:hidden w-full shadow-xl border rounded-lg md:rounded-xl"
           />

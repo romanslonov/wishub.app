@@ -1,14 +1,12 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { protectedRoute } from "~/auth/protected-route";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 import { Navigation } from "~/components/navigation";
-import { getLocaleData } from "~/locales";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const { user } = protectedRoute(context);
-  const t = await getLocaleData(request);
 
-  return json({ user, t });
+  return json({ user, t: context.t });
 };
 
 export default function DashboardLayout() {

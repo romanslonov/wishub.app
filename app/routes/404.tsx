@@ -3,7 +3,6 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Logo } from "~/components/logo";
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/lib/cn";
-import { getLocaleData } from "~/locales";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => [
   {
@@ -11,10 +10,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
   },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const t = await getLocaleData(request);
-
-  return { t };
+export async function loader({ context }: LoaderFunctionArgs) {
+  return { t: context.t };
 }
 
 export default function NotFoundRoute() {

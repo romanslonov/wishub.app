@@ -1,12 +1,11 @@
-import { json, redirect } from "@remix-run/node";
+import { AppLoadContext, json, redirect } from "@remix-run/node";
 import { Argon2id } from "oslo/password";
 import { z } from "zod";
-import { lucia } from "~/auth/lucia";
+import { lucia } from "~/auth/lucia.server";
 import { prisma } from "~/lib/prisma.server";
-import { getLocaleData } from "~/locales";
 
-export async function login(request: Request) {
-  const t = await getLocaleData(request);
+export async function login(request: Request, context: AppLoadContext) {
+  const { t } = context;
 
   const schema = z.object({
     email: z

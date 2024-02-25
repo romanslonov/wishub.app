@@ -7,7 +7,6 @@ import {
   useSubmit,
 } from "@remix-run/react";
 
-import { requireUserSession } from "~/auth/require-user-session.server";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -24,35 +23,32 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { prisma } from "~/lib/prisma.server";
 import { useEffect } from "react";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.profile.title }];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const session = await requireUserSession(request);
-
-  const t = await getLocaleData(request);
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const { session } = protectedRoute(context);
 
   const user = await prisma.user.findUniqueOrThrow({
-    where: { id: session.user.id },
+    where: { id: session.userId },
     select: { email: true, name: true },
   });
 
-  return json({ user, t });
+  return json({ user, t: context.t });
 };
 
-export async function action({ request }: ActionFunctionArgs) {
-  const session = await requireUserSession(request);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { session } = protectedRoute(context);
+  const { t } = context;
   const data = await request.json();
-
-  const t = await getLocaleData(request);
 
   try {
     await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: session.userId },
       data: data,
     });
 

@@ -7,14 +7,12 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
-import { getUser } from "~/auth/get-user.server";
 import { useLoaderData } from "@remix-run/react";
 import { Navigation } from "~/components/navigation";
-import { requireUserSession } from "~/auth/require-user-session.server";
 import { reserve, unreserve } from "./actions.server";
 import { z } from "zod";
-import { getLocaleData } from "~/locales";
 import { ErrorState } from "~/components/error-state";
+import { protectedRoute } from "~/auth/guards/protected-route.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -24,10 +22,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const user = await getUser(request);
-
-  const t = await getLocaleData(request);
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const { user, t } = context;
 
   const list = await prisma.list.findFirst({
     where: { id: params.id, public: true },
@@ -46,10 +42,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   return { items, list, user, t };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const session = await requireUserSession(request);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { session } = protectedRoute(context);
 
-  const t = await getLocaleData(request);
+  const { t } = context;
 
   if (request.method === "POST") {
     const formData = await request.formData();
@@ -68,7 +64,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (action === "unreserve") {
         await unreserve(itemId);
       } else if (action === "reserve") {
-        await reserve(session.user.id, itemId);
+        await reserve(session.userId, itemId);
       }
 
       return json({
