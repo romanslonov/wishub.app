@@ -15,7 +15,6 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - caddy_data:/data
       - ./Caddyfile:/etc/caddy/Caddyfile
 
   backend:
@@ -39,8 +38,4 @@ services:
     ports:
       - 127.0.0.1:5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  caddy_data:
-  pgdata:
+      - ./.postgtres:/var/lib/postgresql/data
