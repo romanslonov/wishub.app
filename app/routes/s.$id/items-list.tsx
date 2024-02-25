@@ -1,5 +1,5 @@
 import { Button } from "~/components/ui/button";
-import { X, Bookmark, Link2 } from "lucide-react";
+import { X, Link2, Gift } from "lucide-react";
 import { HTMLAttributes, useEffect } from "react";
 import { toast } from "sonner";
 import { useFetcher, useRouteLoaderData } from "@remix-run/react";
@@ -93,6 +93,7 @@ interface ItemActionsProps {
 }
 
 function ItemActions({ item, isMyself }: ItemActionsProps) {
+  const data = useRouteLoaderData<{ t: LocaleData }>("routes/s.$id");
   const fetcher = useFetcher<{ message?: string; error?: string }>();
 
   useEffect(() => {
@@ -111,8 +112,23 @@ function ItemActions({ item, isMyself }: ItemActionsProps) {
         value={item.reserverId ? "unreserve" : "reserve"}
         name="action"
       />
-      <Button type="submit" variant="outline" size="icon" className="w-8 h-8">
-        {item.reserverId ? <X size={16} /> : <Bookmark size={16} />}
+      <Button
+        type="submit"
+        size="sm"
+        variant={item.reserverId ? "outline" : "default"}
+        className="gap-1.5"
+      >
+        {item.reserverId ? (
+          <>
+            <X size={16} />
+            <span>{data?.t.shared.list.actions.unreserve}</span>
+          </>
+        ) : (
+          <>
+            <Gift size={16} />
+            <span>{data?.t.shared.list.actions.reserve}</span>
+          </>
+        )}
       </Button>
     </fetcher.Form>
   );

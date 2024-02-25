@@ -240,6 +240,10 @@
       "empty": {
         "title": "This wishlist is empty",
         "subtitle": "The owner of this list didn't add any wishes yet."
+      },
+      "actions": {
+        "reserve": "Gift",
+        "unreserve": "Cancel"
       }
     }
   },
