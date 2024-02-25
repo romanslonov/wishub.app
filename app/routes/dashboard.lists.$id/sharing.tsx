@@ -13,7 +13,7 @@ export function Sharing({ text }: { text: string }) {
 
   async function handleCopyToClipboard() {
     await copyToClipboard(text);
-    toast("Link has been copied. Now you can share it.", {
+    toast(data?.t.toasts.link_was_copied, {
       icon: <ClipboardCheck />,
     });
   }

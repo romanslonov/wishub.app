@@ -385,7 +385,8 @@
     "wish_was_removed": "Wish was removed.",
     "wish_was_updated": "Wish was updated.",
     "gift_was_reserved": "Gift was reserved.",
-    "gift_was_unreserved": "You removed reserve from this gift."
+    "gift_was_unreserved": "You removed reserve from this gift.",
+    "link_was_copied": "Link has been copied. Now you can share it."
   },
   "modals": {
     "update_list": {
