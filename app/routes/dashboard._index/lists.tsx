@@ -49,12 +49,16 @@ export function Lists({ lists }: Props) {
         <li key={item.id}>
           <Link
             to={`./lists/${item.id}`}
-            className="border p-6 rounded-xl shadow-sm block bg-card hover:border-foreground transition-colors"
+            className="border flex flex-col justify-between p-6 rounded-xl shadow-sm h-full bg-card hover:border-foreground transition-colors"
           >
-            <time className="text-sm text-muted-foreground">
-              {new Date(item.createdAt).toLocaleDateString()}
-            </time>
-            <h2 className="font-medium text-lg mb-4">{item.name}</h2>
+            <div>
+              <time className="text-sm text-muted-foreground">
+                {new Date(item.createdAt).toLocaleDateString()}
+              </time>
+              <h2 className="font-medium line-clamp-2 text-lg mb-4">
+                {item.name}
+              </h2>
+            </div>
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <span>{item._count.items}</span>{" "}
