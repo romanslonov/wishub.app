@@ -40,15 +40,27 @@ const app = express();
 
 app.use(csrfProtection);
 
-const limiter = rateLimit({
-  windowMs: 15 * 1000,
-  limit: 25,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 app.set("trust proxy", true);
-app.use(limiter);
+
+app.use((req, res, next) => {
+  const routes = ["/login", "/register", "/reset-password", "/welcome"];
+  if (
+    req.method !== "GET" &&
+    req.method !== "HEAD" &&
+    routes.some((route) => req.path.includes(route))
+  ) {
+    const limiter = rateLimit({
+      windowMs: 15 * 1000,
+      limit: 25,
+      standardHeaders: true,
+      legacyHeaders: false,
+    });
+
+    return limiter(req, res, next);
+  }
+
+  next();
+});
 
 app.use(compression());
 
