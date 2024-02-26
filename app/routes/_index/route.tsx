@@ -122,7 +122,7 @@ export default function Index() {
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-green-100">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  <div className="text-green-500">
+                  <div className="text-green-600">
                     {
                       t.website.sections.main_features.create_wishlist.title
                         .part1
@@ -160,7 +160,7 @@ export default function Index() {
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-pink-100">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  <div className="text-pink-500">
+                  <div className="text-pink-600">
                     {
                       t.website.sections.main_features.share_wishlist.title
                         .part1
@@ -192,7 +192,7 @@ export default function Index() {
             <div className="grid grid-cols-1 md:grid-cols-2 border-2 border-black md:min-h-[90vh] w-full rounded-2xl overflow-hidden">
               <div className="flex items-center justify-center border-b-2 md:border-b-0 md:border-r-2 px-8 md:px-16 border-black py-32 bg-sky-200">
                 <h2 className="text-black text-5xl font-bold mx-auto text-center">
-                  <div className="text-sky-500">
+                  <div className="text-sky-600">
                     {t.website.sections.main_features.reserve_gifts.title.part1}
                   </div>
                   <div>

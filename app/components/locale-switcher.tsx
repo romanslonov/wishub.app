@@ -17,6 +17,7 @@ export function LocaleSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button size="sm" className="w-9 p-0" variant="outline">
           <Globe size={16} />
+          <span className="sr-only">Locale switcher</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-32">
