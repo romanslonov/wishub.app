@@ -1,4 +1,8 @@
-export const loader = () => {
+import { type LoaderFunctionArgs } from "@remix-run/node";
+
+export const loader = ({ request }: LoaderFunctionArgs) => {
+  const origin = new URL(request.url).origin;
+
   const content = process.env.PREVIEW
     ? `
       User-agent: *
@@ -9,6 +13,8 @@ export const loader = () => {
       Allow: /
       Disallow: /dashboard/
       Disallow: /s/
+
+      Sitemap: ${origin}/sitemap.xml
     `;
 
   return new Response(content, {

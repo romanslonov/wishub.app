@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { type LoaderFunctionArgs } from "@remix-run/node";
 import { xml } from "remix-utils/responses";
 
 export function loader({ request }: LoaderFunctionArgs) {
