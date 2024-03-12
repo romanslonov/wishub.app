@@ -7,17 +7,17 @@ import { lucia } from "~/auth/lucia.server";
 import { sendVerificationEmail } from "~/lib/email";
 import { prisma } from "~/lib/prisma.server";
 
-const schema = z.object({
-  name: z.string().min(1, "Name is required."),
-  email: z
-    .string()
-    .min(1, "Email is required.")
-    .email("Please enter a valid email."),
-  password: z.string().min(8, "Password must be at least 8 characters."),
-});
-
 export async function register(request: Request, context: AppLoadContext) {
   const { t } = context;
+
+  const schema = z.object({
+    name: z.string().min(1, t.validation.name.required),
+    email: z
+      .string()
+      .min(1, t.validation.email.required)
+      .email(t.validation.email.invalid),
+    password: z.string().min(8, t.validation.password.too_short),
+  });
 
   try {
     const formData = await request.formData();
