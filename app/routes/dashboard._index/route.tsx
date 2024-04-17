@@ -11,8 +11,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.lists.meta.title }];
 };
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  const { user } = protectedRoute(context);
+export async function loader({ context, request }: LoaderFunctionArgs) {
+  const { user } = protectedRoute(context, request);
 
   const lists = getLists(user.id);
   const reserves = getReserves(user.id);

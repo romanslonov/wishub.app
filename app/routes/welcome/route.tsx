@@ -33,8 +33,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
   },
 ];
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  const { user } = protectedRoute(context);
+export async function loader({ context, request }: LoaderFunctionArgs) {
+  const { user } = protectedRoute(context, request);
 
   const { t } = context;
 
@@ -49,7 +49,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const { t } = context;
 
   if (request.method === "POST") {
-    const { user } = protectedRoute(context);
+    const { user } = protectedRoute(context, request);
     const formData = await request.formData();
 
     try {
@@ -111,7 +111,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   if (request.method === "PUT") {
-    const { user } = protectedRoute(context);
+    const { user } = protectedRoute(context, request);
 
     if (!user?.id) {
       throw redirect("/login");

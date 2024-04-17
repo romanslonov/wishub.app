@@ -43,7 +43,7 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, context }: ActionFunctionArgs) {
-  const { session } = protectedRoute(context);
+  const { session } = protectedRoute(context, request);
 
   const { t } = context;
 

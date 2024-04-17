@@ -32,8 +32,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.t.dashboard.add_wishes.meta.title}` }];
 };
 
-export async function loader({ params: { id }, context }: LoaderFunctionArgs) {
-  protectedRoute(context);
+export async function loader({
+  params: { id },
+  context,
+  request,
+}: LoaderFunctionArgs) {
+  protectedRoute(context, request);
 
   return { listId: id, t: context.t };
 }
@@ -43,7 +47,7 @@ export const action = async ({
   params,
   context,
 }: ActionFunctionArgs) => {
-  protectedRoute(context);
+  protectedRoute(context, request);
 
   const { t } = context;
 

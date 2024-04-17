@@ -39,8 +39,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export async function loader({ params, context }: LoaderFunctionArgs) {
-  const { session } = protectedRoute(context);
+export async function loader({ params, context, request }: LoaderFunctionArgs) {
+  const { session } = protectedRoute(context, request);
 
   const list = await getListWithItems({
     listId: params.id!,
@@ -51,7 +51,7 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params, context }: ActionFunctionArgs) {
-  protectedRoute(context);
+  protectedRoute(context, request);
 
   const { t } = context;
 

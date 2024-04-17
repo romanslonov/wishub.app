@@ -30,8 +30,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.t.dashboard.profile.title }];
 };
 
-export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const { session } = protectedRoute(context);
+export const loader = async ({ context, request }: LoaderFunctionArgs) => {
+  const { session } = protectedRoute(context, request);
 
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: session.userId },
@@ -42,7 +42,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 };
 
 export async function action({ request, context }: ActionFunctionArgs) {
-  const { session } = protectedRoute(context);
+  const { session } = protectedRoute(context, request);
   const { t } = context;
   const data = await request.json();
 

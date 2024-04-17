@@ -36,14 +36,14 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
   { title: data?.t.dashboard.create_list.meta.title },
 ];
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  protectedRoute(context);
+export async function loader({ context, request }: LoaderFunctionArgs) {
+  protectedRoute(context, request);
 
   return { t: context.t };
 }
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
-  const { user } = protectedRoute(context);
+  const { user } = protectedRoute(context, request);
 
   const { t } = context;
 

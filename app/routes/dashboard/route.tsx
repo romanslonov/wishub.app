@@ -4,7 +4,7 @@ import { protectedRoute } from "~/auth/guards/protected-route.server";
 import { Navigation } from "~/components/navigation";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  const { user } = protectedRoute(context);
+  const { user } = protectedRoute(context, request);
 
   return json({ user, t: context.t });
 };
