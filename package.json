@@ -6,7 +6,6 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "tsx ./server/index.ts",
-    "email": "email dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "cross-env NODE_ENV=production prisma migrate deploy && tsx ./server/index.ts",
     "typecheck": "tsc",
@@ -22,7 +21,6 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
-    "@react-email/components": "0.0.14",
     "@remix-run/express": "^2.7.2",
     "@remix-run/node": "^2.7.2",
     "@remix-run/react": "^2.7.2",
@@ -51,7 +49,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "react-email": "^2.1.0",
     "@hookform/devtools": "^4.3.1",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.7.2",

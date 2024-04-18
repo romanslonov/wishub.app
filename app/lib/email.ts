@@ -1,5 +1,3 @@
-import { ConfirmEmailTemplate } from "emails/confirm-email";
-import { ResetPasswordTemplate } from "emails/reset-password";
 import { Resend } from "resend";
 import { LocaleData } from "~/locales";
 
@@ -18,10 +16,7 @@ export function sendVerificationEmail({
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: `${t.emails.confirm_email.title} Wishub`,
-    react: ConfirmEmailTemplate({
-      code,
-      t,
-    }),
+    html: `<p>${t.emails.confirm_email.body}</p><p>${code}</p>`,
     // Set this to prevent Gmail from threading emails.
     // More info: https://resend.com/changelog/custom-email-headers
     headers: headers(),
@@ -41,10 +36,11 @@ export function sendPasswordResetToken({
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: `${t.emails.reset_password.title}`,
-    react: ResetPasswordTemplate({
-      link,
-      t,
-    }),
+    // react: ResetPasswordTemplate({
+    //   link,
+    //   t,
+    // }),
+    html: `<p>Click <a href="${link}">here</a> to reset your password</p>`,
     // Set this to prevent Gmail from threading emails.
     // More info: https://resend.com/changelog/custom-email-headers
     headers: headers(),

@@ -1,50 +1,34 @@
 # base node image
 FROM node:20-bullseye-slim as base
 
-# set for base and all layer that inherit from it
-ENV NODE_ENV production
+# Set production environment
+ENV NODE_ENV="production"
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Throw-away build stage to reduce size of final image
+FROM base as build
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl
 
-# Install all node_modules, including dev dependencies
-FROM base as deps
+# Install node modules
+COPY --link package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod=false
 
-WORKDIR /myapp
-
-ADD package.json ./
-RUN npm install --include=dev
-
-# Setup production node_modules
-FROM base as production-deps
-
-WORKDIR /myapp
-
-COPY --from=deps /myapp/node_modules /myapp/node_modules
-ADD package.json ./
-RUN npm prune --omit=dev
-
-# Build the app
-FROM base as build
-
-WORKDIR /myapp
-
-COPY --from=deps /myapp/node_modules /myapp/node_modules
-
-ADD prisma .
+# Generate Prisma Client
+COPY --link prisma .
 RUN npx prisma generate
 
-ADD . .
-RUN npm run build
+# Copy application code
+COPY --link . .
 
-# Finally, build the production image with minimal footprint
+# Remove development dependencies
+RUN pnpm prune --prod --config.ignore-scripts=true
+
+# Final stage for app image
 FROM base
 
-WORKDIR /myapp
-
-COPY --from=production-deps /myapp/node_modules /myapp/node_modules
-COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
-
-COPY --from=build /myapp/build/server /myapp/build/server
-COPY --from=build /myapp/build/client /myapp/build/client
-ADD . .
+# Copy built application
+COPY --from=build /app /app
