@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   frontend:
     build:
@@ -22,12 +20,11 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     container_name: wishub-backend
-    command: ["npm", "run", "start"]
+    command: ["pnpm", "start"]
     restart: always
     env_file:
       - .env
-    depends_on:
-      - database
+    platform: linux/amd64
 
   database:
     image: postgres:16.1-alpine
