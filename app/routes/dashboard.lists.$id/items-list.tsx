@@ -16,7 +16,7 @@ function ItemActions({ item }: { item: Item }) {
   return (
     <div className="flex items-center gap-2">
       <UpdateItemDialog item={item} />
-      <RemoveItemAlert itemId={item.id} />
+      {!item.reserverId && <RemoveItemAlert itemId={item.id} />}
     </div>
   );
 }
