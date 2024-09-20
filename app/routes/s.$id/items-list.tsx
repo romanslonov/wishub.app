@@ -80,7 +80,7 @@ export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
             </div>
           </div>
 
-          <ItemActions item={item} isMyself={isMyself} />
+          <ItemActions item={item} user={user} isMyself={isMyself} />
         </li>
       ))}
     </ul>
@@ -90,9 +90,10 @@ export function ItemsList({ items, isMyself, user, ...props }: ItemsListProps) {
 interface ItemActionsProps {
   item: { id: string; reserverId: string | null };
   isMyself: boolean;
+  user: ItemsListProps["user"];
 }
 
-function ItemActions({ item, isMyself }: ItemActionsProps) {
+function ItemActions({ item, user, isMyself }: ItemActionsProps) {
   const data = useRouteLoaderData<{ t: LocaleData }>("routes/s.$id");
   const fetcher = useFetcher<{ message?: string; error?: string }>();
 
@@ -104,7 +105,11 @@ function ItemActions({ item, isMyself }: ItemActionsProps) {
     }
   }, [fetcher.data]);
 
-  return isMyself ? null : (
+  if (isMyself) {
+    return null;
+  }
+
+  return (
     <fetcher.Form method="post" className="flex items-center gap-2">
       <input type="hidden" value={item.id} name="itemId" />
       <input
@@ -117,8 +122,9 @@ function ItemActions({ item, isMyself }: ItemActionsProps) {
         size="sm"
         variant={item.reserverId ? "outline" : "default"}
         className="gap-1.5"
+        disabled={!!item.reserverId && item.reserverId !== user?.id}
       >
-        {item.reserverId ? (
+        {item.reserverId === user?.id ? (
           <>
             <X size={16} />
             <span>{data?.t.shared.list.actions.unreserve}</span>
