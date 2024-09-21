@@ -44,7 +44,7 @@ export function Reserves({ reserves }: Props) {
 
   return (
     <div className="space-y-1.5">
-      <div className="hidden md:grid bg-card border p-2 rounded-lg grid-cols-12 font-semibold text-xs text-muted-foreground gap-4 pl-6 pr-6">
+      <div className="hidden md:grid bg-card border p-2 rounded-lg grid-cols-12 font-medium text-xs text-muted-foreground gap-4 pl-6 pr-6">
         <div className="col-span-6 lg:col-span-8">
           {data?.t.dashboard.lists.sections.reserves.table.headings.name}
         </div>
@@ -64,7 +64,7 @@ export function Reserves({ reserves }: Props) {
             key={item.id}
             className="shadow-sm bg-card relative border px-3 md:px-6 py-3 rounded-xl"
           >
-            <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-4">
+            <div className="grid grid-cols-6 md:grid-cols-12 items-center gap-4">
               <div className="col-span-6 lg:col-span-8">
                 <a
                   href={item.url}
@@ -76,31 +76,28 @@ export function Reserves({ reserves }: Props) {
                   <ArrowUpRight className="inline w-4 h-4" />
                 </a>
               </div>
-              <div className="col-span-3 lg:col-span-2">
+              <div className="col-span-3 flex lg:col-span-2">
                 {/* <span className="text-muted-foreground">List</span>{" "} */}
-                <div className="font-medium inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border text-xs">
+                <div className="font-medium min-w-0 inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border text-xs">
                   <div className="bg-foreground shrink-0 text-background w-5 h-5 rounded-full font-bold inline-flex items-center justify-center">
                     {item.list.owner.name[0]}
                   </div>
-                  <div className="inline-flex whitespace-nowrap items-center gap-0.5">
-                    <span>{item.list.owner.name}</span>
-                  </div>
+                  <div className="truncate min-w-0">{item.list.owner.name}</div>
                 </div>
               </div>
               <div className="col-span-3 lg:col-span-2 flex items-center justify-end">
-                {/* <span className="text-muted-foreground">List</span>{" "} */}
                 <a
                   href={`/s/${item.list.id}`}
                   target="_blank"
-                  className="font-medium inline-flex hover:bg-muted transition-colors items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border text-xs"
+                  className="font-medium min-w-0 inline-flex hover:bg-muted transition-colors items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border text-xs"
                   rel="noreferrer"
                 >
                   <div className="bg-foreground shrink-0 text-background w-5 h-5 rounded-full font-bold inline-flex items-center justify-center">
                     {item.list.owner.name[0]}
                   </div>
-                  <div className="inline-flex whitespace-nowrap items-center gap-0.5">
-                    <span>{item.list.name}</span>
-                    <ArrowUpRight className="inline w-4 h-4 align-middle" />
+                  <div className="inline-flex min-w-0 whitespace-nowrap items-center gap-0.5">
+                    <div className="truncate">{item.list.name}</div>
+                    <ArrowUpRight className="inline shrink-0 w-4 h-4 align-middle" />
                   </div>
                 </a>
               </div>
