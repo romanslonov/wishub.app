@@ -1,37 +1,21 @@
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    image: caddy:cloudflare
-    container_name: wishub-frontend
-    hostname: frontend
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-
   backend:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: Dockerfile
     container_name: wishub-backend
-    command: ["pnpm", "start"]
     restart: always
-    env_file:
-      - .env
-    platform: linux/amd64
+    environment:
+      DATABASE_URL: "postgresql://wishub:wishub@database:5432/wishub"
 
   database:
-    image: postgres:16.1-alpine
+    image: postgres:17.2-alpine
     restart: always
     container_name: wishub-database
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: "wishub"
+      POSTGRES_USER: "wishub"
+      POSTGRES_PASSWORD: "wishub"
     ports:
       - 127.0.0.1:5432:5432
     volumes:

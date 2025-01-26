@@ -3,4 +3,5 @@ node_modules
 .DS_Store
 /.cache
 /public/build
-/build
+build
+.idea

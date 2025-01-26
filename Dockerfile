@@ -1,53 +1,47 @@
 # base node image
-FROM node:20-bullseye-slim AS base
-
-# set for base and all layer that inherit from it
+FROM node:22-slim AS base
 ENV NODE_ENV=production
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl
+RUN corepack enable
 
 # Install all node_modules, including dev dependencies
 FROM base AS deps
-
 WORKDIR /myapp
 
-ADD package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml .npmrc ./
+
 RUN pnpm install --frozen-lockfile --prod=false
 
 # Setup production node_modules
 FROM base AS production-deps
-
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
-ADD package.json pnpm-lock.yaml .npmrc .env ./
+COPY package.json pnpm-lock.yaml .npmrc ./
+
 RUN pnpm prune --prod --config.ignore-scripts=true
 
 # Build the app
 FROM base AS build
-
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
+COPY prisma .
 
-ADD prisma .
-RUN npx prisma generate
+RUN pnpm dlx prisma generate
 
-ADD . .
+COPY . .
 RUN pnpm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
-
 WORKDIR /myapp
 
 COPY --from=production-deps /myapp/node_modules /myapp/node_modules
 COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
+COPY --from=build /myapp/build /myapp/build
+COPY . .
 
-COPY --from=build /myapp/build/server /myapp/build/server
-COPY --from=build /myapp/build/client /myapp/build/client
-ADD . .
+EXPOSE 3000
+CMD ["pnpm", "run", "start"]
