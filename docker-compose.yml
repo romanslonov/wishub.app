@@ -1,9 +1,9 @@
 services:
-  backend:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: wishub-backend
+    container_name: wishub-app
     restart: always
     environment:
       DATABASE_URL: "postgresql://wishub:wishub@database:5432/wishub"
