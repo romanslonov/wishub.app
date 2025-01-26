@@ -15,7 +15,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return json({
     ENV: {
       DOMAIN: process.env.DOMAIN!,
-      UMAMI_ID: process.env.UMAMI_ID!,
       ORIGIN: url.origin,
     },
     lang,

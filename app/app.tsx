@@ -16,7 +16,7 @@ export default function App() {
   const data = useRouteLoaderData<{
     t: LocaleData;
     lang: Locale;
-    ENV: { UMAMI_ID?: string; ORIGIN: string };
+    ENV: { ORIGIN: string };
   }>("root");
   const theme = useTheme();
 
@@ -93,13 +93,7 @@ export default function App() {
           name="twitter:image:alt"
           content={`Wishub - ${data?.t.website.sections.join.title.part1} ${data?.t.website.sections.join.title.part2}`}
         />
-        {data?.ENV.UMAMI_ID ? (
-          <script
-            defer
-            src="https://analytics.eu.umami.is/script.js"
-            data-website-id={data?.ENV.UMAMI_ID}
-          ></script>
-        ) : null}
+        <script defer src="https://umami.romanslonov.com/script.js" data-website-id="2e33b1b4-e7f9-4499-9e38-be90798d05a0"></script>
         <NonFlashOfWrongThemeEls />
         <Meta />
         <Links />
