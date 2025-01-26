@@ -16,7 +16,7 @@ export function sendVerificationEmail({
     from: `Wishub App <onboarding@${process.env.DOMAIN}>`,
     to: email,
     subject: `${t.emails.confirm_email.title} Wishub`,
-    html: `<p>${t.emails.confirm_email.body}</p><p>${code}</p>`,
+    html: `<p>${t.emails.confirm_email.comment}</p><p>${code}</p>`,
     // Set this to prevent Gmail from threading emails.
     // More info: https://resend.com/changelog/custom-email-headers
     headers: headers(),
